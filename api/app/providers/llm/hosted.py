@@ -63,6 +63,13 @@ class HostedProvider:
         try:
             with httpx.Client(timeout=self.timeout) as client:
                 resp = client.post(endpoint, json=payload, headers=headers)
+                # Some OpenAI-compatible providers (like Google AI Studio/Gemini) do not support
+                # response_format: {"type": "json_object"} and return 400 or 503. Retry without it.
+                if resp.is_error and "response_format" in payload:
+                    log.info("retrying hosted call without response_format")
+                    payload_no_rf = {k: v for k, v in payload.items() if k != "response_format"}
+                    resp = client.post(endpoint, json=payload_no_rf, headers=headers)
+
                 resp.raise_for_status()
                 data = resp.json()
 
@@ -74,7 +81,15 @@ class HostedProvider:
                 if not content:
                     raise ValueError("Hosted provider returned empty content")
 
-                answer_obj = Answer.model_validate_json(content)
+                # Strip potential markdown code fences: ```json ... ```
+                cleaned = content.strip()
+                if cleaned.startswith("```json"):
+                    cleaned = cleaned[7:]
+                elif cleaned.startswith("```"):
+                    cleaned = cleaned[3:]
+                cleaned = cleaned.removesuffix("```")
+
+                answer_obj = Answer.model_validate_json(cleaned.strip())
                 return answer_obj
 
         except (

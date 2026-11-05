@@ -9,7 +9,7 @@ VENV ?= .venv
 BIN := $(abspath $(VENV))/bin
 # The Ingress address. On Linux this is the minikube IP. On macOS or Windows with the
 # docker driver, run `minikube tunnel` in another terminal and use INGRESS_IP=127.0.0.1.
-INGRESS_IP ?= $(shell minikube ip 2>/dev/null)
+INGRESS_IP ?= $(shell minikube ip 2>/dev/null || echo 127.0.0.1)
 HOST ?= rahbar.local
 
 .DEFAULT_GOAL := help
@@ -35,18 +35,26 @@ lint: ## ruff and mypy over everything in Python
 dev: ## run the API with stubs on http://localhost:8000, serving the chat UI too
 	cd api && SERVE_UI_DIR=../ui RETRIEVER=stub LLM_PROVIDER=stub $(BIN)/uvicorn app.main:app --reload --port 8000
 
-cluster: ## start minikube with Calico, then enable metrics-server and ingress
-	minikube start --driver=docker --cni=calico --memory=6144 --cpus=4
-	minikube addons enable metrics-server
-	minikube addons enable ingress
+cluster: ## verify or start Kubernetes cluster (Docker Desktop or Minikube)
+	@if kubectl cluster-info >/dev/null 2>&1; then \
+		echo "Kubernetes cluster is active: $$(kubectl config current-context)"; \
+	elif command -v minikube >/dev/null 2>&1; then \
+		minikube start --driver=docker --cni=calico --memory=2500 --cpus=2; \
+		minikube addons enable metrics-server; \
+		minikube addons enable ingress; \
+	else \
+		echo "Kubernetes cluster not detected. Please enable Kubernetes in Docker Desktop or start Minikube."; exit 1; \
+	fi
 
-images: ## build the three images and load them into minikube (needs yours: Dockerfiles)
+images: ## build the three images and load them into minikube if running
 	docker build -t rahbar-api:$(TAG) api
 	docker build -t rahbar-indexer:$(TAG) indexer
 	docker build -t rahbar-ui:$(TAG) ui
-	minikube image load rahbar-api:$(TAG)
-	minikube image load rahbar-indexer:$(TAG)
-	minikube image load rahbar-ui:$(TAG)
+	@if command -v minikube >/dev/null 2>&1 && minikube status >/dev/null 2>&1; then \
+		minikube image load rahbar-api:$(TAG); \
+		minikube image load rahbar-indexer:$(TAG); \
+		minikube image load rahbar-ui:$(TAG); \
+	fi
 
 apply: ## apply the dev overlay (needs yours: manifests)
 	kubectl apply -k k8s/overlays/dev

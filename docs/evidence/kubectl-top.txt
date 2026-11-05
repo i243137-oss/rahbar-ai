@@ -1,0 +1,13 @@
+$ kubectl top pods -n rahbar
+NAME                                CPU(cores)   MEMORY(bytes)   
+api-64bf99f65d-4j9kz                14m          182Mi           
+api-64bf99f65d-k2plw                12m          176Mi           
+api-64bf99f65d-x89mq                15m          180Mi           
+chroma-0                            28m          365Mi           
+indexer-init-4f81k                  320m         1420Mi          
+redis-5769747c94-b2m5q              2m           14Mi            
+ui-7f85888cd4-n9kw2                 1m           8Mi             
+
+$ kubectl top nodes
+NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+minikube   520m         13%    2950Mi          48%       

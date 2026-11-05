@@ -146,7 +146,7 @@ jobs:
           tags: rahbar-api:scan
 
       - name: Run Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@v0.29.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: rahbar-api:scan
           format: table

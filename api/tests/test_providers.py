@@ -17,7 +17,7 @@ from app.providers.llm import get_provider
 from app.providers.llm.hosted import HostedProvider
 from app.providers.llm.ollama import OllamaProvider
 from app.providers.llm.stub import StubProvider
-from app.schemas import Answer, Citation, Passage
+from app.schemas import Answer, Passage
 
 
 @pytest.fixture

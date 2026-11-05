@@ -15,14 +15,12 @@ from __future__ import annotations
 from unittest.mock import MagicMock
 
 import pytest
-from pydantic import ValidationError
 
 from app.config import Settings
 from app.schemas import Answer, AskResponse, Citation, Passage
-from app.services.abstention import build_abstention_answer, should_abstain
+from app.services.abstention import should_abstain
 from app.services.answer import answer_question
 from app.services.citations import verify_citations
-from app.services.fallback import build_fallback_answer
 
 
 @pytest.fixture

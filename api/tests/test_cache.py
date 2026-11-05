@@ -5,7 +5,6 @@ All tests use a mock or in-memory redis fixture; no running Redis server is requ
 
 from __future__ import annotations
 
-import json
 from unittest.mock import MagicMock
 
 import pytest

@@ -28,8 +28,6 @@ def verify_citations(
     if not citations:
         return True, []
 
-    retrieved_pairs = {(p.source.strip().lower(), p.section.strip().lower()) for p in passages}
-
     valid_citations: list[Citation] = []
     has_fabrication = False
 

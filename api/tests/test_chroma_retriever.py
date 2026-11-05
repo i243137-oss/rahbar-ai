@@ -5,13 +5,12 @@ All tests use mocks or local test objects; no live Chroma server is needed.
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
 from app.config import Settings
 from app.retrieval.chroma import ChromaRetriever
-from app.schemas import Passage
 
 
 @pytest.fixture

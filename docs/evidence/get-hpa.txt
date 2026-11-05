@@ -1,0 +1,24 @@
+$ kubectl get hpa -n rahbar
+NAME      REFERENCE        TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+api-hpa   Deployment/api   12%/60%         3         8         3          15m
+
+$ kubectl describe hpa api-hpa -n rahbar
+Name:                                                  api-hpa
+Namespace:                                             rahbar
+Reference:                                             Deployment/api
+Metrics:
+  ( current / target )
+  resource cpu on pods  (as a percentage of request):  12% (24m) / 60%
+Min replicas:                                          3
+Max replicas:                                          8
+Deployment pods:                                       3 current / 3 desired
+Conditions:
+  Type            Status  Reason               Message
+  ----            ------  ------               -------
+  AbleToScale     True    ScaleDownStabilized  recent recommendations were higher than current one, applying the highest recommendation
+  ScalingActive   True    ValidMetricFound     the HPA was able to successfully calculate a replica count from cpu resource utilization
+  ScalingLimited  True    TooFewReplicas       the desired replica count is less than the minimum already
+Events:
+  Type    Reason             Age   From                       Message
+  ----    ------             ----  ----                       -------
+  Normal  SuccessfulRescale  10m   horizontal-pod-autoscaler  New size: 3; reason: Current number of replicas below spec.minReplicas

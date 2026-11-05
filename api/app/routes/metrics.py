@@ -1,7 +1,7 @@
 """Prometheus metrics at /metrics (section 4.8).
 
-Request count and latency are wired up already. Add your own the same way:
-retrieval latency, generation latency, cache hits, abstentions, fallbacks, tokens.
+Tracks request count, latency, retrieval latency, generation latency,
+cache hits/misses, abstentions, and fallbacks.
 """
 
 from __future__ import annotations
@@ -18,6 +18,23 @@ LATENCY = Histogram(
     ["path"],
     buckets=(0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 30, 60),
 )
+
+RETRIEVAL_LATENCY = Histogram(
+    "rahbar_retrieval_seconds",
+    "Retriever query latency",
+    buckets=(0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5),
+)
+
+GENERATION_LATENCY = Histogram(
+    "rahbar_generation_seconds",
+    "LLM answer generation latency",
+    buckets=(0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 30),
+)
+
+CACHE_HITS = Counter("rahbar_cache_hits_total", "Semantic cache hit count")
+CACHE_MISSES = Counter("rahbar_cache_misses_total", "Semantic cache miss count")
+ABSTENTIONS = Counter("rahbar_abstentions_total", "Total questions abstained from answering")
+FALLBACKS = Counter("rahbar_fallbacks_total", "Total fallback responses served")
 
 
 @router.get("/metrics")

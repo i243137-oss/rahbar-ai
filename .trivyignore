@@ -1,0 +1,4 @@
+# Trivy ignore file for known upstream framework vulnerabilities without compatible major releases
+CVE-2025-62727
+CVE-2026-48818
+CVE-2026-54283

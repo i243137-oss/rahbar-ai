@@ -5,12 +5,18 @@ SHELL := /bin/bash
 NS ?= rahbar
 TAG ?= dev
 PY ?= python3
+-include api/.env
+-include .env
+export
+
 VENV ?= .venv
 BIN := $(abspath $(VENV))/bin
 # The Ingress address. On Linux this is the minikube IP. On macOS or Windows with the
 # docker driver, run `minikube tunnel` in another terminal and use INGRESS_IP=127.0.0.1.
 INGRESS_IP ?= $(shell minikube ip 2>/dev/null || echo 127.0.0.1)
 HOST ?= rahbar.local
+RETRIEVER ?= stub
+LLM_PROVIDER ?= stub
 
 .DEFAULT_GOAL := help
 .PHONY: help install test lint dev cluster images apply secret index ask fetch eval eval-fixtures check
@@ -32,8 +38,8 @@ lint: ## ruff and mypy over everything in Python
 	cd api && $(BIN)/mypy app
 	cd indexer && $(BIN)/mypy pipeline
 
-dev: ## run the API with stubs on http://localhost:8000, serving the chat UI too
-	cd api && SERVE_UI_DIR=../ui RETRIEVER=stub LLM_PROVIDER=stub $(BIN)/uvicorn app.main:app --reload --port 8000
+dev: ## run the API on http://localhost:8000, serving the chat UI too
+	cd api && SERVE_UI_DIR=../ui RETRIEVER=$(RETRIEVER) LLM_PROVIDER=$(LLM_PROVIDER) $(BIN)/uvicorn app.main:app --reload --port 8000
 
 cluster: ## verify or start Kubernetes cluster (Docker Desktop or Minikube)
 	@if kubectl cluster-info >/dev/null 2>&1; then \

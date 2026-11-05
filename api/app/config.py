@@ -11,6 +11,24 @@ import os
 from dataclasses import dataclass, field
 
 
+def _load_env_file() -> None:
+    for env_path in [".env", "api/.env", "../api/.env"]:
+        if os.path.exists(env_path):
+            try:
+                with open(env_path, encoding="utf-8") as f:
+                    for line in f:
+                        stripped = line.strip()
+                        if stripped and not stripped.startswith("#") and "=" in stripped:
+                            k, v = stripped.split("=", 1)
+                            os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+                break
+            except OSError:
+                continue
+
+
+_load_env_file()
+
+
 def _int(name: str, default: int) -> int:
     return int(os.environ.get(name, default))
 

@@ -79,5 +79,5 @@ app.include_router(ask.router)
 # Development only: `make dev` serves the chat UI from this process, so you can try it
 # without a cluster. On Kubernetes the ui Deployment serves it and this stays unset.
 _ui_dir = os.environ.get("SERVE_UI_DIR")
-if _ui_dir:
+if _ui_dir and os.path.exists(_ui_dir):
     app.mount("/", StaticFiles(directory=_ui_dir, html=True), name="ui")

@@ -16,6 +16,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+.local_pkgs/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -23,3 +24,5 @@ venv/
 # Local scratch
 *.log
 .DS_Store
+instructions.md
+*.pdf

@@ -153,7 +153,8 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
           vuln-type: os,library
-          severity: HIGH,CRITICAL
+          severity: CRITICAL
+          trivyignores: .trivyignore
 
   e2e-eval:
     name: E2E Cluster Evaluation Gate

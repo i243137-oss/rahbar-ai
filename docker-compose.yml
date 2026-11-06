@@ -1,0 +1,27 @@
+services:
+  api:
+    image: itxumairhassan/rahbar-api:dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - RETRIEVER=${RETRIEVER:-stub}
+      - LLM_PROVIDER=${LLM_PROVIDER:-stub}
+      - LOG_LEVEL=INFO
+    env_file:
+      - path: ./api/.env
+        required: false
+    restart: unless-stopped
+
+  ui:
+    image: itxumairhassan/rahbar-ui:dev
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+    restart: unless-stopped

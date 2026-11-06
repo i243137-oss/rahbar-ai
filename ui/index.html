@@ -75,9 +75,16 @@
 </form>
 
 <script>
-// The API sits behind the same Ingress host at /api. For local development you can
-// point elsewhere with ?api=http://localhost:8000 (that server must allow CORS).
-const API_BASE = new URLSearchParams(location.search).get("api") || window.RAHBAR_API || "";
+// The API sits behind the same Ingress host at /api. For local development, automatically
+// detect port 8080 and route to :8000, or use ?api=... and remember it in localStorage.
+let savedApi = "";
+try { savedApi = localStorage.getItem("rahbar_api") || ""; } catch (_) {}
+const urlApi = new URLSearchParams(location.search).get("api");
+if (urlApi) {
+  try { localStorage.setItem("rahbar_api", urlApi); } catch (_) {}
+}
+const autoLocalApi = (location.port === "8080") ? `${location.protocol}//${location.hostname}:8000` : "";
+const API_BASE = urlApi || savedApi || window.RAHBAR_API || autoLocalApi;
 
 const thread = document.getElementById("thread");
 const form = document.getElementById("ask");

@@ -9,10 +9,16 @@ services:
     environment:
       - RETRIEVER=${RETRIEVER:-stub}
       - LLM_PROVIDER=${LLM_PROVIDER:-stub}
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
       - LOG_LEVEL=INFO
     env_file:
+      - path: .env
+        required: false
       - path: ./api/.env
         required: false
+    depends_on:
+      - chroma
     restart: unless-stopped
 
   ui:
@@ -25,3 +31,18 @@ services:
     depends_on:
       - api
     restart: unless-stopped
+
+  chroma:
+    image: chromadb/chroma:0.5.5
+    ports:
+      - "8002:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - chroma-data:/chroma/chroma
+    restart: unless-stopped
+
+volumes:
+  chroma-data:

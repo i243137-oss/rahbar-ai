@@ -7,11 +7,17 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - RETRIEVER=${RETRIEVER:-stub}
-      - LLM_PROVIDER=${LLM_PROVIDER:-stub}
+      - RETRIEVER=chroma
+      - LLM_PROVIDER=hosted
       - CHROMA_HOST=chroma
       - CHROMA_PORT=8000
+      - CHROMA_COLLECTION=rahbar
+      - EMBED_MODEL=nomic-embed-text
+      - EMBED_DIM=768
+      - OLLAMA_URL=http://host.docker.internal:11434
       - LOG_LEVEL=INFO
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - path: .env
         required: false
@@ -33,15 +39,15 @@ services:
     restart: unless-stopped
 
   chroma:
-    image: chromadb/chroma:0.5.5
+    image: chromadb/chroma:1.0.12
     ports:
       - "8002:8000"
     environment:
       - IS_PERSISTENT=TRUE
-      - PERSIST_DIRECTORY=/chroma/chroma
+      - PERSIST_DIRECTORY=/data
       - ANONYMIZED_TELEMETRY=FALSE
     volumes:
-      - chroma-data:/chroma/chroma
+      - chroma-data:/data
     restart: unless-stopped
 
 volumes:

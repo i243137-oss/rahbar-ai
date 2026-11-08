@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import time
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -25,6 +27,17 @@ def embed(texts: list[str], settings: IndexerSettings,
     """
     if not texts:
         return []
+
+    cache_file = Path(settings.corpus_dir) / ".embeddings_cache.json"
+    if cache_file.exists():
+        try:
+            cached = json.loads(cache_file.read_text(encoding="utf-8"))
+            if isinstance(cached, list) and len(cached) == len(texts):
+                log.info("loaded %d cached embeddings from %s", len(cached), cache_file.name)
+                return cached
+        except Exception:
+            pass
+
     own_client = client is None
     http = client or httpx.Client(timeout=httpx.Timeout(180.0, connect=15.0))
     try:
@@ -41,6 +54,10 @@ def embed(texts: list[str], settings: IndexerSettings,
     if len(vectors) != len(texts) or len(dims) != 1:
         raise RuntimeError(f"embedding returned {len(vectors)} vectors of dimensions {dims} "
                            f"for {len(texts)} texts")
+    try:
+        cache_file.write_text(json.dumps(vectors), encoding="utf-8")
+    except Exception:
+        pass
     return vectors
 
 

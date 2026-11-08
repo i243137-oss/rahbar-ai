@@ -47,7 +47,10 @@ def _extract_pdf(path: Path, dpi: int, lang: str, min_chars: int,
 
     pages: list[Page] = []
     with pdfplumber.open(path) as pdf:
+        total = len(pdf.pages)
         for number, page in enumerate(pdf.pages, start=1):
+            if number == 1 or number % 5 == 0 or number == total:
+                log.info("extracting %s: page %d/%d", path.name, number, total)
             text = _page_text(page, columns)
             ocr = False
             if len(text.strip()) < min_chars:  # no (or almost no) text layer: try OCR

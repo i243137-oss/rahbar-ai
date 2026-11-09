@@ -44,3 +44,7 @@ Thresholds you tried, the false hit that ruled one out, the one you shipped.
 
 ## Evaluation method
 How recall@k matches retrieved passages to golden ones (by source and section? by chunk id?).
+Evaluation method
+Recall@k compares the top k retrieved chunks with the unique source and section pairs in the golden set. The source must match exactly. A section matches if its trimmed label is identical or begins with the expected label followed by a space or colon, so 1.21 Attendance matches 1.21 but 1.210 does not. Recall@3 and Recall@5 are averaged across questions with expected evidence and reported both overall and by question type.
+
+A citation is valid when it matches a retrieved source and section and, if the citation specifies a page, that page also matches. The overall score divides valid citations by all citations in the run. Abstention correctness measures the share of must-abstain questions with answered_from_context: false. A metric with no applicable observations is reported as null. The expect cues in the golden set are for manual review of answer content.

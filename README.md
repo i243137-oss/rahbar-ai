@@ -99,7 +99,24 @@ flowchart TD
 ### Prerequisites
 - Python 3.12+
 - `make` and `git`
-- (Optional for full container stack) Docker and Minikube
+- (Optional for container stack) Docker & Docker Compose or Minikube
+
+### Quickstart with Docker Compose
+
+To start the complete stack (ChromaDB vector store on `:8002`, FastAPI backend on `:8000`, and Chat UI on `:8080`):
+
+```bash
+# 1. Provide your environment variables (e.g. Gemini / OpenAI-compatible key)
+cp .env.example .env  # or export LLM_API_KEY in your shell
+
+# 2. Start services in background
+docker compose up -d
+
+# 3. View logs
+docker compose logs -f api
+```
+
+The Chat UI is accessible at [http://localhost:8080](http://localhost:8080) (or directly via the API server at [http://localhost:8000](http://localhost:8000)).
 
 ### Quickstart (Stub Mode — No Model, No Network Required)
 
@@ -185,7 +202,27 @@ kubectl get endpoints -n rahbar
 
 ## How to Run the Indexer
 
-The indexer is decoupled from the API. To trigger an on-demand re-index without redeploying the API:
+The indexer is decoupled from the API.
+
+### 1. Local / Docker Indexing
+
+To index the FAST-NUCES documents into ChromaDB locally:
+
+```bash
+# Ensure Ollama has nomic-embed-text pulled and ChromaDB is running on :8002
+ollama pull nomic-embed-text
+
+# Run the indexing pipeline
+CORPUS_DIR=corpus/raw \
+CHROMA_HOST=localhost \
+CHROMA_PORT=8002 \
+OLLAMA_URL=http://localhost:11434 \
+python3 -m pipeline.run
+```
+
+### 2. Kubernetes Job Indexing
+
+To trigger an on-demand re-index in Kubernetes without redeploying the API:
 
 ```bash
 # Trigger an index run from the CronJob template:

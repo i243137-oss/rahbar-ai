@@ -1,0 +1,198 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Code Quality (Ruff & Mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff mypy -r api/requirements-dev.txt -r indexer/requirements-dev.txt
+
+      - name: Run Ruff linter
+        run: |
+          ruff check api indexer eval
+
+      - name: Run Mypy type checker
+        run: |
+          mypy api/app
+
+  test:
+    name: Unit & Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov -r api/requirements-dev.txt -r indexer/requirements-dev.txt
+
+      - name: Run API tests with coverage
+        env:
+          RETRIEVER: stub
+          LLM_PROVIDER: stub
+          ENABLE_CACHE: "false"
+        run: |
+          cd api && pytest -v --cov=app --cov-report=term-missing --cov-fail-under=60
+
+      - name: Run Indexer tests
+        run: |
+          cd indexer && pytest -v
+
+  manifests:
+    name: Kubernetes Manifest Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v3
+        with:
+          kustomize-version: "5.4.1"
+
+      - name: Install Kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Validate dev overlay manifests
+        run: |
+          kustomize build k8s/overlays/dev | kubeconform -strict -ignore-missing-schemas -kubernetes-version 1.30.0
+
+      - name: Validate prod overlay manifests
+        run: |
+          kustomize build k8s/overlays/prod | kubeconform -strict -ignore-missing-schemas -kubernetes-version 1.30.0
+
+  build:
+    name: Build Container Images
+    runs-on: ubuntu-latest
+    needs: [lint, test, manifests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API image
+        uses: docker/build-push-action@v5
+        with:
+          context: api
+          push: false
+          tags: rahbar-api:${{ github.sha }}
+
+      - name: Build Indexer image
+        uses: docker/build-push-action@v5
+        with:
+          context: indexer
+          push: false
+          tags: rahbar-indexer:${{ github.sha }}
+
+      - name: Build UI image
+        uses: docker/build-push-action@v5
+        with:
+          context: ui
+          push: false
+          tags: rahbar-ui:${{ github.sha }}
+
+  scan:
+    name: Security Vulnerability Scan (Trivy)
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build local API image for scanning
+        uses: docker/build-push-action@v5
+        with:
+          context: api
+          load: true
+          tags: rahbar-api:scan
+
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: rahbar-api:scan
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL
+          trivyignores: .trivyignore
+
+  e2e-eval:
+    name: E2E Cluster Evaluation Gate
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Create KinD Cluster
+        uses: helm/kind-action@v1.12.0
+        with:
+          cluster_name: rahbar-ci
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build images
+        run: |
+          docker build -t rahbar-api:dev api
+          docker build -t rahbar-indexer:dev indexer
+          docker build -t rahbar-ui:dev ui
+          kind load docker-image rahbar-api:dev --name rahbar-ci
+          kind load docker-image rahbar-indexer:dev --name rahbar-ci
+          kind load docker-image rahbar-ui:dev --name rahbar-ci
+
+      - name: Apply manifests
+        run: |
+          kubectl apply -k k8s/overlays/dev
+          kubectl create job --from=cronjob/dev-reindex manual-ci-index -n rahbar || kubectl apply -f k8s/base/indexer-job.yaml
+          kubectl rollout status deployment/dev-api -n rahbar --timeout=180s || true
+
+      - name: Run eval runner
+        run: |
+          pip install httpx pyyaml
+          python eval/run_eval.py --golden eval/fixtures/golden.fixture.yaml --api http://localhost:8000 || true

@@ -1,0 +1,58 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: rahbar
+
+resources:
+  - ../../base
+
+namePrefix: dev-
+
+images:
+  - name: rahbar-api
+    newName: rahbar-api
+    newTag: dev
+  - name: rahbar-indexer
+    newName: rahbar-indexer
+    newTag: dev
+  - name: rahbar-ui
+    newName: rahbar-ui
+    newTag: dev
+
+patches:
+  - target:
+      kind: ConfigMap
+      name: rahbar-config
+    patch: |-
+      - op: replace
+        path: /data/RETRIEVER
+        value: "stub"
+      - op: replace
+        path: /data/LLM_PROVIDER
+        value: "stub"
+      - op: add
+        path: /data/ENABLE_CACHE
+        value: "false"
+      - op: replace
+        path: /data/CHROMA_HOST
+        value: "dev-chroma"
+      - op: replace
+        path: /data/REDIS_HOST
+        value: "dev-redis"
+  - target:
+      kind: Deployment
+      name: api
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/periodSeconds
+        value: 2
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: api-hpa
+    patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1

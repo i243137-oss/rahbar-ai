@@ -231,3 +231,86 @@ def test_prompt_injection_poisoned_chunk_not_obeyed(mock_settings: Settings) -> 
 
     assert resp.answered_from_context is False
     assert "waived" not in resp.answer.lower()
+
+
+# ==============================================================================
+# Precision Citation & Abstention Regression Tests
+# ==============================================================================
+
+
+def test_citation_verification_rejects_broad_substring(valid_passages: list[Passage]) -> None:
+    """A broad section like 'Section 5' must not match 'Section 5.1' or 'Section 5.2'."""
+    broad_citation = [Citation(source="Academic_Handbook_2026.pdf", section="5", page=45)]
+    valid, cites = verify_citations(broad_citation, valid_passages)
+    assert valid is False
+    assert len(cites) == 0
+
+
+def test_citation_verification_mismatched_page(valid_passages: list[Passage]) -> None:
+    """Citation with mismatched page number must be rejected."""
+    wrong_page_citation = [
+        Citation(source="Academic_Handbook_2026.pdf", section="Section 5.1 Graduation Requirements", page=999)
+    ]
+    valid, cites = verify_citations(wrong_page_citation, valid_passages)
+    assert valid is False
+    assert len(cites) == 0
+
+
+def test_grounded_answer_without_citations_converts_to_abstention(
+    mock_settings: Settings, valid_passages: list[Passage]
+) -> None:
+    """A model claiming answered_from_context=True with empty citations must fail and convert to abstention."""
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = valid_passages
+    mock_retriever.name = "chroma"
+
+    # Provider returning grounded=True but no citations
+    ungrounded_answer = Answer(
+        reasoning="Claims grounded without citations",
+        answer="Undergraduate degree requires 2.0 CGPA.",
+        citations=[],
+        answered_from_context=True,
+        confidence="high",
+    )
+    mock_provider = MagicMock()
+    mock_provider.name = "ollama"
+    mock_provider.generate.return_value = ungrounded_answer
+
+    resp = answer_question("What is the graduation CGPA requirement?", mock_retriever, mock_provider, mock_settings)
+    assert resp.answered_from_context is False
+    assert "could not be verified" in resp.answer.lower() or "consult" in resp.answer.lower()
+
+
+def test_should_abstain_unsupported_query_topics(valid_passages: list[Passage]) -> None:
+    """Uncovered query with no substantive term overlap must trigger abstention."""
+    unsupported_query = "What are the rules for booking tennis courts and swimming pools?"
+    assert should_abstain(valid_passages, 0.5, question=unsupported_query) is True
+
+
+def test_metrics_instrumentation_on_answer(mock_settings: Settings, valid_passages: list[Passage]) -> None:
+    """Assert Prometheus metrics observe latency and count abstentions."""
+    from app.routes.metrics import ABSTENTIONS, GENERATION_LATENCY, RETRIEVAL_LATENCY
+
+    mock_retriever = MagicMock()
+    mock_retriever.retrieve.return_value = valid_passages
+    mock_retriever.name = "chroma"
+
+    grounded_answer = Answer(
+        reasoning="Grounding verified",
+        answer="A minimum CGPA of 2.0 is required.",
+        citations=[Citation(source="Academic_Handbook_2026.pdf", section="Section 5.1 Graduation Requirements", page=45)],
+        answered_from_context=True,
+        confidence="high",
+    )
+    mock_provider = MagicMock()
+    mock_provider.name = "ollama"
+    mock_provider.generate.return_value = grounded_answer
+
+    retrieval_samples_before = RETRIEVAL_LATENCY._samples()
+    gen_samples_before = GENERATION_LATENCY._samples()
+
+    resp = answer_question("What is the CGPA requirement?", mock_retriever, mock_provider, mock_settings)
+    assert resp.answered_from_context is True
+
+    assert len(RETRIEVAL_LATENCY._samples()) >= len(retrieval_samples_before)
+    assert len(GENERATION_LATENCY._samples()) >= len(gen_samples_before)

@@ -40,3 +40,10 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts:
+            - name: corpus-volume
+              mountPath: /corpus
+      volumes:
+        - name: corpus-volume
+          persistentVolumeClaim:
+            claimName: corpus-pvc

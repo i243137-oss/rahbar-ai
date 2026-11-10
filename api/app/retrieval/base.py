@@ -13,3 +13,7 @@ class Retriever(Protocol):
     def retrieve(self, question: str, k: int) -> list[Passage]:
         """Return up to k passages, best first."""
         ...
+
+    def get_index_id(self) -> str | None:
+        """Return the active index ID for cache alignment."""
+        ...

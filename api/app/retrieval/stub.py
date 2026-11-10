@@ -96,7 +96,7 @@ class StubRetriever:
 
         if matches:
             remaining = [p.model_copy() for p in _PASSAGES if p.chunk_id not in {m.chunk_id for m in matches}]
-            return (matches + remaining)[:k]
+            return (matches + remaining)[:min(k, 3)]
 
         return [p.model_copy() for p in _PASSAGES[:k]]
 

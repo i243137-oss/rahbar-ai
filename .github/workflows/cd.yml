@@ -105,9 +105,13 @@ jobs:
           docker build -t ${REG}/rahbar-api:${{ github.sha }} api
           docker build -t ${REG}/rahbar-indexer:${{ github.sha }} indexer
           docker build -t ${REG}/rahbar-ui:${{ github.sha }} ui
+          docker pull chromadb/chroma:1.0.12
+          docker pull redis:7.4-alpine
           kind load docker-image ${REG}/rahbar-api:${{ github.sha }} --name rahbar-prod
           kind load docker-image ${REG}/rahbar-indexer:${{ github.sha }} --name rahbar-prod
           kind load docker-image ${REG}/rahbar-ui:${{ github.sha }} --name rahbar-prod
+          kind load docker-image chromadb/chroma:1.0.12 --name rahbar-prod
+          kind load docker-image redis:7.4-alpine --name rahbar-prod
 
       - name: Set Image Tags in Overlay
         run: |
@@ -123,8 +127,8 @@ jobs:
 
       - name: Initialize Data Tier & Chroma Collection for Rollout
         run: |
-          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=120s
-          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=120s
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || (kubectl describe pod -n rahbar -l app=chroma && exit 1)
+          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || (kubectl describe pod -n rahbar -l app=redis && exit 1)
           kubectl port-forward -n rahbar svc/chroma 8002:8000 &
           FWD_PID=$!
           sleep 3

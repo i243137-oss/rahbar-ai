@@ -7,6 +7,7 @@ converts cosine distance to similarity score, and returns valid Passage schemas.
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 from ..config import Settings
@@ -14,6 +15,9 @@ from ..schemas import Passage
 from .embed import embed_query
 
 log = logging.getLogger("rahbar.retrieval.chroma")
+
+_MONTHS = "january february march april may june july august september october november december".split()
+_DATED_EDITION = re.compile(rf"\b({'|'.join(_MONTHS)})\s+(\d{{4}})\s+(?:version|edition)\b")
 
 
 class ChromaRetriever:
@@ -52,15 +56,19 @@ class ChromaRetriever:
             log.warning("Chroma collection unavailable", extra={"collection": self.settings.collection, "error": str(exc)})
             return []
 
-        # 3. Superseded document filtering
-        # Unless the query explicitly asks about older/superseded policy versions,
-        # filter out chunks where superseded == True.
+        # 3. An explicitly dated edition takes precedence over the current-only default.
         lower_q = question.lower()
+        dated_edition = _DATED_EDITION.search(lower_q)
         explicit_historical = any(
             marker in lower_q
             for marker in ("superseded", "old version", "previous version", "prior rule", "repealed", "historical")
         )
-        where_filter = None if explicit_historical else {"superseded": False}
+        where_filter: dict[str, str | bool] | None
+        if dated_edition:
+            month, year = dated_edition.groups()
+            where_filter = {"doc_version": f"{year}-{_MONTHS.index(month) + 1:02d}"}
+        else:
+            where_filter = None if explicit_historical else {"superseded": False}
 
         # 4. Query Chroma collection
         try:
@@ -102,7 +110,8 @@ class ChromaRetriever:
             extra={
                 "top_k": top_k,
                 "retrieved_count": len(passages),
-                "superseded_filtered": not explicit_historical,
+                "superseded_filtered": where_filter == {"superseded": False},
+                "where_filter": where_filter,
                 "scores": [round(p.score, 4) for p in passages],
             },
         )

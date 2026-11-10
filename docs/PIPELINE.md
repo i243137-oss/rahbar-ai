@@ -1,46 +1,64 @@
 # Indexing and retrieval pipeline
 
-<!-- STARTER-TODO(3.1, 3.3, 5.2): fill each section with your numbers, then delete this comment. -->
-
 ## Extraction
-Which documents needed OCR, one before-and-after example of a table, what could not be recovered.
 
-The HTML tuition and refund tables preserved their row labels and values.
-For example, the tuition row became `BBA / BS | Rs. 12,000`, and the
-surrounding text preserved that this is the rate per credit hour for 2026–27.
+The baseline dry run produced 380 chunks from nine documents. It used OCR on 23 pages of the August 2023 academic rules, two pages of the June 2026 academic rules handbook, two pages of the June 2026 student handbook, and all eight pages of the faculty start-up policy.
 
-The August 2023 rules preserved the SGPA and CGPA explanation. In the
-grading chunk tagged PDF page 9, the standalone S and U rows visible in
-the source excerpt were lost. Clause numbers 2.4 through 2.11 were grouped
-before their text, making individual clause references unreliable.
-Some OCR noise also survived in the table of contents.
+The HTML tuition table retained its program and fee columns. For example, the source row for BBA / BS was serialized as `BBA / BS | Rs. 12,000`. The same chunk retains the statement that this is the rate per credit hour for academic year 2026–27. The refund table also retains the deadline and percentage pairs.
 
-Both chunks tagged PDF page 39 of the June 2026 academic rules handbook
-interleave the exam retake list with nearby notes. The original page is
-needed to verify answers based on those passages.
+**Before and after, August 2023 rules, PDF page 9, clause 2.2.** The source excerpt lists these as separate rows. The extracted chunk `undergraduate-academic-rules-aug-2023-pdf-0005` merges the first four rows and the next heading:
 
-### Section labels
+| Source rows before extraction | Extracted output |
+| --- | --- |
+| F — Fail<br>FA — Fail due to shortage of attendance<br>I — Incomplete<br>W — Withdrawn<br>S — Satisfactory<br>U — Unsatisfactory | `F Fail FA Fail due to shortage of attendance I Incomplete W Withdrawn Grade Points` |
 
-The chunker sometimes treats cover text such as `ACADEMIC RULES AND` and
-`NATIONAL UNIVERSITY` as section headings. Some numbered clauses remain
-under broader section labels. For example, clause 1.21 is in the body
-of a chunk labeled `1. Introduction`.
+The standalone `S` and `U` rows were lost, although the labels also occur in prose later in the chunk. The clause numbers `2.4` through `2.11` appear together before their body text, making individual clause references unreliable. In the June 2026 academic rules handbook, both chunks tagged PDF page 39 interleave the exam retake list with nearby notes. Check the original page before relying on these passages.
 
 ## Cleaning
-The rules you applied, and one thing you deliberately did not strip.
+
+The pipeline removes recurring page headers and identifiable table-of-contents lines. It deliberately preserves section headings and numbered clauses such as `1.21` so the retriever and evaluator can locate policy evidence. The baseline still includes some garbled table-of-contents entries in the scanned 2023 rules and some navigation text in the HTML fee page.
 
 ## Chunking
-Size and overlap you shipped, storage amplification (stored tokens / original tokens),
-and the three configurations you measured:
 
-| Size (tokens) | Overlap (tokens) | recall@5 | Chunks stored |
-| --- | --- | --- | --- |
+Chunk size, overlap, and storage amplification use whitespace-separated words as a token proxy. These counts differ from the embedding model's tokenizer. The baseline 400/50 dry run reported 85,001 words before chunking and 94,240 across the resulting chunks, for 1.11× amplification. The word count across the exported 380 chunks reproduces the reported 94,240.
+
+Some chunks inherit section labels from cover text, such as `ACADEMIC RULES AND` and `NATIONAL UNIVERSITY`. Some numbered clauses remain in the body under a broader section label. For example, clause `1.21` is in a chunk labeled `1. Introduction`. Check the stored section and page when labeling expected passages.
+
+| Size (tokens) | Overlap (tokens) | Chunks stored | Storage amplification | Recall@3 | Recall@5 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 200 | 20 | 615 | 1.11× | 84.6% (11/13) | 84.6% (11/13) |
+| 400 | 50 | 380 | 1.11× | 84.6% (11/13) | 92.3% (12/13) |
+| 500 | 80 | 328 | 1.12× | 84.6% (11/13) | 92.3% (12/13) |
+| 800 | 100 | 265 | 1.08× | 69.2% (9/13) | 84.6% (11/13) |
+
+The four collections were evaluated with the same corpus, golden questions, embedding model, retriever, and stub answer provider. The 400/50 and 500/80 configurations tied on overall recall and recall by question type. Both retrieved both exact-term matches in the top five. The 200/20 collection stored 235 more chunks than 400/50 and found only one exact-term match in the top five. The 800/100 collection stored the fewest chunks and had the lowest storage amplification, but neither exact-term match appeared in its top three, and only one appeared in its top five.
+
+Use 500/80 for the next retrieval experiment. Manual inspection confirmed that the first passage for q09 contained clause 4.25 and the current withdrawal deadline. With 400/50, the actual deadline was at rank 2 even though rank 1 shared its section label. For the exact-term questions, the expected section moved from rank 1 to 2 on q11 and from rank 5 to 4 on q12. The 500/80 collection stored 52 fewer vectors, but used 95,214 text tokens versus 94,240 in the 400/50 dry run. Some adjacent rules in the 500/80 passage are still interleaved because of PDF reading order.
+
+Before edition targeting, Version Recall@5 was 1/2 in every run. A controlled test on 500/80 used the same q10 embedding for three searches. Both the current-only search and the unfiltered search missed August 2023 in the top five. Filtering by `doc_version: 2023-08` returned the old withdrawal deadline at rank 1. The retriever now normalizes an explicit month and year immediately before “version” or “edition” to its indexed `YYYY-MM` value. Ordinary questions still exclude superseded documents. The four chunk comparisons used the stub and all failed the abstention gate.
+
+With the 500/80 collection held fixed, the live API rerun with edition targeting improved Recall@3 from 84.6% (11/13) to 92.3% (12/13) and Recall@5 from 92.3% (12/13) to 100% (13/13). Both version questions matched in the top three, and all other per-type retrieval scores held. Stub citations matched retrieved passages, but abstention remained 0/2, so the evaluation gate failed. The before-and-after runs are `eval/results-500-80-stub.json` and `eval/results-500-80-edition-filter-stub.json`.
 
 ## Embedding
-Model, vector dimension, where the pin lives, how the API checks it.
+
+The indexer uses the model configured by `EMBED_MODEL`, which defaults to `nomic-embed-text`. It sends text to Ollama in batches, checks that each chunk has one vector, and records the model name and actual vector dimension on the Chroma collection. The API compares this metadata with its embedding settings during readiness checks. The local index uses cosine distance and a new collection name for each run.
+
+## Storage
+
+The selected local 500/80 collection stored 328 chunks with 768-dimensional vectors. Each record contains a chunk ID, text, embedding, and five metadata fields defined in [indexer/pipeline/models.py](../indexer/pipeline/models.py):
+
+| Field | Meaning |
+| --- | --- |
+| `source` | Corpus filename |
+| `section` | Heading attached by the chunker |
+| `page` | One-based source page |
+| `doc_version` | Edition from the corpus index, such as `2023-08` |
+| `superseded` | Boolean indicating whether a newer policy replaces this one |
 
 ## Semantic cache
-Thresholds you tried, the false hit that ruled one out, the one you shipped.
+The local retrieval comparisons ran with caching disabled so each request reached Chroma. The team still needs to record the cache threshold trials and invalidation evidence from the integrated run.
 
 ## Evaluation method
-How recall@k matches retrieved passages to golden ones (by source and section? by chunk id?).
+Recall@k compares the top k retrieved chunks with the unique source and section pairs in the golden set. The source must match exactly. A section matches if its trimmed label is identical or begins with the expected label followed by a space or colon, so `1.21 Attendance` matches `1.21` but `1.210` does not. Recall@3 and Recall@5 are averaged across questions with expected evidence and reported both overall and by question type.
+
+A citation is valid when it matches a retrieved source and section and, if the citation specifies a page, that page also matches. The overall score divides valid citations by all citations in the run. Abstention correctness measures the share of must-abstain questions with `answered_from_context: false`. A metric with no applicable observations is reported as null. The `expect` cues in the golden set are for manual review of answer content.

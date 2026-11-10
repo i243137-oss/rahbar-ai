@@ -72,44 +72,29 @@ To use custom metrics, we would deploy Prometheus-Adapter or KEDA, query `sum(ra
 
 ## 4. The indexer's peak memory, its limit, the margin, and the exit code when it is wrong
 
-In `k8s/base/indexer-job.yaml` (lines 35-40), the indexer container resources are set to:
-```yaml
-resources:
-  requests:
-    cpu: 500m
-    memory: 1Gi
-  limits:
-    cpu: 2000m
-    memory: 4Gi
+The indexer requests **1 GiB** and has a **4 GiB (4,096 MiB)** limit in `k8s/base/indexer-job.yaml:31-37`. The local 500/80 run logged page and chunk counts, but it did not measure Kubernetes memory. The 1,420 MiB sample previously quoted here has not been verified against a Job running the final corpus and settings.
+
+While a real indexing Job is processing the nine-document corpus, sample the indexer container in a second terminal and save the output:
+
+```bash
+while true; do
+  date -Is
+  kubectl top pods -n rahbar -l app=indexer --containers
+  sleep 5
+done | tee docs/evidence/indexer-memory-samples.txt
 ```
 
-### Justification with `kubectl top` Output:
-Based on `docs/evidence/kubectl-top.txt`:
-```
-NAME                                CPU(cores)   MEMORY(bytes)   
-indexer-init-4f81k                  320m         1420Mi          
-```
-- **Peak Memory Observed**: ~1,420 MiB during OCR rendering (`pdf2image` rendering high-DPI raster pages to memory) and batch vector generation.
-- **Configured Limit**: 4,096 MiB (4 GiB).
-- **Safety Margin**: Approximately 2,676 MiB (~188% safety margin), ensuring multi-page PDF rasterization does not spike over memory boundaries.
-- **Exit Code when Wrong**:
-  If the limit is set too low (e.g., 1 GiB), the Linux kernel OOM killer sends `SIGKILL` (signal 9) to the container process. The container exits immediately with **Exit Code 137** ($128 + 9$), resulting in a `CrashLoopBackOff` state in Kubernetes.
+Stop sampling after the Job completes. Use the highest successful reading for the actual Job pod as the **maximum observed sample**. `kubectl top` samples periodically, so this can miss brief peaks. Subtract the sample in MiB from 4,096 MiB to report the observed margin. Check the deployed pod's configured limit as well if the overlay changes the base manifest. The measured sample and margin are pending a cluster run. If the container exceeds its limit, Kubernetes reports `OOMKilled`, typically with exit code **137** for SIGKILL. Check the termination reason with `kubectl describe pod`; 137 alone identifies the signal, not its cause.
 
 ---
 
 ## 5. recall@5 by question type: where is it worst, and why?
 
-In retrieval evaluation over academic regulations (`eval/golden.yaml`), questions fall into five distinct categories:
-1. Ordinary definitional questions (e.g. "What is academic probation?")
-2. Procedural questions (e.g. "How to apply for grade improvement?")
-3. Version-sensitive policy questions (e.g. "What is attendance threshold in current handbook?")
-4. Must-abstain questions (e.g. "What are the rules for off-campus hostel accommodation?")
-5. Exact-term questions (e.g. "What specific CGPA triggers academic warning in clause 4.2?")
+On the selected 500/80 index **before edition targeting**, version questions were weakest at **50% Recall@5 (1/2)**. Ordinary, exact-term, and injection questions each scored 100% at five. The q10 query for August 2023 ranked newer material above the old withdrawal rule even when both editions were eligible. The controlled Chroma query found the requested deadline at rank 1 after restricting results to `doc_version: 2023-08`. This is a case for metadata filtering.
 
-### Where is recall@5 worst?
-Dense embedding models (like `nomic-embed-text`) struggle most on **exact-term queries** (course codes, specific clause numbers like `clause 4.2`, and exact GPA numbers like `2.00`).
-- **Why**: Dense embeddings map semantic meaning into latent continuous space. In vector space, the vector for "2.00" is geometrically close to "2.20" or "2.50", and "clause 4.2" is blurred with "clause 4.3". The embedding model lacks lexical precision.
-- **Remedy from RAG Lecture**: Implement **hybrid search** (combining sparse BM25 keyword matching with dense vector retrieval using Reciprocal Rank Fusion) and metadata keyword filtering.
+On the same index **after edition targeting**, all four scored categories tied at **100% Recall@5 (13/13 overall)**. The two abstention cases have no relevant reference and are excluded from recall. Exact-term queries were still weakest at **50% Recall@3 (1/2)**. In the 500/80 diagnostic, q12's `FA` grade table came fourth, behind three same-site grading passages without the exact table. Dense embeddings rank by semantic similarity, so topical grading prose can outrank a short literal code. A hybrid dense and lexical search, with an exact-code match or BM25 feeding a fused ranking, could improve this. That remedy was not benchmarked in these runs.
+
+See the per-type aggregation in `eval/run_eval.py:92-108`, the queries in `eval/golden.yaml:59-91`, and the before/after reports `eval/results-500-80-stub.json` and `eval/results-500-80-edition-filter-stub.json`. The stub run measures retrieval; it failed both must-abstain cases.
 
 ---
 

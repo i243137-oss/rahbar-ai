@@ -129,22 +129,7 @@ jobs:
           FWD_PID=$!
           sleep 3
           pip install chromadb-client==1.0.12
-          python3 -c "
-import chromadb
-client = chromadb.HttpClient(host='localhost', port=8002)
-col = client.get_or_create_collection(
-    name='rahbar',
-    metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}
-)
-if col.count() == 0:
-    col.add(
-        ids=['bootstrap-001'],
-        documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'],
-        embeddings=[[0.0] * 768],
-        metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]
-    )
-print(f'Chroma initialized with {col.count()} documents for readiness probe')
-"
+          python3 -c "import chromadb; c=chromadb.HttpClient(host='localhost', port=8002); col=c.get_or_create_collection(name='rahbar', metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}); col.add(ids=['bootstrap-001'], documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'], embeddings=[[0.0]*768], metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]) if col.count() == 0 else None; print(f'Chroma initialized with {col.count()} documents for readiness probe')"
           kill $FWD_PID || true
 
       - name: Wait for Rollout Status

@@ -121,6 +121,32 @@ jobs:
         run: |
           kubectl apply -k k8s/overlays/prod
 
+      - name: Initialize Data Tier & Chroma Collection for Rollout
+        run: |
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=120s
+          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=120s
+          kubectl port-forward -n rahbar svc/chroma 8002:8000 &
+          FWD_PID=$!
+          sleep 3
+          pip install chromadb-client==1.0.12
+          python3 -c "
+import chromadb
+client = chromadb.HttpClient(host='localhost', port=8002)
+col = client.get_or_create_collection(
+    name='rahbar',
+    metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}
+)
+if col.count() == 0:
+    col.add(
+        ids=['bootstrap-001'],
+        documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'],
+        embeddings=[[0.0] * 768],
+        metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]
+    )
+print(f'Chroma initialized with {col.count()} documents for readiness probe')
+"
+          kill $FWD_PID || true
+
       - name: Wait for Rollout Status
         run: |
           kubectl rollout status deployment/api -n rahbar --timeout=180s

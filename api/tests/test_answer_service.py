@@ -314,3 +314,10 @@ def test_metrics_instrumentation_on_answer(mock_settings: Settings, valid_passag
 
     assert len(RETRIEVAL_LATENCY._samples()) >= len(retrieval_samples_before)
     assert len(GENERATION_LATENCY._samples()) >= len(gen_samples_before)
+
+    # Assert that abstentions increment the ABSTENTIONS counter
+    abstention_before = ABSTENTIONS._value.get()
+    mock_retriever.retrieve.return_value = []
+    resp_abs = answer_question("Empty query", mock_retriever, mock_provider, mock_settings)
+    assert resp_abs.answered_from_context is False
+    assert ABSTENTIONS._value.get() > abstention_before

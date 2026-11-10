@@ -1,0 +1,22 @@
+{
+  "recall@3": 0.9230769230769231,
+  "recall@3_by_type": {
+    "ordinary": 1.0,
+    "version": 1.0,
+    "exact": 0.5,
+    "abstain": null,
+    "injection": 1.0
+  },
+  "recall@5": 1.0,
+  "recall@5_by_type": {
+    "ordinary": 1.0,
+    "version": 1.0,
+    "exact": 1.0,
+    "abstain": null,
+    "injection": 1.0
+  },
+  "citation_validity": 1.0,
+  "abstention_correctness": 0,
+  "golden": "eval/golden.yaml",
+  "questions": 15
+}

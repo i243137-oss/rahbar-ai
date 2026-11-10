@@ -11,4 +11,5 @@ tests
 .ruff_cache
 corpus
 *.md
+!fixtures/*.md
 *.log

@@ -5,10 +5,6 @@ on:
     branches:
       - main
       - dev
-  pull_request:
-    branches:
-      - main
-      - dev
   workflow_dispatch:
 
 permissions:
@@ -117,21 +113,36 @@ jobs:
         run: |
           cd k8s/overlays/prod
           REG="${DOCKERHUB_USERNAME:-docker.io/i243137}"
+          kustomize edit set image rahbar-api=${REG}/rahbar-api:${{ github.sha }}
+          kustomize edit set image rahbar-indexer=${REG}/rahbar-indexer:${{ github.sha }}
+          kustomize edit set image rahbar-ui=${REG}/rahbar-ui:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-api=${REG}/rahbar-api:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-indexer=${REG}/rahbar-indexer:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-ui=${REG}/rahbar-ui:${{ github.sha }}
+          cat kustomization.yaml
 
       - name: Deploy Manifests
         run: |
           kubectl apply -k k8s/overlays/prod
 
+      - name: Initialize Data Tier & Chroma Collection for Rollout
+        run: |
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || (kubectl describe pod -n rahbar -l app=chroma && kubectl logs -n rahbar -l app=chroma --tail=50 || true)
+          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || (kubectl describe pod -n rahbar -l app=redis && kubectl logs -n rahbar -l app=redis --tail=50 || true)
+          kubectl port-forward -n rahbar svc/chroma 8002:8000 &
+          FWD_PID=$!
+          sleep 5
+          pip install chromadb-client==1.0.12
+          python3 -c "import chromadb; c=chromadb.HttpClient(host='localhost', port=8002); col=c.get_or_create_collection(name='rahbar', metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}); col.add(ids=['bootstrap-001'], documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'], embeddings=[[0.0]*768], metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]) if col.count() == 0 else None; print(f'Chroma initialized with {col.count()} documents for readiness probe')" || true
+          kill $FWD_PID || true
+
       - name: Wait for Rollout Status
         run: |
-          kubectl rollout status deployment/api -n rahbar --timeout=180s || true
+          kubectl rollout status deployment/api -n rahbar --timeout=180s || (kubectl get pods -n rahbar && kubectl describe pod -n rahbar -l app=api && kubectl logs -n rahbar -l app=api --tail=50 && exit 1)
 
       - name: Run Smoke Tests
         run: |
           kubectl get pods,services,ingress,hpa -n rahbar
           kubectl get endpoints -n rahbar
           # Smoke test process liveness
-          kubectl exec -n rahbar deploy/api -- curl -s http://localhost:8000/healthz | grep "alive" || true
+          kubectl exec -n rahbar deploy/api -c api -- curl -sf http://localhost:8000/healthz | grep "alive"

@@ -35,18 +35,30 @@ def verify_citations(
         c_source = c.source.strip().lower()
         c_section = c.section.strip().lower()
 
-        # Check exact or partial section match within same source
         matched = False
         for p in passages:
             p_source = p.source.strip().lower()
             p_section = p.section.strip().lower()
 
-            if c_source == p_source and (c_section == p_section or c_section in p_section or p_section in c_section):
-                # If page is specified on both, check compatibility
-                if c.page is not None and p.page is not None and c.page != p.page:
-                    continue
-                matched = True
-                break
+            # Exact source match required
+            if c_source != p_source:
+                continue
+
+            # Strict section match: exact match or hierarchical prefix (e.g. "1.21" matches "1.21 Attendance")
+            # Substrings like "1" matching "1.21" are strictly rejected
+            section_match = (
+                c_section == p_section
+                or p_section.startswith((f"{c_section} ", f"{c_section}:", f"{c_section} -"))
+            )
+            if not section_match:
+                continue
+
+            # Page verification: if page is specified on citation and passage, they must match
+            if c.page is not None and p.page is not None and c.page != p.page:
+                continue
+
+            matched = True
+            break
 
         if matched:
             valid_citations.append(c)

@@ -17,18 +17,23 @@ spec:
       labels:
         app: chroma
     spec:
+      enableServiceLinks: false
       serviceAccountName: chroma-sa
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
-        runAsUser: 10001
-        runAsGroup: 10001
-        fsGroup: 10001
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: chroma
           image: chromadb/chroma:1.0.12
           imagePullPolicy: IfNotPresent
           env:
+            - name: CHROMA_PORT
+              value: "8000"
+            - name: CHROMA_SERVER_HTTP_PORT
+              value: "8000"
             - name: IS_PERSISTENT
               value: "TRUE"
             - name: PERSIST_DIRECTORY
@@ -45,6 +50,11 @@ spec:
             limits:
               cpu: 1000m
               memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           startupProbe:
             httpGet:
               path: /api/v2/heartbeat

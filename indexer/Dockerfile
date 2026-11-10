@@ -17,8 +17,9 @@ RUN apt-get update && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy indexer pipeline code
+# Copy indexer pipeline code and seed fixtures
 COPY pipeline/ ./pipeline/
+COPY fixtures/ ./fixtures/
 
 # Create and switch to non-root user
 RUN groupadd -g 10001 indexergroup && \

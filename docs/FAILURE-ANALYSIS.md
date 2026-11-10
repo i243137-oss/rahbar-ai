@@ -4,6 +4,36 @@ This document analyzes deliberate failure experiments across the RAG lifecycle a
 
 ---
 
+## Stage A · Extraction without OCR
+
+**Control:** the 500/80 run OCR'd all eight pages of the Faculty Entrepreneurship and Technical Start-ups Policy and stored ten chunks for it. The good corpus includes the policy's scope: technical start-ups commercialize research conducted at NUCES campuses (q08).
+
+**Change:** bypass OCR for that PDF alone, using only its native text layer. Keep the rest of extraction, cleaning, chunking, embeddings, and retrieval settings fixed. The runner logs the count of pages with native text and checks whether q08's evidence appears in the top five for the control and experimental indexes.
+
+**Diagnosis and remedy:** if the document's source chunks or q08 evidence disappear, inspect the per-document page and chunk counts before investigating the retriever. A scan can have pages while yielding little or no native text. Restore the per-page Tesseract fallback and reindex. The no-OCR full-corpus run is pending; the control OCR count alone does not prove the size of the loss.
+
+## Stage B · Fixed-window chunking
+
+**Change:** replace only chunking with consecutive 100-word windows and zero overlap. The production pipeline uses whitespace-separated words as its token proxy. This deliberately removes section boundaries while retaining the filename, starting page, edition, and superseded flag.
+
+**Observed on a real excerpt:** applying the fixed-window splitter to the exported 2026 registration passage (`academic-rules-handbook-jun-2026-pdf-0018`, PDF page 21) cut clause 4.19 between “Approval of the Head” and “of Department is essential.” The same exported passage contains the complete sentence before splitting. This is a passage-level reproduction, separate from the pending full-corpus rebuild.
+
+**Diagnosis and remedy:** inspect consecutive chunks around a broken sentence and check whether the complete supporting phrase is available in the top five. The runner probes q09, q10, and q12. The fixed-window chunks carry the section label `Fixed window`, so the normal section-based golden scorer would treat changed labels as misses even when the answer text survived. The probe instead checks the expected source and phrase, and records their rank. Restore structure-aware chunking and overlap.
+
+### Reproduce A and B locally
+
+From the WSL repository root with `.venv` active, start Chroma and Ollama and keep the existing 500/80 collection available. Run the two experiments separately. Each run creates a uniquely named collection and uses the same original corpus files. The API can stay pointed at the 500/80 collection.
+
+```bash
+export CORPUS_DIR="$PWD/corpus/raw" CHROMA_HOST=127.0.0.1 CHROMA_PORT=8001
+export OLLAMA_URL=http://192.168.80.1:11434 EMBED_MODEL=nomic-embed-text
+set -o pipefail
+PYTHONPATH=indexer python eval/run_index_failure.py A | tee docs/evidence/failure-a.txt
+PYTHONPATH=indexer python eval/run_index_failure.py B | tee docs/evidence/failure-b.txt
+```
+
+After the runs, record the actual native-text page count, total chunks, and relevant evidence ranks in the sections above. The direct Chroma probes are retrieval diagnostics; they do not measure answer quality.
+
 ## 1. Stage C · Retrieval
 
 ### What we broke:
@@ -114,8 +144,8 @@ At temperature 1.2, the model output degraded severely:
 
 | Stage | Root Cause | Key Metric / Log Signal | Permanent Guardrail |
 | :--- | :--- | :--- | :--- |
-| **Stage A · Extraction** | Scanned PDF missing OCR | Empty extracted text; 0 chunks stored | Pypdf OCR detection with Tesseract fallback |
-| **Stage B · Chunking** | Fixed window splitting clauses | Broken clause sentences; recall drops | Structure-aware section splitting + 50 token overlap |
+| **Stage A · Extraction** | Scanned PDF missing OCR | Check native-text pages and q08 evidence against control | Text-layer detection with Tesseract fallback |
+| **Stage B · Chunking** | Fixed window splitting clauses | Observed broken sentence in excerpt; measure evidence ranks on rebuild | Structure-aware chunking with overlap |
 | **Stage C · Retrieval** | Embedding model mismatch | `/readyz` returns 503; pod 0/1 READY | API readiness embedding-pin guardrail |
 | **Stage D · Prompt** | Missing grounding rules | Must-abstain CI gate failure; hallucinated citations | Explicit `<retrieved_evidence>` boundary & citation validator |
 | **Stage E · Source** | Missing superseded filter | Quotes repealed 2023 rules | `where={"superseded": False}` filter in Chroma query |

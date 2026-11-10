@@ -135,7 +135,20 @@ class SemanticCache:
         except Exception as e:
             log.warning("failed to clear cache: %s", e)
 
-    def get(self, question: str) -> AskResponse | None:
+    def sync_active_index(self, index_id: str) -> None:
+        """Ensure cache is bound to the active index. If index changed, bump generation."""
+        if not self.client or not index_id:
+            return
+        try:
+            stored_index = self.client.get("rahbar:active_index_id")
+            if stored_index != index_id:
+                log.info("detected new active index (%s -> %s); invalidating cache", stored_index, index_id)
+                self.client.set("rahbar:active_index_id", index_id)
+                self.bump_generation_id()
+        except Exception as e:
+            log.warning("failed to sync active index in cache: %s", e)
+
+    def get(self, question: str, index_id: str | None = None) -> AskResponse | None:
         """Look up answer in semantic cache if similarity >= threshold."""
         if not self.settings.enable_cache or not self.client:
             return None
@@ -144,9 +157,13 @@ class SemanticCache:
             return None
 
         try:
+            if index_id:
+                self.sync_active_index(index_id)
+
             query_vec = embed_query(question, self.settings)
             gen_id = self.get_generation_id()
-            key_pattern = f"rahbar:cache:{gen_id}:*"
+            prefix = f"{index_id}:" if index_id else ""
+            key_pattern = f"rahbar:cache:{prefix}{gen_id}:*"
             keys = self.client.keys(key_pattern)
             if not keys:
                 CACHE_MISSES.inc()
@@ -187,7 +204,7 @@ class SemanticCache:
             CACHE_MISSES.inc()
             return None
 
-    def set(self, question: str, response: AskResponse) -> None:
+    def set(self, question: str, response: AskResponse, index_id: str | None = None) -> None:
         """Store a validated response in the semantic cache."""
         if not self.settings.enable_cache or not self.client:
             return
@@ -197,10 +214,14 @@ class SemanticCache:
             return
 
         try:
+            if index_id:
+                self.sync_active_index(index_id)
+
             query_vec = embed_query(question, self.settings)
             gen_id = self.get_generation_id()
+            prefix = f"{index_id}:" if index_id else ""
             entry_id = f"{int(time.time() * 1000)}"
-            key = f"rahbar:cache:{gen_id}:{entry_id}"
+            key = f"rahbar:cache:{prefix}{gen_id}:{entry_id}"
 
             payload = {
                 "question": question,

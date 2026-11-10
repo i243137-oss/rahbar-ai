@@ -17,6 +17,7 @@ spec:
       labels:
         app: chroma
     spec:
+      enableServiceLinks: false
       serviceAccountName: chroma-sa
       automountServiceAccountToken: false
       securityContext:
@@ -29,6 +30,10 @@ spec:
           image: chromadb/chroma:1.0.12
           imagePullPolicy: IfNotPresent
           env:
+            - name: CHROMA_PORT
+              value: "8000"
+            - name: CHROMA_SERVER_HTTP_PORT
+              value: "8000"
             - name: IS_PERSISTENT
               value: "TRUE"
             - name: PERSIST_DIRECTORY

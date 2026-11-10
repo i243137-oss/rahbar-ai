@@ -113,9 +113,13 @@ jobs:
         run: |
           cd k8s/overlays/prod
           REG="${DOCKERHUB_USERNAME:-docker.io/i243137}"
+          kustomize edit set image rahbar-api=${REG}/rahbar-api:${{ github.sha }}
+          kustomize edit set image rahbar-indexer=${REG}/rahbar-indexer:${{ github.sha }}
+          kustomize edit set image rahbar-ui=${REG}/rahbar-ui:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-api=${REG}/rahbar-api:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-indexer=${REG}/rahbar-indexer:${{ github.sha }}
           kustomize edit set image docker.io/i243137/rahbar-ui=${REG}/rahbar-ui:${{ github.sha }}
+          cat kustomization.yaml
 
       - name: Deploy Manifests
         run: |
@@ -141,4 +145,4 @@ jobs:
           kubectl get pods,services,ingress,hpa -n rahbar
           kubectl get endpoints -n rahbar
           # Smoke test process liveness
-          kubectl exec -n rahbar deploy/api -- curl -sf http://localhost:8000/healthz | grep "alive"
+          kubectl exec -n rahbar deploy/api -c api -- curl -sf http://localhost:8000/healthz | grep "alive"

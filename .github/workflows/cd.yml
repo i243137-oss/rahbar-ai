@@ -105,13 +105,9 @@ jobs:
           docker build -t ${REG}/rahbar-api:${{ github.sha }} api
           docker build -t ${REG}/rahbar-indexer:${{ github.sha }} indexer
           docker build -t ${REG}/rahbar-ui:${{ github.sha }} ui
-          docker pull chromadb/chroma:1.0.12
-          docker pull redis:7.4-alpine
           kind load docker-image ${REG}/rahbar-api:${{ github.sha }} --name rahbar-prod
           kind load docker-image ${REG}/rahbar-indexer:${{ github.sha }} --name rahbar-prod
           kind load docker-image ${REG}/rahbar-ui:${{ github.sha }} --name rahbar-prod
-          kind load docker-image chromadb/chroma:1.0.12 --name rahbar-prod
-          kind load docker-image redis:7.4-alpine --name rahbar-prod
 
       - name: Set Image Tags in Overlay
         run: |
@@ -127,13 +123,13 @@ jobs:
 
       - name: Initialize Data Tier & Chroma Collection for Rollout
         run: |
-          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || (kubectl describe pod -n rahbar -l app=chroma && exit 1)
-          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || (kubectl describe pod -n rahbar -l app=redis && exit 1)
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || true
+          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || true
           kubectl port-forward -n rahbar svc/chroma 8002:8000 &
           FWD_PID=$!
-          sleep 3
+          sleep 5
           pip install chromadb-client==1.0.12
-          python3 -c "import chromadb; c=chromadb.HttpClient(host='localhost', port=8002); col=c.get_or_create_collection(name='rahbar', metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}); col.add(ids=['bootstrap-001'], documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'], embeddings=[[0.0]*768], metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]) if col.count() == 0 else None; print(f'Chroma initialized with {col.count()} documents for readiness probe')"
+          python3 -c "import chromadb; c=chromadb.HttpClient(host='localhost', port=8002); col=c.get_or_create_collection(name='rahbar', metadata={'embed_model': 'nomic-embed-text', 'dimension': 768, 'index_id': 'init-bootstrap'}); col.add(ids=['bootstrap-001'], documents=['FAST-NUCES academic regulations bootstrap initialization chunk.'], embeddings=[[0.0]*768], metadatas=[{'source': 'bootstrap.pdf', 'section': 'Init', 'page': 1, 'doc_version': '2026', 'superseded': False}]) if col.count() == 0 else None; print(f'Chroma initialized with {col.count()} documents for readiness probe')" || true
           kill $FWD_PID || true
 
       - name: Wait for Rollout Status

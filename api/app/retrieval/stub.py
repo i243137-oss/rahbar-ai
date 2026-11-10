@@ -48,9 +48,9 @@ class StubRetriever:
         if any(term in q for term in ["hostel", "swimming", "tennis", "curfew"]):
             return []
 
-        # Grounded matches for evaluation fixture corpus (academic-rules and fees)
+        matches: list[Passage] = []
         if "warning" in q or "cgpa" in q or "gpa" in q:
-            return [
+            matches.append(
                 Passage(
                     chunk_id="fix-warning-001",
                     text="A student whose cumulative GPA falls below 2.00 at the end of a semester is placed on academic warning.",
@@ -59,9 +59,9 @@ class StubRetriever:
                     page=1,
                     score=0.95,
                 )
-            ]
-        if "attendance" in q:
-            return [
+            )
+        elif "attendance" in q:
+            matches.append(
                 Passage(
                     chunk_id="fix-attend-001",
                     text="A student must maintain a minimum of 80% attendance in each course to be eligible to sit the final examination.",
@@ -70,9 +70,9 @@ class StubRetriever:
                     page=1,
                     score=0.92,
                 )
-            ]
-        if "repeat" in q or "capped" in q:
-            return [
+            )
+        elif "repeat" in q or "capped" in q:
+            matches.append(
                 Passage(
                     chunk_id="fix-repeat-001",
                     text="When a student repeats a course, the most recent grade earned replaces the earlier grade in the CGPA calculation, without cap.",
@@ -81,9 +81,9 @@ class StubRetriever:
                     page=1,
                     score=0.89,
                 )
-            ]
-        if "fee" in q or "credit hour" in q or "tuition" in q:
-            return [
+            )
+        elif "fee" in q or "credit hour" in q or "tuition" in q:
+            matches.append(
                 Passage(
                     chunk_id="fix-fee-001",
                     text="The tuition fee for undergraduate (BS) programs is PKR 10,000 per credit hour.",
@@ -92,7 +92,11 @@ class StubRetriever:
                     page=1,
                     score=0.93,
                 )
-            ]
+            )
+
+        if matches:
+            remaining = [p.model_copy() for p in _PASSAGES if p.chunk_id not in {m.chunk_id for m in matches}]
+            return (matches + remaining)[:k]
 
         return [p.model_copy() for p in _PASSAGES[:k]]
 

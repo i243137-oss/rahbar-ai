@@ -123,8 +123,8 @@ jobs:
 
       - name: Initialize Data Tier & Chroma Collection for Rollout
         run: |
-          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || true
-          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || true
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s || (kubectl describe pod -n rahbar -l app=chroma && kubectl logs -n rahbar -l app=chroma --tail=50 || true)
+          kubectl wait -n rahbar --for=condition=ready pod -l app=redis --timeout=180s || (kubectl describe pod -n rahbar -l app=redis && kubectl logs -n rahbar -l app=redis --tail=50 || true)
           kubectl port-forward -n rahbar svc/chroma 8002:8000 &
           FWD_PID=$!
           sleep 5
@@ -134,7 +134,7 @@ jobs:
 
       - name: Wait for Rollout Status
         run: |
-          kubectl rollout status deployment/api -n rahbar --timeout=180s
+          kubectl rollout status deployment/api -n rahbar --timeout=180s || (kubectl get pods -n rahbar && kubectl describe pod -n rahbar -l app=api && kubectl logs -n rahbar -l app=api --tail=50 && exit 1)
 
       - name: Run Smoke Tests
         run: |

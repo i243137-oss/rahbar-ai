@@ -1,0 +1,22 @@
+{
+  "recall@3": 0.6923076923076923,
+  "recall@3_by_type": {
+    "ordinary": 0.875,
+    "version": 0.5,
+    "exact": 0.0,
+    "abstain": null,
+    "injection": 1.0
+  },
+  "recall@5": 0.8461538461538461,
+  "recall@5_by_type": {
+    "ordinary": 1.0,
+    "version": 0.5,
+    "exact": 0.5,
+    "abstain": null,
+    "injection": 1.0
+  },
+  "citation_validity": 1.0,
+  "abstention_correctness": 0,
+  "golden": "/home/ahmed_tanweer/scd_assignment2/rahbar-ai/eval/golden.yaml",
+  "questions": 15
+}

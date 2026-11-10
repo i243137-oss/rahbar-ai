@@ -387,3 +387,55 @@ def test_clean_drops_garbled_ocr_dot_leaders_and_contents_pages() -> None:
     text = "\n".join(p.text for p in out.pages)
     assert "Medium of Instruction" not in text and "AAMISSION" not in text
     assert "The body text is here and stays." in text
+
+
+def test_embedding_cache_content_aware_invalidation(tmp_path) -> None:
+    """Changing texts or embedding model must invalidate the disk cache."""
+    from unittest.mock import patch
+    from pipeline.config import IndexerSettings
+    from pipeline.embed import embed
+
+    settings_a = IndexerSettings(
+        embed_model="nomic-embed-text",
+        chroma_host="localhost",
+        chroma_port=8000,
+        collection="test",
+        corpus_dir=str(tmp_path),
+        chunk_size=500,
+        chunk_overlap=80,
+        ollama_url="http://localhost:11434",
+    )
+
+    with patch("pipeline.embed._embed_batch") as mock_batch:
+        mock_batch.return_value = [[0.1, 0.2, 0.3]]
+
+        # First embed - cache miss, calls model
+        vecs1 = embed(["First text"], settings_a)
+        assert len(vecs1) == 1
+        assert mock_batch.call_count == 1
+
+        # Second embed with same text and same model - cache hit, does not call model
+        vecs2 = embed(["First text"], settings_a)
+        assert vecs2 == vecs1
+        assert mock_batch.call_count == 1
+
+        # Text content change - cache miss, calls model again
+        mock_batch.return_value = [[0.4, 0.5, 0.6]]
+        vecs3 = embed(["Different text"], settings_a)
+        assert mock_batch.call_count == 2
+        assert vecs3 != vecs1
+
+        # Model change - cache miss, calls model again
+        settings_b = IndexerSettings(
+            embed_model="all-minilm",
+            chroma_host="localhost",
+            chroma_port=8000,
+            collection="test",
+            corpus_dir=str(tmp_path),
+            chunk_size=500,
+            chunk_overlap=80,
+            ollama_url="http://localhost:11434",
+        )
+        vecs4 = embed(["Different text"], settings_b)
+        assert len(vecs4) == 1
+        assert mock_batch.call_count == 3

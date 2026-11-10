@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import time
@@ -28,15 +29,25 @@ def embed(texts: list[str], settings: IndexerSettings,
     if not texts:
         return []
 
+    content_hash = hashlib.sha256("".join(texts).encode("utf-8")).hexdigest()
     cache_file = Path(settings.corpus_dir) / ".embeddings_cache.json"
-    if cache_file.exists():
+    if client is None and cache_file.exists():
         try:
-            cached = json.loads(cache_file.read_text(encoding="utf-8"))
-            if isinstance(cached, list) and len(cached) == len(texts):
-                log.info("loaded %d cached embeddings from %s", len(cached), cache_file.name)
-                return cached
-        except Exception:
-            pass
+            cached_data = json.loads(cache_file.read_text(encoding="utf-8"))
+            if (
+                isinstance(cached_data, dict)
+                and cached_data.get("model") == settings.embed_model
+                and cached_data.get("content_hash") == content_hash
+                and isinstance(cached_data.get("vectors"), list)
+                and len(cached_data["vectors"]) == len(texts)
+            ):
+                cached_vectors = cached_data["vectors"]
+                dims = {len(v) for v in cached_vectors}
+                if len(dims) == 1:
+                    log.info("loaded %d verified cached embeddings from %s", len(cached_vectors), cache_file.name)
+                    return cached_vectors
+        except Exception as exc:
+            log.warning("could not read embedding cache: %s", exc)
 
     own_client = client is None
     http = client or httpx.Client(timeout=httpx.Timeout(180.0, connect=15.0))
@@ -54,10 +65,18 @@ def embed(texts: list[str], settings: IndexerSettings,
     if len(vectors) != len(texts) or len(dims) != 1:
         raise RuntimeError(f"embedding returned {len(vectors)} vectors of dimensions {dims} "
                            f"for {len(texts)} texts")
-    try:
-        cache_file.write_text(json.dumps(vectors), encoding="utf-8")
-    except Exception:
-        pass
+    if client is None:
+        try:
+            cache_payload = {
+                "model": settings.embed_model,
+                "content_hash": content_hash,
+                "count": len(texts),
+                "dimension": next(iter(dims)),
+                "vectors": vectors,
+            }
+            cache_file.write_text(json.dumps(cache_payload), encoding="utf-8")
+        except Exception:
+            pass
     return vectors
 
 

@@ -26,3 +26,5 @@ venv/
 .DS_Store
 instructions.md
 *.pdf
+.embeddings_cache.json
+*.embeddings_cache.json

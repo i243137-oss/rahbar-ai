@@ -16,7 +16,10 @@ from .embed import embed_query
 
 log = logging.getLogger("rahbar.retrieval.chroma")
 
-_MONTHS = "january february march april may june july august september october november december".split()
+_MONTHS = [
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december"
+]
 _DATED_EDITION = re.compile(rf"\b({'|'.join(_MONTHS)})\s+(\d{{4}})\s+(?:version|edition)\b")
 
 
@@ -36,6 +39,16 @@ class ChromaRetriever:
                 port=settings.chroma_port,
                 settings=ChromaSettings(anonymized_telemetry=False),
             )
+
+    def get_index_id(self) -> str | None:
+        """Return index_id from active Chroma collection metadata."""
+        try:
+            col = self.client.get_collection(self.settings.collection)
+            meta = getattr(col, "metadata", None) or {}
+            idx_id = meta.get("index_id")
+            return str(idx_id) if idx_id else None
+        except Exception:
+            return None
 
     def retrieve(self, question: str, k: int | None = None) -> list[Passage]:
         top_k = k if k is not None else self.settings.top_k

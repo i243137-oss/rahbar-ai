@@ -45,7 +45,7 @@ cluster: ## verify or start Kubernetes cluster (Docker Desktop or Minikube)
 	@if kubectl cluster-info >/dev/null 2>&1; then \
 		echo "Kubernetes cluster is active: $$(kubectl config current-context)"; \
 	elif command -v minikube >/dev/null 2>&1; then \
-		minikube start --driver=docker --cni=calico --memory=2500 --cpus=2; \
+		minikube start --driver=docker --cni=calico --memory=6144 --cpus=4; \
 		minikube addons enable metrics-server; \
 		minikube addons enable ingress; \
 	else \

@@ -186,12 +186,38 @@ jobs:
           kind load docker-image rahbar-indexer:dev --name rahbar-ci
           kind load docker-image rahbar-ui:dev --name rahbar-ci
 
-      - name: Apply manifests and wait for rollout
+      - name: Deploy manifests and run real indexer pipeline
         run: |
           kubectl apply -k k8s/overlays/dev
+          echo "Waiting for ChromaDB data tier to be ready..."
+          kubectl wait -n rahbar --for=condition=ready pod -l app=chroma --timeout=180s
+          echo "Waiting for real indexer Job to populate Chroma collection from fixtures..."
+          kubectl wait -n rahbar --for=condition=complete job/dev-indexer-init --timeout=180s || (kubectl describe job/dev-indexer-init -n rahbar && kubectl logs -n rahbar job/dev-indexer-init && exit 1)
+
+      - name: Verify Chroma collection, metadata, and vector dimensions
+        run: |
+          kubectl port-forward -n rahbar svc/dev-chroma 8002:8000 &
+          CHROMA_PID=$!
+          sleep 4
+          pip install chromadb-client==1.0.12
+          python3 -c "
+          import chromadb
+          client = chromadb.HttpClient(host='localhost', port=8002)
+          col = client.get_collection('rahbar')
+          count = col.count()
+          meta = col.metadata
+          print(f'Chroma collection verified: {count} chunks, model={meta.get(\"embed_model\")}, dim={meta.get(\"dimension\")}')
+          assert count > 0, 'Collection is empty'
+          assert meta.get('dimension') == 768, f'Wrong dimension: {meta.get(\"dimension\")}'
+          assert meta.get('embed_model') == 'dummy-768', f'Wrong model: {meta.get(\"embed_model\")}'
+          "
+          kill $CHROMA_PID || true
+
+      - name: Wait for API rollout with real Chroma retrieval
+        run: |
           kubectl rollout status deployment/dev-api -n rahbar --timeout=180s
 
-      - name: Run eval runner against cluster
+      - name: Run E2E evaluation gate against cluster
         run: |
           kubectl port-forward -n rahbar deployment/dev-api 8000:8000 &
           PID=$!

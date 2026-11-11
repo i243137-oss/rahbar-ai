@@ -26,10 +26,16 @@ patches:
     patch: |-
       - op: replace
         path: /data/RETRIEVER
-        value: "stub"
+        value: "chroma"
       - op: replace
         path: /data/LLM_PROVIDER
         value: "stub"
+      - op: replace
+        path: /data/EMBED_MODEL
+        value: "dummy-768"
+      - op: add
+        path: /data/ALLOW_FIXTURE_FALLBACK
+        value: "true"
       - op: add
         path: /data/ENABLE_CACHE
         value: "false"

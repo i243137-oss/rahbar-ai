@@ -1,91 +1,117 @@
 {
+  "embedding_model": "dummy-768",
+  "embedding_dimension": 768,
+  "mean_latency_ms": 33.01,
+  "threshold_evaluations": {
+    "0.80": {
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 2,
+      "true_negatives": 4,
+      "precision": 0.6667,
+      "recall": 0.5,
+      "accuracy": 0.6667
+    },
+    "0.85": {
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 2,
+      "true_negatives": 4,
+      "precision": 0.6667,
+      "recall": 0.5,
+      "accuracy": 0.6667
+    },
+    "0.90": {
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 2,
+      "true_negatives": 4,
+      "precision": 0.6667,
+      "recall": 0.5,
+      "accuracy": 0.6667
+    },
+    "0.95": {
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "true_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.25,
+      "accuracy": 0.6667
+    }
+  },
+  "never_cache_rules": {
+    "followup_rejected": true,
+    "abstention_rejected": true,
+    "uncited_answer_rejected": true
+  },
+  "invalidation_correctness": {
+    "hit_with_same_index_id": true,
+    "miss_and_eviction_on_new_index_id": true
+  },
   "pairs": [
     {
-      "type": "paraphrase",
+      "category": "exact_duplicate",
       "q1": "What is the BBA/BS tuition fee per credit hour for Fall 2026?",
-      "q2": "How much does one credit hour cost for BS and BBA in Fall 2026?",
+      "q2": "What is the BBA/BS tuition fee per credit hour for Fall 2026?",
       "should_match": true,
-      "similarity": -0.0389
+      "similarity": 1.0
     },
     {
-      "type": "paraphrase",
+      "category": "paraphrase",
       "q1": "What is the minimum attendance required to sit the final examination?",
-      "q2": "What attendance percentage is mandatory to appear in final exams?",
+      "q2": "What is the attendance percentage mandatory to appear in final exams?",
       "should_match": true,
-      "similarity": -0.0061
+      "similarity": 0.5527
     },
     {
-      "type": "paraphrase",
+      "category": "paraphrase",
       "q1": "What CGPA must an undergraduate student maintain to avoid academic warning?",
-      "q2": "What is the minimum CGPA required to prevent an academic warning?",
+      "q2": "What minimum CGPA is required to avoid an academic warning?",
       "should_match": true,
-      "similarity": -0.0108
+      "similarity": 0.6817
     },
     {
-      "type": "cross_version",
-      "q1": "Under the current June 2026 undergraduate academic rules, what is the deadline to withdraw from a course?",
-      "q2": "Under the old August 2023 version of the undergraduate academic rules, what was the deadline to withdraw from a course?",
+      "category": "paraphrase",
+      "q1": "What is the tuition fee per credit hour for BS programs in Fall 2026?",
+      "q2": "For Fall 2026 what is the BS tuition fee per credit hour?",
+      "should_match": true,
+      "similarity": 0.9231
+    },
+    {
+      "category": "different_domain",
+      "q1": "What is the BBA/BS tuition fee per credit hour for Fall 2026?",
+      "q2": "What are the rules regarding student hostel accommodation at FAST?",
       "should_match": false,
-      "similarity": -0.0268
+      "similarity": 0.1745
     },
     {
-      "type": "distinct_policy",
-      "q1": "What is the tuition refund percentage on the 5th day of classes?",
-      "q2": "What is the tuition refund percentage on the 12th day of classes?",
+      "category": "different_amounts",
+      "q1": "What is the tuition refund percentage on the 5th day after classes start?",
+      "q2": "What is the tuition refund percentage on the 12th day after classes start?",
       "should_match": false,
-      "similarity": -0.0004
+      "similarity": 0.7792
     },
     {
-      "type": "distinct_grade",
+      "category": "different_years",
+      "q1": "Under the current June 2026 undergraduate rules, what is the withdrawal deadline?",
+      "q2": "Under the old August 2023 version of undergraduate rules, what was the withdrawal deadline?",
+      "should_match": false,
+      "similarity": 0.5499
+    },
+    {
+      "category": "different_clauses",
+      "q1": "What attendance requirement is stated in clause 1.21 of the Academic Rules Handbook?",
+      "q2": "What attendance requirement is stated in clause 2.15 of the Academic Rules Handbook?",
+      "should_match": false,
+      "similarity": 0.6519
+    },
+    {
+      "category": "distinct_grades",
       "q1": "What does the grade code FA mean on the Academic Grading page?",
       "q2": "What does the grade code I mean on the Academic Grading page?",
       "should_match": false,
-      "similarity": 0.022
-    },
-    {
-      "type": "out_of_scope_vs_in_scope",
-      "q1": "What campus facilities exist at FAST Peshawar?",
-      "q2": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
-      "should_match": false,
-      "similarity": -0.0383
+      "similarity": 0.9375
     }
-  ],
-  "summary": {
-    "0.75": {
-      "threshold": 0.75,
-      "tp": 0,
-      "fn": 3,
-      "fp": 0,
-      "tn": 4,
-      "precision": 1.0,
-      "recall": 0.0
-    },
-    "0.82": {
-      "threshold": 0.82,
-      "tp": 0,
-      "fn": 3,
-      "fp": 0,
-      "tn": 4,
-      "precision": 1.0,
-      "recall": 0.0
-    },
-    "0.9": {
-      "threshold": 0.9,
-      "tp": 0,
-      "fn": 3,
-      "fp": 0,
-      "tn": 4,
-      "precision": 1.0,
-      "recall": 0.0
-    },
-    "0.95": {
-      "threshold": 0.95,
-      "tp": 0,
-      "fn": 3,
-      "fp": 0,
-      "tn": 4,
-      "precision": 1.0,
-      "recall": 0.0
-    }
-  }
+  ]
 }

@@ -144,5 +144,13 @@ jobs:
         run: |
           kubectl get pods,services,ingress,hpa -n rahbar
           kubectl get endpoints -n rahbar
-          # Smoke test process liveness
+          # 1. Smoke test process liveness
           kubectl exec -n rahbar deploy/api -c api -- curl -sf http://localhost:8000/healthz | grep "alive"
+          # 2. Smoke test cluster readiness (checks Chroma & Redis connectivity)
+          kubectl exec -n rahbar deploy/api -c api -- curl -sf http://localhost:8000/readyz | grep "ok"
+          # 3. End-to-end semantic QA inquiry test
+          RESP=$(kubectl exec -n rahbar deploy/api -c api -- curl -sf -X POST http://localhost:8000/api/ask \
+            -H "Content-Type: application/json" \
+            -d '{"question": "What is the tuition fee per credit hour for Fall 2026?"}')
+          echo "Smoke test response: ${RESP}"
+          echo "${RESP}" | grep -q "answer"

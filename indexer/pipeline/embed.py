@@ -29,20 +29,40 @@ def embed(texts: list[str], settings: IndexerSettings,
     if not texts:
         return []
 
-    # Deterministic embedding generation for offline CI and integration testing
+    # Deterministic semantic embedding generation for offline CI and integration testing
     if settings.embed_model == "dummy-768" or settings.embed_model.startswith("dummy"):
         import math
+        import re
         dim = 768
         vectors: list[list[float]] = []
         for text in texts:
-            values: list[float] = []
-            seed = text.encode("utf-8")
-            while len(values) < dim:
-                seed = hashlib.sha256(seed).digest()
-                values.extend((b - 127.5) / 127.5 for b in seed)
-            values = values[:dim]
-            norm = math.sqrt(sum(v * v for v in values)) or 1.0
-            vectors.append([v / norm for v in values])
+            tokens = re.findall(r"\b[a-zA-Z0-9_-]+\b", text.lower())
+            if not tokens:
+                vectors.append([1.0 / math.sqrt(dim)] * dim)
+                continue
+            combined = [0.0] * dim
+            for tok in tokens:
+                weight = 2.0 if any(c.isdigit() for c in tok) else 1.0
+                tok_values: list[float] = []
+                tok_seed = tok.encode("utf-8")
+                while len(tok_values) < dim:
+                    tok_seed = hashlib.sha256(tok_seed).digest()
+                    tok_values.extend((b - 127.5) / 127.5 for b in tok_seed)
+                tok_norm = math.sqrt(sum(v * v for v in tok_values[:dim])) or 1.0
+                for i in range(dim):
+                    combined[i] += (tok_values[i] / tok_norm) * weight
+            for i in range(len(text) - 3):
+                ngram = text[i : i + 4].lower()
+                ng_values: list[float] = []
+                ng_seed = ngram.encode("utf-8")
+                while len(ng_values) < dim:
+                    ng_seed = hashlib.sha256(ng_seed).digest()
+                    ng_values.extend((b - 127.5) / 127.5 for b in ng_seed)
+                ng_norm = math.sqrt(sum(v * v for v in ng_values[:dim])) or 1.0
+                for j in range(dim):
+                    combined[j] += (ng_values[j] / ng_norm) * 0.2
+            norm = math.sqrt(sum(v * v for v in combined)) or 1.0
+            vectors.append([v / norm for v in combined])
         log.info("generated %d deterministic embeddings using %s", len(vectors), settings.embed_model)
         return vectors
 

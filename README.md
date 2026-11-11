@@ -163,8 +163,9 @@ export LLM_API_KEY="your-actual-api-key"
 make secret
 ```
 
-### 4. Apply Manifests (Exact Apply Order)
-Deploy the infrastructure using Kustomize overlays in the following exact sequence:
+### 4. Clean-Clone Deployment Sequence (Exact 12-Step Order)
+
+Deploy the platform on a fresh cluster following this exact order to guarantee data integrity and eliminate race conditions:
 
 ```bash
 # Step 1: Create Namespace
@@ -174,21 +175,48 @@ kubectl apply -f k8s/base/namespace.yaml
 kubectl apply -f k8s/base/configmap.yaml
 kubectl apply -f k8s/base/serviceaccounts.yaml
 
-# Step 3: Deploy Data Tier (Chroma StatefulSet & Redis Deployment)
+# Step 3: Deploy Data Tier (Chroma StatefulSet & Redis)
 kubectl apply -f k8s/base/chroma-statefulset.yaml
 kubectl apply -f k8s/base/redis.yaml
+kubectl wait --for=condition=ready pod -l app=chroma -n rahbar --timeout=180s
+kubectl wait --for=condition=ready pod -l app=redis -n rahbar --timeout=120s
+
+# Step 4: Deploy Core Services
 kubectl apply -f k8s/base/services.yaml
 
-# Step 4: Run Initial Indexing Job
+# Step 5: Provision Corpus PersistentVolumeClaim
+kubectl apply -f k8s/base/corpus-pvc.yaml
+
+# Step 6: Fetch Official Corpus and Verify Checksums
+python3 corpus/fetch.py
+python3 corpus/fetch.py --verify
+
+# Step 7: Populate Persistent Volume and Verify Inside the Cluster
+bash scripts/populate_corpus_pvc.sh rahbar corpus-pvc
+
+# Step 8: Trigger Initial Indexer Batch Job
 kubectl apply -f k8s/base/indexer-job.yaml
+
+# Step 9: Wait for Indexer Completion and Verify Chunk Count
 kubectl wait --for=condition=complete job/indexer-init -n rahbar --timeout=300s
+kubectl logs job/indexer-init -n rahbar --tail=10
 
-# Step 5: Deploy API, UI, Ingress, HPA, and NetworkPolicies (via dev overlay)
-kubectl apply -k k8s/overlays/dev
+# Step 10: Deploy Application Workloads (API and Web UI)
+kubectl apply -f k8s/base/api-deployment.yaml
+kubectl apply -f k8s/base/ui-deployment.yaml
+kubectl rollout status deployment/api -n rahbar --timeout=180s
+kubectl rollout status deployment/ui -n rahbar --timeout=120s
 
-# Step 6: Verify Deployment and Rollout Status
-kubectl rollout status deployment/dev-api -n rahbar --timeout=180s
-kubectl rollout status deployment/dev-ui -n rahbar --timeout=120s
+# Step 11: Deploy Ingress, HPA Autoscaler, and NetworkPolicies
+kubectl apply -f k8s/base/ingress.yaml
+kubectl apply -f k8s/base/hpa.yaml
+kubectl apply -f k8s/base/networkpolicy.yaml
+
+# Step 12: Validate Cluster Readiness Probes and Run Real QA Smoke Tests
+kubectl exec -n rahbar deploy/api -c api -- curl -sf http://localhost:8000/readyz
+kubectl exec -n rahbar deploy/api -c api -- curl -sf -X POST http://localhost:8000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What is the BBA tuition fee per credit hour for Fall 2026?"}'
 ```
 
 ### 5. Verify Running Endpoints & HPA

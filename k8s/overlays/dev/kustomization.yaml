@@ -45,6 +45,9 @@ patches:
       - op: replace
         path: /data/REDIS_HOST
         value: "dev-redis"
+      - op: replace
+        path: /data/RELEVANCE_FLOOR
+        value: "0.2"
   - target:
       kind: Deployment
       name: api

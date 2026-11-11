@@ -69,21 +69,35 @@ def discover(corpus_dir: str) -> list[tuple[Path, str, bool]]:
     present. Otherwise read Markdown front matter (the CI fixtures work this way).
     """
     root = Path(corpus_dir)
-    # If the mounted corpus volume is empty, seed it with bundled fixtures
-    if not root.exists() or not any(p for p in root.glob("*") if p.suffix.lower() in {".pdf", ".md", ".html", ".txt"}):
-        fixtures_dir = Path(__file__).resolve().parents[1] / "fixtures"
-        if fixtures_dir.exists() and any(fixtures_dir.iterdir()):
-            import shutil
-            try:
-                root.mkdir(parents=True, exist_ok=True)
-                for item in fixtures_dir.glob("*"):
-                    if item.is_file() and not item.name.lower().startswith("readme") and item.suffix.lower() in {".md", ".json", ".yaml"}:
-                        dest = root / item.name
-                        if not dest.exists():
-                            shutil.copy2(item, dest)
-                log("seeded empty corpus directory from bundled fixtures", corpus_dir=corpus_dir)
-            except Exception as e:
-                log("corpus auto-seed skipped or failed", error=str(e))
+    has_docs = root.exists() and any(
+        p for p in root.glob("*")
+        if p.suffix.lower() in {".pdf", ".md", ".html", ".txt"} and not p.name.lower().startswith("readme")
+    )
+
+    # In production, an empty corpus must fail clearly rather than silently indexing mock fixtures.
+    # Fixtures are permitted ONLY when explicitly enabled (e.g. CI or unit test environments).
+    if not has_docs:
+        allow_fallback = os.environ.get("ALLOW_FIXTURE_FALLBACK", "").lower() in {"1", "true", "yes"}
+        if allow_fallback:
+            fixtures_dir = Path(__file__).resolve().parents[1] / "fixtures"
+            if fixtures_dir.exists() and any(fixtures_dir.iterdir()):
+                import shutil
+                try:
+                    root.mkdir(parents=True, exist_ok=True)
+                    for item in fixtures_dir.glob("*"):
+                        if item.is_file() and not item.name.lower().startswith("readme") and item.suffix.lower() in {".md", ".json", ".yaml"}:
+                            dest = root / item.name
+                            if not dest.exists():
+                                shutil.copy2(item, dest)
+                    log("seeded empty corpus directory from bundled fixtures (ALLOW_FIXTURE_FALLBACK=true)", corpus_dir=corpus_dir)
+                except Exception as e:
+                    log("corpus auto-seed skipped or failed", error=str(e))
+        else:
+            raise SystemExit(
+                f"CRITICAL: Corpus directory '{corpus_dir}' is empty or contains no valid policy documents. "
+                f"Production indexing aborted. Please populate the official FAST-NUCES corpus before running indexing "
+                f"(e.g. via 'python corpus/fetch.py' and 'bash scripts/populate_corpus_pvc.sh')."
+            )
 
     index = root / "_index.json"
     if index.exists():

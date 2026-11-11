@@ -1,0 +1,91 @@
+{
+  "pairs": [
+    {
+      "type": "paraphrase",
+      "q1": "What is the BBA/BS tuition fee per credit hour for Fall 2026?",
+      "q2": "How much does one credit hour cost for BS and BBA in Fall 2026?",
+      "should_match": true,
+      "similarity": -0.0389
+    },
+    {
+      "type": "paraphrase",
+      "q1": "What is the minimum attendance required to sit the final examination?",
+      "q2": "What attendance percentage is mandatory to appear in final exams?",
+      "should_match": true,
+      "similarity": -0.0061
+    },
+    {
+      "type": "paraphrase",
+      "q1": "What CGPA must an undergraduate student maintain to avoid academic warning?",
+      "q2": "What is the minimum CGPA required to prevent an academic warning?",
+      "should_match": true,
+      "similarity": -0.0108
+    },
+    {
+      "type": "cross_version",
+      "q1": "Under the current June 2026 undergraduate academic rules, what is the deadline to withdraw from a course?",
+      "q2": "Under the old August 2023 version of the undergraduate academic rules, what was the deadline to withdraw from a course?",
+      "should_match": false,
+      "similarity": -0.0268
+    },
+    {
+      "type": "distinct_policy",
+      "q1": "What is the tuition refund percentage on the 5th day of classes?",
+      "q2": "What is the tuition refund percentage on the 12th day of classes?",
+      "should_match": false,
+      "similarity": -0.0004
+    },
+    {
+      "type": "distinct_grade",
+      "q1": "What does the grade code FA mean on the Academic Grading page?",
+      "q2": "What does the grade code I mean on the Academic Grading page?",
+      "should_match": false,
+      "similarity": 0.022
+    },
+    {
+      "type": "out_of_scope_vs_in_scope",
+      "q1": "What campus facilities exist at FAST Peshawar?",
+      "q2": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
+      "should_match": false,
+      "similarity": -0.0383
+    }
+  ],
+  "summary": {
+    "0.75": {
+      "threshold": 0.75,
+      "tp": 0,
+      "fn": 3,
+      "fp": 0,
+      "tn": 4,
+      "precision": 1.0,
+      "recall": 0.0
+    },
+    "0.82": {
+      "threshold": 0.82,
+      "tp": 0,
+      "fn": 3,
+      "fp": 0,
+      "tn": 4,
+      "precision": 1.0,
+      "recall": 0.0
+    },
+    "0.9": {
+      "threshold": 0.9,
+      "tp": 0,
+      "fn": 3,
+      "fp": 0,
+      "tn": 4,
+      "precision": 1.0,
+      "recall": 0.0
+    },
+    "0.95": {
+      "threshold": 0.95,
+      "tp": 0,
+      "fn": 3,
+      "fp": 0,
+      "tn": 4,
+      "precision": 1.0,
+      "recall": 0.0
+    }
+  }
+}

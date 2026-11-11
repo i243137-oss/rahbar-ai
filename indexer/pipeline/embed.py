@@ -29,6 +29,23 @@ def embed(texts: list[str], settings: IndexerSettings,
     if not texts:
         return []
 
+    # Deterministic embedding generation for offline CI and integration testing
+    if settings.embed_model == "dummy-768" or settings.embed_model.startswith("dummy"):
+        import math
+        dim = 768
+        vectors: list[list[float]] = []
+        for text in texts:
+            values: list[float] = []
+            seed = text.encode("utf-8")
+            while len(values) < dim:
+                seed = hashlib.sha256(seed).digest()
+                values.extend((b - 127.5) / 127.5 for b in seed)
+            values = values[:dim]
+            norm = math.sqrt(sum(v * v for v in values)) or 1.0
+            vectors.append([v / norm for v in values])
+        log.info("generated %d deterministic embeddings using %s", len(vectors), settings.embed_model)
+        return vectors
+
     content_hash = hashlib.sha256("".join(texts).encode("utf-8")).hexdigest()
     cache_file = Path(settings.corpus_dir) / ".embeddings_cache.json"
     if client is None and cache_file.exists():

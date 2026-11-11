@@ -112,6 +112,13 @@ def summarise(rows: list[dict]) -> dict:
     total_citations = sum(total for _, total in citation_counts)
     results["citation_validity"] = valid_citations / total_citations if total_citations else None
 
+    # Track any answers claiming to be grounded that produced zero citations
+    grounded_without_citations = sum(
+        1 for row in rows
+        if row["response"].get("answered_from_context", False) and not row["response"].get("citations")
+    )
+    results["grounded_without_citations"] = grounded_without_citations
+
     abstentions = [
         row["response"]["answered_from_context"] is False for row in rows if row["must_abstain"]
     ]
@@ -124,18 +131,29 @@ def gate(results: dict, baseline: dict | None) -> list[str]:
     failures = []
     recall5 = results["recall@5"]
     baseline_recall5 = baseline.get("recall@5") if baseline is not None else None
-    if recall5 is not None and baseline_recall5 is not None:
+    if recall5 is None:
+        failures.append("Recall@5 could not be measured (no retrieval results)")
+    elif baseline_recall5 is not None:
         drop = baseline_recall5 - recall5
         if drop > MAX_RECALL5_DROP and not isclose(drop, MAX_RECALL5_DROP, abs_tol=1e-12):
             failures.append(f"Recall@5 fell from {baseline_recall5:.1%} to {recall5:.1%}")
 
     abstention = results["abstention_correctness"]
-    if abstention is not None and abstention < REQUIRED_ABSTENTION:
+    if abstention is None:
+        failures.append("Must-abstain questions were not evaluated")
+    elif abstention < REQUIRED_ABSTENTION:
         failures.append(f"Must-abstain questions answered from context (correct abstention: {abstention:.1%})")
 
     validity = results["citation_validity"]
-    if validity is not None and validity < MIN_CITATION_VALIDITY:
+    if validity is None:
+        failures.append("Citation validity could not be measured (zero citations produced)")
+    elif validity < MIN_CITATION_VALIDITY:
         failures.append(f"Citation validity {validity:.1%} is below {MIN_CITATION_VALIDITY:.0%}")
+
+    if results.get("grounded_without_citations", 0) > 0:
+        failures.append(
+            f"{results['grounded_without_citations']} grounded answer(s) claim answered_from_context=true with 0 citations"
+        )
 
     return failures
 

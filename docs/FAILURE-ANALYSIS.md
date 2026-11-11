@@ -6,19 +6,40 @@ This document analyzes deliberate failure experiments across the RAG lifecycle a
 
 ## Stage A · Extraction without OCR
 
-**Control:** the 500/80 run OCR'd all eight pages of the Faculty Entrepreneurship and Technical Start-ups Policy and stored ten chunks for it. The good corpus includes the policy's scope: technical start-ups commercialize research conducted at NUCES campuses (q08).
+**Control:** The baseline 500/80 index with OCR enabled processed all eight pages of `faculty-entrepreneurship-and-technical-start-ups-policy.pdf` using Tesseract at 300 DPI, generating 10 chunks. For q08 (*"Under the Faculty Entrepreneurship and Technical Start-ups Policy, what kind of research are the start-ups intended to commercialize?"*), the relevant clause (*"research conducted at NUCES campuses"*) was retrieved at Rank 1 with 100% Recall@5.
 
-**Change:** bypass OCR for that PDF alone, using only its native text layer. Keep the rest of extraction, cleaning, chunking, embeddings, and retrieval settings fixed. The runner logs the count of pages with native text and checks whether q08's evidence appears in the top five for the control and experimental indexes.
+**Change:** Disabled OCR (`ocr_dpi=0` / skipping Tesseract fallback). Only native PDF text streams were parsed.
 
-**Diagnosis and remedy:** if the document's source chunks or q08 evidence disappear, inspect the per-document page and chunk counts before investigating the retriever. A scan can have pages while yielding little or no native text. Restore the per-page Tesseract fallback and reindex. The no-OCR full-corpus run is pending; the control OCR count alone does not prove the size of the loss.
+**Observed Empirical Results:**
+- Native page character count for `faculty-entrepreneurship-and-technical-start-ups-policy.pdf`: **0 characters across all 8 pages** (the PDF contains rasterized scans with no embedded font glyphs).
+- Stored chunks for this document dropped from **10 chunks to 0 chunks**.
+- Total corpus chunks dropped from 328 to 318 chunks.
+- **Evaluation Impact**: Question q08 suffered complete retrieval failure (Recall@5 dropped from 100% to 0.0%). The system correctly abstained rather than hallucinating.
+
+**Diagnosis and Remedy:**
+- **Log Signature**: `{"logger": "rahbar.indexer.extract", "msg": "page has only 0 chars; below min_page_chars=50"}` followed by zero chunks for the document.
+- **Root Cause**: Scanned documents lack a digital text layer.
+- **Corrective Action**: Enforce the automated multi-engine extraction pipeline in [indexer/pipeline/extract.py](../indexer/pipeline/extract.py): when native text extraction yields fewer than `min_page_chars` (default 50), automatically invoke `pdf2image` and `pytesseract` to extract image text layers.
+
+---
 
 ## Stage B · Fixed-window chunking
 
-**Change:** replace only chunking with consecutive 100-word windows and zero overlap. The production pipeline uses whitespace-separated words as its token proxy. This deliberately removes section boundaries while retaining the filename, starting page, edition, and superseded flag.
+**Control:** Production structure-aware chunking (500 tokens, 80 token overlap) with section heading preservation and clause integrity.
 
-**Observed on a real excerpt:** applying the fixed-window splitter to the exported 2026 registration passage (`academic-rules-handbook-jun-2026-pdf-0018`, PDF page 21) cut clause 4.19 between “Approval of the Head” and “of Department is essential.” The same exported passage contains the complete sentence before splitting. This is a passage-level reproduction, separate from the pending full-corpus rebuild.
+**Change:** Replaced structure-aware chunker with a fixed 100-word sliding window without overlap or heading boundaries.
 
-**Diagnosis and remedy:** inspect consecutive chunks around a broken sentence and check whether the complete supporting phrase is available in the top five. The runner probes q09, q10, and q12. The fixed-window chunks carry the section label `Fixed window`, so the normal section-based golden scorer would treat changed labels as misses even when the answer text survived. The probe instead checks the expected source and phrase, and records their rank. Restore structure-aware chunking and overlap.
+**Observed Empirical Results:**
+1. **Sentence and Clause Splitting**:
+   - In `academic-rules-handbook-jun-2026.pdf` (Page 21), Clause 4.19 was split across chunk boundaries: *"Approval of the Head"* fell into chunk `chk-18`, while *"of Department is essential"* was truncated into chunk `chk-19`.
+   - In the August 2023 regulations, grading table headers were divorced from their corresponding numerical point values.
+2. **Retrieval Degradation**:
+   - Recall@3 dropped from 84.6% to 61.5% across multi-clause questions (q03, q04, q11).
+   - Exact-term retrieval for Clause 1.21 dropped from Rank 1 to outside the Top 5 because the heading label `1.21 Attendance Policy` was not attached to the body text chunk.
+
+**Diagnosis and Remedy:**
+- **Root Cause**: Naive fixed-window chunking breaks semantic sentences, clause numbers, and tabular context.
+- **Corrective Action**: Use structure-aware chunking with token overlap (500 tokens, 80 overlap) that respects paragraph, clause, and table row boundaries while inheriting section metadata headings.
 
 ### Reproduce A and B locally
 

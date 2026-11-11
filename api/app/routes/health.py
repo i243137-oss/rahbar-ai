@@ -45,7 +45,10 @@ def readyz(request: Request, response: Response) -> dict[str, Any]:
             checks["chroma"] = "not initialized"
         else:
             try:
-                collection = retriever.client.get_collection(settings.collection)
+                if hasattr(retriever, "get_active_collection") and getattr(retriever, "name", None) == "chroma":
+                    collection = retriever.get_active_collection()
+                else:
+                    collection = retriever.client.get_collection(settings.collection)
                 # Check that collection is non-empty
                 doc_count = collection.count()
                 if doc_count == 0:

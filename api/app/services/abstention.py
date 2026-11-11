@@ -35,13 +35,24 @@ _STOPWORDS = {
 }
 
 
-def has_substantive_coverage(question: str, passages: list[Passage]) -> bool:
-    """Check if retrieved passages contain substantive tokens from the question."""
-    q_words = {w for w in re.findall(r"\b[a-zA-Z]{3,}\b", question.lower()) if w not in _STOPWORDS}
+def has_substantive_coverage(question: str, passages: list[Passage], min_coverage_ratio: float = 0.35) -> bool:
+    """Check if retrieved passages contain substantive tokens from the question.
+
+    Distinguishes mere topical coincidence (e.g. general 'hostel' mentions) from
+    actual evidence supporting the specific inquiry (e.g. 'curfew', 'deadline').
+    """
+    q_words = {w for w in re.findall(r"\b[a-zA-Z0-9_-]{3,}\b", question.lower()) if w not in _STOPWORDS}
     if not q_words:
         return True
     all_text = " ".join(p.text.lower() for p in passages)
-    return any(w in all_text for w in q_words)
+    matched = {w for w in q_words if w in all_text}
+
+    # If the question contains 4 or more informative terms and fewer than min_coverage_ratio match,
+    # the evidence is insufficient to answer the specific question honestly.
+    coverage_ratio = len(matched) / len(q_words)
+    if len(q_words) >= 4 and coverage_ratio < min_coverage_ratio:
+        return False
+    return len(matched) > 0
 
 
 def should_abstain(passages: list[Passage], relevance_floor: float, question: str | None = None) -> bool:

@@ -40,10 +40,22 @@ class ChromaRetriever:
                 settings=ChromaSettings(anonymized_telemetry=False),
             )
 
+    def get_active_collection(self) -> Any:
+        """Resolve active collection from pointer if present, else fallback to base collection."""
+        try:
+            ptr = self.client.get_collection(f"{self.settings.collection}_pointer")
+            meta = getattr(ptr, "metadata", None) or {}
+            active_name = meta.get("active_collection")
+            if active_name:
+                return self.client.get_collection(active_name)
+        except Exception:
+            pass
+        return self.client.get_collection(self.settings.collection)
+
     def get_index_id(self) -> str | None:
         """Return index_id from active Chroma collection metadata."""
         try:
-            col = self.client.get_collection(self.settings.collection)
+            col = self.get_active_collection()
             meta = getattr(col, "metadata", None) or {}
             idx_id = meta.get("index_id")
             return str(idx_id) if idx_id else None
@@ -62,9 +74,9 @@ class ChromaRetriever:
             log.warning("Embedding query failed", extra={"error": str(exc), "question": question[:50]})
             return []
 
-        # 2. Connect to collection
+        # 2. Connect to active collection (supporting safe blue/green pointer swap)
         try:
-            collection = self.client.get_collection(self.settings.collection)
+            collection = self.get_active_collection()
         except Exception as exc:
             log.warning("Chroma collection unavailable", extra={"collection": self.settings.collection, "error": str(exc)})
             return []

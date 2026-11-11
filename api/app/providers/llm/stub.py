@@ -6,21 +6,8 @@ real model. It is deterministic: the same input always gives the same output.
 
 from __future__ import annotations
 
-import re
-
 from ...schemas import Answer, Citation, Passage
-
-_STOPWORDS = {
-    "what", "when", "where", "which", "who", "whom", "this", "that", "these", "those",
-    "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "do", "does",
-    "did", "shall", "will", "should", "would", "may", "might", "must", "can", "could",
-    "the", "a", "an", "and", "or", "but", "if", "for", "with", "about", "against", "between",
-    "into", "through", "during", "before", "after", "above", "below", "to", "from", "up",
-    "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once",
-    "here", "there", "why", "how", "all", "any", "both", "each", "few", "more", "most",
-    "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than",
-    "too", "very", "say", "tell"
-}
+from ...services.abstention import assess_evidence_sufficiency
 
 
 class StubProvider:
@@ -36,14 +23,11 @@ class StubProvider:
                 confidence="low",
             )
 
-        # Check if the retrieved passages actually cover any substantive words from the question
-        q_words = {w for w in re.findall(r"\b[a-zA-Z]{3,}\b", question.lower()) if w not in _STOPWORDS}
-        all_text = " ".join(p.text.lower() for p in passages)
-        overlap = [w for w in q_words if w in all_text]
-
-        if not overlap:
+        # Check evidence sufficiency (distinguishes mere topical overlap from sufficient evidence)
+        assessment = assess_evidence_sufficiency(question, passages, relevance_floor=0.0)
+        if not assessment.is_sufficient:
             return Answer(
-                reasoning="stub: question keywords not found in retrieved passages",
+                reasoning=f"stub: {assessment.reason}",
                 answer="(stub) The official documents do not contain information to answer this question.",
                 citations=[],
                 answered_from_context=False,

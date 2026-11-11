@@ -75,13 +75,40 @@ kubectl wait --for=condition=Ready pod/"${LOADER_POD}" -n "${NAMESPACE}" --timeo
 echo "Copying verified corpus documents into '${PVC_NAME}':/corpus/ ..."
 kubectl cp "${CORPUS_RAW}/." "${NAMESPACE}/${LOADER_POD}:/corpus/"
 
-# Step 4: Verify uploaded files inside the volume
+# Step 4: Verify uploaded files and checksums inside the volume
 DOC_COUNT=$(kubectl exec -n "${NAMESPACE}" "${LOADER_POD}" -- sh -c 'ls -1 /corpus | grep -v "^\." | wc -l')
 echo "SUCCESS: Uploaded ${DOC_COUNT} files to /corpus on PVC '${PVC_NAME}'."
 
 if [[ "${DOC_COUNT}" -lt 9 ]]; then
-    echo "WARNING: Expected at least 9 corpus files, but found ${DOC_COUNT}."
+    echo "ERROR: Expected at least 9 corpus files, but found ${DOC_COUNT}. Failing closed."
     exit 1
 fi
 
-echo "Corpus volume successfully populated and verified. The Indexer Job can now proceed."
+echo "Verifying internal checksums and index integrity inside the PVC..."
+kubectl exec -n "${NAMESPACE}" "${LOADER_POD}" -- python3 -c "
+import hashlib, json, sys
+from pathlib import Path
+
+root = Path('/corpus')
+idx_file = root / '_index.json'
+if not idx_file.exists():
+    print('ERROR: /corpus/_index.json missing from persistent volume', file=sys.stderr)
+    sys.exit(1)
+
+with open(idx_file) as f:
+    entries = json.load(f)
+
+for item in entries:
+    target = root / item['file']
+    if not target.exists():
+        print(f'ERROR: File {item[\"file\"]} missing in PVC', file=sys.stderr)
+        sys.exit(1)
+    computed = hashlib.sha256(target.read_bytes()).hexdigest()
+    if computed != item['sha256']:
+        print(f'ERROR: Checksum mismatch for {item[\"file\"]} inside PVC: {computed} vs {item[\"sha256\"]}', file=sys.stderr)
+        sys.exit(1)
+
+print(f'All {len(entries)} corpus documents verified inside PVC with matching SHA-256.')
+"
+
+echo "Corpus volume successfully populated and verified. The Indexer Job can now safely proceed."

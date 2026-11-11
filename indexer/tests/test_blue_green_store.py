@@ -7,7 +7,7 @@ import pytest
 
 from pipeline.config import IndexerSettings
 from pipeline.models import Chunk
-from pipeline.store import smoke_test_candidate, store
+from pipeline.store import store
 
 
 class MockChromaCollection:

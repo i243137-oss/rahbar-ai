@@ -1,5 +1,27 @@
+"""The contracts. Change them only with your partner's review: the UI, the
+evaluation script and your tests all depend on these shapes.
+
+`Answer` is what the model must produce (section 3.4). `AskResponse` is what
+the API returns to the UI and to eval/run_eval.py. The model's `reasoning` is
+never sent to the user.
+"""
+
+from __future__ import annotations
+
+from typing import Literal
+
+from pydantic import BaseModel, Field
 
 
+class AskRequest(BaseModel):
+    question: str = Field(min_length=3, max_length=500)
+
+
+class Passage(BaseModel):
+    """One retrieved chunk, as the retriever hands it to the generator."""
+
+    chunk_id: str
+    text: str
     source: str
     section: str
     page: int | None = None

@@ -1,0 +1,26 @@
+{
+  "run_id": "ingest-20261127T162613Z",
+  "timestamp": "2026-11-27T16:26:13.812637+00:00",
+  "collection": "rahbar_batch_b",
+  "embed_model": "dummy-768",
+  "unchanged_count": 5,
+  "new_count": 0,
+  "modified_count": 0,
+  "removed_count": 0,
+  "chunks_added": 0,
+  "chunks_deleted": 0,
+  "chunks_retained": 12,
+  "chunks_total": 12,
+  "embedding_operations": 0,
+  "orphans_cleaned": 0,
+  "unchanged_documents": [
+    "batch_b_01_grading_policy_v2026.md",
+    "batch_b_08_academic_rules_v2027.md",
+    "batch_b_10_prompt_injection_exploit.md",
+    "batch_b_11_hostel_rules_v2026.md",
+    "batch_b_12_scholarship_policy_v2026.md"
+  ],
+  "new_documents": [],
+  "modified_documents": [],
+  "removed_documents": []
+}

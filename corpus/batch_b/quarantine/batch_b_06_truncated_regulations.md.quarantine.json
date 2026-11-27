@@ -1,0 +1,48 @@
+{
+  "source": "batch_b_06_truncated_regulations.md",
+  "quarantined_at": "2026-11-27T16:26:11.698237+00:00",
+  "passed": false,
+  "failed_checks": [
+    "completeness"
+  ],
+  "checks": {
+    "quality": {
+      "passed": true,
+      "reason": "Quality check passed: clean extraction (459 characters across 1 page(s))",
+      "details": {
+        "char_count": 459,
+        "page_count": 1
+      }
+    },
+    "completeness": {
+      "passed": false,
+      "reason": "Completeness check failed: content contains explicit truncation marker ('[truncated - content cut off]')",
+      "details": {
+        "marker": "[truncated - content cut off]"
+      }
+    },
+    "recency": {
+      "passed": true,
+      "reason": "Recency check passed: document is the latest active version (2026-06)",
+      "details": {
+        "doc_version": "2026-06",
+        "lineage": "batch_campus_code_disciplinary"
+      }
+    },
+    "uniqueness": {
+      "passed": true,
+      "reason": "Uniqueness check passed: document content is unique",
+      "details": {
+        "sha256": "36e7bf993f1b"
+      }
+    }
+  },
+  "metadata": {
+    "title": "Campus Disciplinary Code",
+    "doc_version": "2026-06",
+    "superseded": false,
+    "char_count": 459,
+    "page_count": 1,
+    "sha256": "36e7bf993f1b65681139623f8d382c34c550a99b1f0157ae0deda03d24c7e13f"
+  }
+}

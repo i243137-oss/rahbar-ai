@@ -1,0 +1,56 @@
+{
+  "source": "batch_b_05_corrupt_unreadable.pdf",
+  "quarantined_at": "2026-11-27T16:26:11.692533+00:00",
+  "passed": false,
+  "failed_checks": [
+    "quality",
+    "completeness"
+  ],
+  "checks": {
+    "quality": {
+      "passed": false,
+      "reason": "Quality check failed: extraction failed (ModuleNotFoundError: No module named 'pdfplumber')",
+      "details": {
+        "error": "ModuleNotFoundError: No module named 'pdfplumber'"
+      }
+    },
+    "completeness": {
+      "passed": false,
+      "reason": "Completeness check failed: missing required metadata (title, doc_version, page_count)",
+      "details": {
+        "missing_fields": [
+          "title",
+          "doc_version",
+          "page_count"
+        ],
+        "metadata": {
+          "title": "",
+          "version": ""
+        }
+      }
+    },
+    "recency": {
+      "passed": true,
+      "reason": "Recency check passed: document is the latest active version ()",
+      "details": {
+        "doc_version": "",
+        "lineage": "batch_corrupt_unreadable"
+      }
+    },
+    "uniqueness": {
+      "passed": true,
+      "reason": "Uniqueness check passed: document content is unique",
+      "details": {
+        "sha256": "81d47301717b"
+      }
+    }
+  },
+  "metadata": {
+    "title": "",
+    "doc_version": "",
+    "superseded": false,
+    "char_count": 0,
+    "page_count": 0,
+    "sha256": "81d47301717b762e4ad0f62e392f2be4c467f09196393f6afb957dbb18786b93"
+  }
+}

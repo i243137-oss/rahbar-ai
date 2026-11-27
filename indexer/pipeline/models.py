@@ -21,6 +21,7 @@ class Document:
     doc_version: str         # e.g. "2026-06"; from corpus/sources.yaml
     superseded: bool         # True for an older version of a policy
     pages: list[Page] = field(default_factory=list)
+    title: str = ""          # Official document title from manifest or front matter
 
 
 @dataclass

@@ -1,0 +1,667 @@
+{
+  "run_id": "verify-20261127T162611Z",
+  "timestamp": "2026-11-27T16:26:11.676109+00:00",
+  "corpus_dir": "/home/umair_hassan/rahbar-ai/corpus/batch_b",
+  "quarantine_dir": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine",
+  "total_documents": 12,
+  "passed_count": 5,
+  "quarantined_count": 7,
+  "checks_summary": {
+    "quality": {
+      "passed": 11,
+      "failed": 1
+    },
+    "completeness": {
+      "passed": 9,
+      "failed": 3
+    },
+    "recency": {
+      "passed": 11,
+      "failed": 1
+    },
+    "uniqueness": {
+      "passed": 9,
+      "failed": 3
+    }
+  },
+  "results": [
+    {
+      "source": "batch_b_01_grading_policy_v2026.md",
+      "passed": true,
+      "action": "accepted",
+      "quarantine_path": null,
+      "metadata": {
+        "title": "FAST-NUCES Grading Policy Handbook",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 689,
+        "page_count": 1,
+        "sha256": "9ade1635e364c6e39f3075497c698f853382399942cd96d6ef882b5dac03fb30"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (689 characters across 1 page(s))",
+          "details": {
+            "char_count": 689,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "FAST-NUCES Grading Policy Handbook",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "academic_grading"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "9ade1635e364"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_02_grading_policy_exact_dupe.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_02_grading_policy_exact_dupe.md",
+      "metadata": {
+        "title": "FAST-NUCES Grading Policy Handbook",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 689,
+        "page_count": 1,
+        "sha256": "15fd6cd29f7c91a34abc2e5f15d3286d50fac6b7be3cbe5fd550fd94e6cefd89"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (689 characters across 1 page(s))",
+          "details": {
+            "char_count": 689,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "FAST-NUCES Grading Policy Handbook",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "academic_grading"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": false,
+          "reason": "Uniqueness check failed: exact duplicate of 'batch_b_01_grading_policy_v2026.md' (SHA-256 match: 15fd6cd29f7c...)",
+          "details": {
+            "duplicate_type": "exact",
+            "duplicate_of": "batch_b_01_grading_policy_v2026.md",
+            "sha256": "15fd6cd29f7c91a34abc2e5f15d3286d50fac6b7be3cbe5fd550fd94e6cefd89"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_03_grading_policy_exact_dupe_2.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_03_grading_policy_exact_dupe_2.md",
+      "metadata": {
+        "title": "FAST-NUCES Grading Policy Handbook",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 689,
+        "page_count": 1,
+        "sha256": "30be0e35cbf839077192edf76d96592bc1865077dc3506270e0f5b53d5ae7cc0"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (689 characters across 1 page(s))",
+          "details": {
+            "char_count": 689,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "FAST-NUCES Grading Policy Handbook",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "academic_grading"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": false,
+          "reason": "Uniqueness check failed: exact duplicate of 'batch_b_01_grading_policy_v2026.md' (SHA-256 match: 30be0e35cbf8...)",
+          "details": {
+            "duplicate_type": "exact",
+            "duplicate_of": "batch_b_01_grading_policy_v2026.md",
+            "sha256": "30be0e35cbf839077192edf76d96592bc1865077dc3506270e0f5b53d5ae7cc0"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_04_grading_policy_near_dupe.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_04_grading_policy_near_dupe.md",
+      "metadata": {
+        "title": "FAST-NUCES Grading Policy Handbook",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 694,
+        "page_count": 1,
+        "sha256": "ce536ca659f680cba5ae99f346443d87fbcf0e0913e63f72e9fe373ab2bd82f8"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (694 characters across 1 page(s))",
+          "details": {
+            "char_count": 694,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "FAST-NUCES Grading Policy Handbook",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "academic_grading"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": false,
+          "reason": "Uniqueness check failed: near-duplicate of 'batch_b_01_grading_policy_v2026.md' (similarity 0.923 >= threshold 0.8)",
+          "details": {
+            "duplicate_type": "near",
+            "duplicate_of": "batch_b_01_grading_policy_v2026.md",
+            "similarity": 0.9231,
+            "threshold": 0.8
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_05_corrupt_unreadable.pdf",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_05_corrupt_unreadable.pdf",
+      "metadata": {
+        "title": "",
+        "doc_version": "",
+        "superseded": false,
+        "char_count": 0,
+        "page_count": 0,
+        "sha256": "81d47301717b762e4ad0f62e392f2be4c467f09196393f6afb957dbb18786b93"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": false,
+          "reason": "Quality check failed: extraction failed (ModuleNotFoundError: No module named 'pdfplumber')",
+          "details": {
+            "error": "ModuleNotFoundError: No module named 'pdfplumber'"
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": false,
+          "reason": "Completeness check failed: missing required metadata (title, doc_version, page_count)",
+          "details": {
+            "missing_fields": [
+              "title",
+              "doc_version",
+              "page_count"
+            ],
+            "metadata": {
+              "title": "",
+              "version": ""
+            }
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version ()",
+          "details": {
+            "doc_version": "",
+            "lineage": "batch_corrupt_unreadable"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "81d47301717b"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_06_truncated_regulations.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_06_truncated_regulations.md",
+      "metadata": {
+        "title": "Campus Disciplinary Code",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 459,
+        "page_count": 1,
+        "sha256": "36e7bf993f1b65681139623f8d382c34c550a99b1f0157ae0deda03d24c7e13f"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (459 characters across 1 page(s))",
+          "details": {
+            "char_count": 459,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": false,
+          "reason": "Completeness check failed: content contains explicit truncation marker ('[truncated - content cut off]')",
+          "details": {
+            "marker": "[truncated - content cut off]"
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "batch_campus_code_disciplinary"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "36e7bf993f1b"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_07_missing_metadata.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_07_missing_metadata.md",
+      "metadata": {
+        "title": "Unregistered Draft Guidelines",
+        "doc_version": "",
+        "superseded": false,
+        "char_count": 264,
+        "page_count": 1,
+        "sha256": "9773b1904d9f86a580627ef0e020570f07b351d0e8ba98b333098a87393ff48e"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (264 characters across 1 page(s))",
+          "details": {
+            "char_count": 264,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": false,
+          "reason": "Completeness check failed: missing required metadata (doc_version)",
+          "details": {
+            "missing_fields": [
+              "doc_version"
+            ],
+            "metadata": {
+              "title": "Unregistered Draft Guidelines",
+              "version": ""
+            }
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version ()",
+          "details": {
+            "doc_version": "",
+            "lineage": "batch_draft_guidelines_metadata"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "9773b1904d9f"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_08_academic_rules_v2027.md",
+      "passed": true,
+      "action": "accepted",
+      "quarantine_path": null,
+      "metadata": {
+        "title": "Academic Rules Handbook",
+        "doc_version": "2027-01",
+        "superseded": false,
+        "char_count": 494,
+        "page_count": 1,
+        "sha256": "082868b62ab0347cc6768b4394faaf221195657a4ae7cb429c61afb8765162ac"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (494 characters across 1 page(s))",
+          "details": {
+            "char_count": 494,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "Academic Rules Handbook",
+            "doc_version": "2027-01",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2027-01)",
+          "details": {
+            "doc_version": "2027-01",
+            "lineage": "academic_rules"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "082868b62ab0"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_09_academic_rules_v2022_superseded.md",
+      "passed": false,
+      "action": "quarantined",
+      "quarantine_path": "/home/umair_hassan/rahbar-ai/corpus/batch_b/quarantine/batch_b_09_academic_rules_v2022_superseded.md",
+      "metadata": {
+        "title": "Academic Rules Handbook",
+        "doc_version": "2022-08",
+        "superseded": true,
+        "char_count": 368,
+        "page_count": 1,
+        "sha256": "e045784f8605f9731da6148a39880695ec0280067afae5459791b4c35349de94"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (368 characters across 1 page(s))",
+          "details": {
+            "char_count": 368,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "Academic Rules Handbook",
+            "doc_version": "2022-08",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": false,
+          "reason": "Recency check failed: document is marked superseded (version 2022-08)",
+          "details": {
+            "superseded": true,
+            "doc_version": "2022-08"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "e045784f8605"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_10_prompt_injection_exploit.md",
+      "passed": true,
+      "action": "accepted",
+      "quarantine_path": null,
+      "metadata": {
+        "title": "Campus Advisory on Generative AI",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 944,
+        "page_count": 1,
+        "sha256": "eb88a81d56618f9d3b01f92d238692173672364f74c279ad55d1d209e9eea02d"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (944 characters across 1 page(s))",
+          "details": {
+            "char_count": 944,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "Campus Advisory on Generative AI",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "advisory_batch_campus_exploit"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "eb88a81d5661"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_11_hostel_rules_v2026.md",
+      "passed": true,
+      "action": "accepted",
+      "quarantine_path": null,
+      "metadata": {
+        "title": "Campus Student Hostel Regulations",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 662,
+        "page_count": 1,
+        "sha256": "d06a35da55deacb0ecedb1a19ccd848f96c6c04efe5e985aa79878263d58f766"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (662 characters across 1 page(s))",
+          "details": {
+            "char_count": 662,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "Campus Student Hostel Regulations",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "student_handbook"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "d06a35da55de"
+          }
+        }
+      }
+    },
+    {
+      "source": "batch_b_12_scholarship_policy_v2026.md",
+      "passed": true,
+      "action": "accepted",
+      "quarantine_path": null,
+      "metadata": {
+        "title": "FAST University Scholarship and Financial Aid Policy",
+        "doc_version": "2026-06",
+        "superseded": false,
+        "char_count": 704,
+        "page_count": 1,
+        "sha256": "d370804e541d5e361be134e8f20ca57a051eabaa650c776913da941bd9beaf5e"
+      },
+      "checks": {
+        "quality": {
+          "name": "quality",
+          "passed": true,
+          "reason": "Quality check passed: clean extraction (704 characters across 1 page(s))",
+          "details": {
+            "char_count": 704,
+            "page_count": 1
+          }
+        },
+        "completeness": {
+          "name": "completeness",
+          "passed": true,
+          "reason": "Completeness check passed: all required metadata present and content complete",
+          "details": {
+            "title": "FAST University Scholarship and Financial Aid Policy",
+            "doc_version": "2026-06",
+            "page_count": 1
+          }
+        },
+        "recency": {
+          "name": "recency",
+          "passed": true,
+          "reason": "Recency check passed: document is the latest active version (2026-06)",
+          "details": {
+            "doc_version": "2026-06",
+            "lineage": "aid_and_batch_fast"
+          }
+        },
+        "uniqueness": {
+          "name": "uniqueness",
+          "passed": true,
+          "reason": "Uniqueness check passed: document content is unique",
+          "details": {
+            "sha256": "d370804e541d"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -111,22 +111,80 @@ def discover(corpus_dir: str) -> list[tuple[Path, str, bool]]:
         if path.name.lower().startswith("readme"):
             continue
         meta = _front_matter(path) if path.suffix.lower() == ".md" else {}
-        found.append((path, meta.get("doc_version", "unknown"),
+        doc_version = meta.get("doc_version", "" if meta else "unknown")
+        found.append((path, doc_version,
                       meta.get("superseded", "false").lower() == "true"))
     return found
 
 
 def run_pipeline(settings: IndexerSettings, *, dry_run: bool = False,
-                 dump: str | None = None) -> int:
+                 dump: str | None = None, verify: bool = True) -> int:
     from .chunk import chunk, token_count
     from .clean import clean
     from .embed import embed
     from .extract import extract
     from .store import store
+    from .verify import inspect_document, verify_documents
 
     documents = discover(settings.corpus_dir)
     if not documents:
         raise SystemExit(f"no documents found in {settings.corpus_dir}")
+
+    # Build manifest lookup for document titles if _index.json exists
+    manifest_entries: dict[str, dict] = {}
+    index_file = Path(settings.corpus_dir) / "_index.json"
+    if index_file.exists():
+        try:
+            for entry in json.loads(index_file.read_text(encoding="utf-8")):
+                manifest_entries[entry.get("file", "")] = entry
+        except Exception:
+            pass
+
+    # Stage 1.5: Verification (Assignment 3, Part A1)
+    if verify:
+        q_dir = Path(settings.quarantine_dir) if settings.quarantine_dir else Path(settings.corpus_dir) / "quarantine"
+        records = []
+        for path, doc_version, superseded in documents:
+            entry = manifest_entries.get(path.name, {})
+            title = entry.get("name", "")
+            rec = inspect_document(
+                path,
+                title=title,
+                doc_version=doc_version,
+                superseded=superseded,
+                settings=settings,
+            )
+            records.append(rec)
+
+        accepted_records, report = verify_documents(records, settings=settings, quarantine_dir=q_dir)
+        log("verification stage complete",
+            total=report.total_documents,
+            accepted=report.passed_count,
+            quarantined=report.quarantined_count,
+            quarantine_dir=str(q_dir))
+
+        accepted_sources = {r.source for r in accepted_records}
+        documents = [d for d in documents if d[0].name in accepted_sources]
+        if not documents:
+            log("all documents quarantined; 0 chunks to index")
+            return 0
+
+        # Incremental Ingestion Engine (Assignment 3, Part A2)
+        if settings.incremental and not dump and not dry_run:
+            from .incremental import run_incremental_ingestion
+            count, inc_report = run_incremental_ingestion(
+                accepted_records,
+                settings=settings,
+                dry_run=dry_run,
+            )
+            log("incremental ingestion complete",
+                chunks_total=count,
+                embeddings_computed=inc_report.embedding_operations,
+                unchanged_documents=inc_report.unchanged_count,
+                new_documents=inc_report.new_count,
+                modified_documents=inc_report.modified_count,
+                removed_documents=inc_report.removed_count)
+            return count
     all_chunks: list[Chunk] = []
     failed: list[str] = []
     original_tokens = 0
@@ -173,9 +231,17 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true",
                         help="extract, clean and chunk only; no embedding, nothing written")
     parser.add_argument("--dump", metavar="FILE", help="also write every chunk to FILE as JSONL")
+    parser.add_argument("--skip-verify", action="store_true", help="skip Part A1 document verification")
+    parser.add_argument("--verify-only", action="store_true", help="run verification only and exit")
+    parser.add_argument("--full-rebuild", action="store_true", help="force full index rebuild instead of incremental")
     args = parser.parse_args()
     _setup_logging()
-    settings = get_settings()
+    base_settings = get_settings()
+    if args.full_rebuild:
+        from dataclasses import replace
+        settings = replace(base_settings, incremental=False)
+    else:
+        settings = base_settings
     log("indexer starting", dummy=args.dummy, dry_run=args.dry_run, embed_model=settings.embed_model,
         collection=settings.collection, chroma=f"{settings.chroma_host}:{settings.chroma_port}",
         pod=os.environ.get("HOSTNAME", "-"))
@@ -186,8 +252,11 @@ def main() -> int:
             from .store import get_client
 
             count = write_dummy_index(settings, get_client(settings))
+        elif args.verify_only:
+            from .verify import main as verify_main
+            return verify_main()
         else:
-            count = run_pipeline(settings, dry_run=args.dry_run, dump=args.dump)
+            count = run_pipeline(settings, dry_run=args.dry_run, dump=args.dump, verify=not args.skip_verify)
     except NotImplementedError as exc:
         log("indexer stage not implemented yet", error=str(exc))
         return 2

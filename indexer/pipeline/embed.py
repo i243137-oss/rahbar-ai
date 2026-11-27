@@ -9,7 +9,10 @@ import time
 from pathlib import Path
 from typing import Any
 
-import httpx
+try:
+    import httpx
+except ImportError:
+    httpx = None  # type: ignore
 
 from .config import IndexerSettings
 
@@ -19,7 +22,7 @@ _ATTEMPTS = 3
 
 
 def embed(texts: list[str], settings: IndexerSettings,
-          client: httpx.Client | None = None) -> list[list[float]]:
+          client: Any | None = None) -> list[list[float]]:
     """Embed with settings.embed_model and nothing else.
 
     With Ollama: POST {ollama_url}/api/embed with {"model": ..., "input": [texts]}

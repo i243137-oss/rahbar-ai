@@ -1,0 +1,52 @@
+{
+  "source": "batch_b_03_grading_policy_exact_dupe_2.md",
+  "quarantined_at": "2026-11-27T16:26:11.682917+00:00",
+  "passed": false,
+  "failed_checks": [
+    "uniqueness"
+  ],
+  "checks": {
+    "quality": {
+      "passed": true,
+      "reason": "Quality check passed: clean extraction (689 characters across 1 page(s))",
+      "details": {
+        "char_count": 689,
+        "page_count": 1
+      }
+    },
+    "completeness": {
+      "passed": true,
+      "reason": "Completeness check passed: all required metadata present and content complete",
+      "details": {
+        "title": "FAST-NUCES Grading Policy Handbook",
+        "doc_version": "2026-06",
+        "page_count": 1
+      }
+    },
+    "recency": {
+      "passed": true,
+      "reason": "Recency check passed: document is the latest active version (2026-06)",
+      "details": {
+        "doc_version": "2026-06",
+        "lineage": "academic_grading"
+      }
+    },
+    "uniqueness": {
+      "passed": false,
+      "reason": "Uniqueness check failed: exact duplicate of 'batch_b_01_grading_policy_v2026.md' (SHA-256 match: 30be0e35cbf8...)",
+      "details": {
+        "duplicate_type": "exact",
+        "duplicate_of": "batch_b_01_grading_policy_v2026.md",
+        "sha256": "30be0e35cbf839077192edf76d96592bc1865077dc3506270e0f5b53d5ae7cc0"
+      }
+    }
+  },
+  "metadata": {
+    "title": "FAST-NUCES Grading Policy Handbook",
+    "doc_version": "2026-06",
+    "superseded": false,
+    "char_count": 689,
+    "page_count": 1,
+    "sha256": "30be0e35cbf839077192edf76d96592bc1865077dc3506270e0f5b53d5ae7cc0"
+  }
+}

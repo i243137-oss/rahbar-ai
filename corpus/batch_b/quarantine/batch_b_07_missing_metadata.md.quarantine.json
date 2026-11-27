@@ -1,0 +1,54 @@
+{
+  "source": "batch_b_07_missing_metadata.md",
+  "quarantined_at": "2026-11-27T16:26:11.702838+00:00",
+  "passed": false,
+  "failed_checks": [
+    "completeness"
+  ],
+  "checks": {
+    "quality": {
+      "passed": true,
+      "reason": "Quality check passed: clean extraction (264 characters across 1 page(s))",
+      "details": {
+        "char_count": 264,
+        "page_count": 1
+      }
+    },
+    "completeness": {
+      "passed": false,
+      "reason": "Completeness check failed: missing required metadata (doc_version)",
+      "details": {
+        "missing_fields": [
+          "doc_version"
+        ],
+        "metadata": {
+          "title": "Unregistered Draft Guidelines",
+          "version": ""
+        }
+      }
+    },
+    "recency": {
+      "passed": true,
+      "reason": "Recency check passed: document is the latest active version ()",
+      "details": {
+        "doc_version": "",
+        "lineage": "batch_draft_guidelines_metadata"
+      }
+    },
+    "uniqueness": {
+      "passed": true,
+      "reason": "Uniqueness check passed: document content is unique",
+      "details": {
+        "sha256": "9773b1904d9f"
+      }
+    }
+  },
+  "metadata": {
+    "title": "Unregistered Draft Guidelines",
+    "doc_version": "",
+    "superseded": false,
+    "char_count": 264,
+    "page_count": 1,
+    "sha256": "9773b1904d9f86a580627ef0e020570f07b351d0e8ba98b333098a87393ff48e"
+  }
+}

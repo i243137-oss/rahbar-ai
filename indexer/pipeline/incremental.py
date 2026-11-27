@@ -175,19 +175,40 @@ def compute_diff(verified_docs: list[DocumentRecord], state: IngestionState) -> 
 
 # --------------------------------------------------------------------------- Chroma helpers
 
-def _get_active_or_create_collection(client: Any, settings: IndexerSettings) -> Any:
+def _infer_embed_dim(settings: IndexerSettings) -> int:
+    """Infer expected vector dimension from embed model name."""
+    if "384" in settings.embed_model:
+        return 384
+    if "1024" in settings.embed_model:
+        return 1024
+    if "1536" in settings.embed_model:
+        return 1536
+    return 768
+
+
+def _get_active_or_create_collection(
+    client: Any,
+    settings: IndexerSettings,
+    dimension: int | None = None,
+) -> Any:
     """Retrieve existing Chroma collection or create new one with correct metadata."""
+    dim = dimension or _infer_embed_dim(settings)
+    meta = {
+        "hnsw:space": "cosine",
+        "embed_model": settings.embed_model,
+        "dimension": dim,
+    }
     if hasattr(client, "get_or_create_collection"):
         return client.get_or_create_collection(
             name=settings.collection,
-            metadata={"hnsw:space": "cosine", "embed_model": settings.embed_model},
+            metadata=meta,
         )
     try:
         return client.get_collection(settings.collection)
     except Exception:
         return client.create_collection(
             name=settings.collection,
-            metadata={"hnsw:space": "cosine", "embed_model": settings.embed_model},
+            metadata=meta,
         )
 
 
@@ -322,6 +343,7 @@ def run_incremental_ingestion(
     chunks_deleted = 0
     chunks_added = 0
     embedding_operations = 0
+    detected_vector_dim: int | None = None
 
     # 1. Handle Removed Documents
     for removed_state in diff.removed_docs:
@@ -354,6 +376,8 @@ def run_incremental_ingestion(
 
         # Embed ONLY the new chunks
         vectors = embed([c.text for c in new_chunks], settings)
+        if vectors:
+            detected_vector_dim = len(vectors[0])
         embedding_operations += len(vectors)
         _add_chunks(collection, new_chunks, vectors, settings.embed_batch_size)
         chunks_added += len(new_chunks)
@@ -392,6 +416,8 @@ def run_incremental_ingestion(
 
         # Embed new chunks
         vectors = embed([c.text for c in new_chunks], settings)
+        if vectors:
+            detected_vector_dim = len(vectors[0])
         embedding_operations += len(vectors)
         _add_chunks(collection, new_chunks, vectors, settings.embed_batch_size)
         chunks_added += len(new_chunks)
@@ -444,12 +470,23 @@ def run_incremental_ingestion(
         else sum(s.chunk_count for s in state.documents.values() if s.status == "active")
     )
 
+    final_dim = (
+        detected_vector_dim
+        or (
+            collection.metadata.get("dimension")
+            if getattr(collection, "metadata", None) and isinstance(collection.metadata, dict)
+            else None
+        )
+        or _infer_embed_dim(settings)
+    )
+
     if hasattr(collection, "modify"):
         try:
             collection.modify(
                 metadata={
                     "hnsw:space": "cosine",
                     "embed_model": settings.embed_model,
+                    "dimension": final_dim,
                     "index_id": run_id,
                     "updated_at": timestamp,
                     "chunk_count": total_live_chunks,

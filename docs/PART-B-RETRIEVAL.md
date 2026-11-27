@@ -187,3 +187,37 @@ Run via:
 python3 eval/test_contract.py
 ```
 Outputs: `ALL PART B4 INTEGRATION CONTRACT TESTS PASSED!`
+
+---
+
+## 6. Part B5 — Reproducibility & Multi-Run Determinism
+
+Fulfills Section B5 requirements:
+1. **Fixed Random Seeds:** Deterministic typo generation (`seed=42`, `seed=100 + idx`).
+2. **Consistent Evaluation Ground Truth:** Constant evaluation sets ([`eval/golden.jsonl`](file:///home/umair_hassan/rahbar-ai/eval/golden.jsonl), [`eval/embedding_pairs.json`](file:///home/umair_hassan/rahbar-ai/eval/embedding_pairs.json)).
+3. **Repeated Executions:** Multi-iteration benchmark runner ([`eval/run_reproducibility.py`](file:///home/umair_hassan/rahbar-ai/eval/run_reproducibility.py)) executing full embedding and retrieval pipelines at least twice.
+4. **Zero-Variance Verification:** Metric delta calculation between Run 1 and Run 2 confirming mathematically identical results ($\Delta = 0.000000$).
+5. **Timestamped Auditing:** Automated JSON archive persistence (`eval/results/reproducibility_report.json`).
+
+### Empirical Multi-Run Comparison (Run 1 vs. Run 2)
+
+| Metric | Run 1 | Run 2 | Absolute Delta | Status |
+| :--- | :--- | :--- | :--- | :---: |
+| **Embedding Paraphrase Mean** | 0.4494 | 0.4494 | **0.000000** | **PASS** |
+| **Embedding Unrelated Mean** | 0.0980 | 0.0980 | **0.000000** | **PASS** |
+| **Embedding Separation Gap** | 0.3514 | 0.3514 | **0.000000** | **PASS** |
+| **Retrieval Recall@3 (Clean)** | 0.3182 | 0.3182 | **0.000000** | **PASS** |
+| **Retrieval Recall@5 (Clean)** | 0.3182 | 0.3182 | **0.000000** | **PASS** |
+| **Retrieval MRR (Clean)** | 0.3333 | 0.3333 | **0.000000** | **PASS** |
+| **Retrieval nDCG@5 (Clean)** | 0.3432 | 0.3432 | **0.000000** | **PASS** |
+| **Retrieval Recall@5 (Noisy)** | 0.3182 | 0.3182 | **0.000000** | **PASS** |
+| **Retrieval nDCG@5 (Noisy)** | 0.3142 | 0.3142 | **0.000000** | **PASS** |
+| **Recall@5 Retention %** | 100.0000% | 100.0000% | **0.000000** | **PASS** |
+| **nDCG@5 Retention %** | 91.6000% | 91.6000% | **0.000000** | **PASS** |
+
+### Execution Command:
+```bash
+python3 eval/run_reproducibility.py
+```
+*Output Report:* [`eval/results/reproducibility_report.json`](file:///home/umair_hassan/rahbar-ai/eval/results/reproducibility_report.json)
+

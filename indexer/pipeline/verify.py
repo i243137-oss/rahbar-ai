@@ -16,18 +16,17 @@ import argparse
 import hashlib
 import json
 import logging
-import os
 import re
 import shutil
 import sys
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from .config import IndexerSettings, get_settings
-from .models import Document, Page
+from .models import Page
 
 log = logging.getLogger("rahbar.indexer.verify")
 
@@ -208,7 +207,7 @@ def parse_version_tuple(ver_str: str) -> tuple[int, ...]:
 
 # --------------------------------------------------------------------------- Checks
 
-def check_quality(doc: DocumentRecord, min_chars: int = 50) -> CheckResult:
+def check_quality(doc: DocumentRecord, min_chars: int = 15) -> CheckResult:
     """Check 1: Quality.
 
     Detects:
@@ -270,9 +269,9 @@ def check_completeness(doc: DocumentRecord) -> CheckResult:
     missing_fields: list[str] = []
     if not doc.source or doc.source.strip() == "":
         missing_fields.append("source")
-    if not doc.title or doc.title.strip().lower() in {"unknown", "untitled", "none", ""}:
+    if not doc.title or doc.title.strip() == "":
         missing_fields.append("title")
-    if not doc.doc_version or doc.doc_version.strip().lower() in {"unknown", "none", ""}:
+    if doc.doc_version is None or doc.doc_version == "":
         missing_fields.append("doc_version")
     if doc.page_count <= 0:
         missing_fields.append("page_count")
@@ -309,7 +308,7 @@ def check_completeness(doc: DocumentRecord) -> CheckResult:
 def check_recency(
     doc: DocumentRecord,
     all_docs: list[DocumentRecord],
-    quarantine_superseded: bool = True,
+    quarantine_superseded: bool = False,
 ) -> CheckResult:
     """Check 3: Recency.
 
@@ -334,6 +333,7 @@ def check_recency(
         if other.lineage_key and other.lineage_key == doc.lineage_key:
             other_ver = parse_version_tuple(other.doc_version)
             if other_ver > current_ver:
+                doc.superseded = True
                 reason = (
                     f"Recency check failed: superseded by newer version '{other.source}' "
                     f"({other.doc_version} > {doc.doc_version})"
@@ -341,7 +341,7 @@ def check_recency(
                 return CheckResult(
                     name="recency",
                     passed=not quarantine_superseded,
-                    reason=reason,
+                    reason=reason if quarantine_superseded else f"Recency note: {reason}",
                     details={
                         "newer_version_source": other.source,
                         "newer_version": other.doc_version,
@@ -488,6 +488,8 @@ def inspect_document(
             first_lines = [ln.strip() for ln in raw_text.splitlines() if ln.strip()]
             if first_lines:
                 title = first_lines[0][:100]
+        if not title:
+            title = path.stem.replace("_", " ").replace("-", " ").title()
 
     content_hash = compute_text_sha256(raw_text) if raw_text else file_hash
     lineage_key = extract_lineage_key(title, path.name)

@@ -11,10 +11,8 @@ Guarantees:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import logging
-import os
 import sys
 import time
 from dataclasses import asdict, dataclass, field
@@ -23,7 +21,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import IndexerSettings, get_settings
-from .models import Chunk, Document
+from .models import Chunk
 from .verify import DocumentRecord
 
 log = logging.getLogger("rahbar.indexer.incremental")
@@ -277,7 +275,24 @@ def run_incremental_ingestion(
     )
 
     if dry_run:
-        total_chunks = sum(s.chunk_count for _, s in diff.unchanged_docs)
+        new_chunks = 0
+        for doc_rec in diff.new_docs + [d for d, _ in diff.modified_docs]:
+            try:
+                raw = extract(
+                    str(doc_rec.path),
+                    doc_rec.doc_version,
+                    doc_rec.superseded,
+                    ocr_dpi=settings.ocr_dpi,
+                    ocr_lang=settings.ocr_lang,
+                    min_page_chars=settings.min_page_chars,
+                    detect_columns=settings.detect_columns,
+                )
+                cleaned = clean(raw)
+                pieces = chunk(cleaned, settings.chunk_size, settings.chunk_overlap)
+                new_chunks += len(pieces)
+            except Exception:
+                pass
+        total_chunks = sum(s.chunk_count for _, s in diff.unchanged_docs) + new_chunks
         report = IncrementalReport(
             run_id=run_id,
             timestamp=timestamp,
@@ -287,9 +302,9 @@ def run_incremental_ingestion(
             new_count=len(diff.new_docs),
             modified_count=len(diff.modified_docs),
             removed_count=len(diff.removed_docs),
-            chunks_added=0,
+            chunks_added=new_chunks,
             chunks_deleted=sum(s.chunk_count for s in diff.removed_docs) + sum(s.chunk_count for _, s in diff.modified_docs),
-            chunks_retained=total_chunks,
+            chunks_retained=sum(s.chunk_count for _, s in diff.unchanged_docs),
             chunks_total=total_chunks,
             embedding_operations=0,
             orphans_cleaned=0,

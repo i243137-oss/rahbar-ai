@@ -21,18 +21,13 @@ from pathlib import Path
 from pipeline.config import IndexerSettings
 from pipeline.models import Page
 from pipeline.verify import (
-    CheckResult,
     DocumentRecord,
-    VerificationReport,
     check_completeness,
     check_quality,
     check_recency,
     check_uniqueness,
     compute_file_sha256,
     compute_text_sha256,
-    inspect_document,
-    jaccard_similarity,
-    quarantine_file,
     verify_documents,
 )
 

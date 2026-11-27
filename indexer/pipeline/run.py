@@ -111,7 +111,8 @@ def discover(corpus_dir: str) -> list[tuple[Path, str, bool]]:
         if path.name.lower().startswith("readme"):
             continue
         meta = _front_matter(path) if path.suffix.lower() == ".md" else {}
-        found.append((path, meta.get("doc_version", "unknown"),
+        doc_version = meta.get("doc_version", "" if meta else "unknown")
+        found.append((path, doc_version,
                       meta.get("superseded", "false").lower() == "true"))
     return found
 
@@ -169,7 +170,7 @@ def run_pipeline(settings: IndexerSettings, *, dry_run: bool = False,
             return 0
 
         # Incremental Ingestion Engine (Assignment 3, Part A2)
-        if settings.incremental and not dump:
+        if settings.incremental and not dump and not dry_run:
             from .incremental import run_incremental_ingestion
             count, inc_report = run_incremental_ingestion(
                 accepted_records,

@@ -21,9 +21,7 @@ from typing import Any
 
 from pipeline.config import IndexerSettings
 from pipeline.incremental import (
-    DocumentState,
     IngestionState,
-    compute_diff,
     count_chunks_for_source,
     run_incremental_ingestion,
 )

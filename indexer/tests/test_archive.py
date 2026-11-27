@@ -18,7 +18,7 @@ import unittest
 from pathlib import Path
 from typing import Any
 
-from pipeline.archive import ArchiveManager, ArchivedDocumentRecord
+from pipeline.archive import ArchiveManager
 from pipeline.config import IndexerSettings
 from pipeline.incremental import DocumentState, IngestionState
 

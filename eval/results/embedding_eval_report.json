@@ -1,0 +1,252 @@
+{
+  "timestamp": "2026-11-27T18:02:10.297288+00:00",
+  "summary": {
+    "model": "nomic-embed-text",
+    "dimension": 768,
+    "paraphrase_count": 16,
+    "unrelated_count": 16,
+    "paraphrase_mean_sim": 0.8539,
+    "paraphrase_min_sim": 0.7299,
+    "paraphrase_max_sim": 0.9186,
+    "paraphrase_stdev": 0.0563,
+    "unrelated_mean_sim": 0.4619,
+    "unrelated_min_sim": 0.3395,
+    "unrelated_max_sim": 0.5733,
+    "unrelated_stdev": 0.0659,
+    "separation_gap": 0.3919,
+    "determinism_max_abs_diff": 0.0,
+    "determinism_passed": true,
+    "latency_mean_ms": 80.99,
+    "latency_p50_ms": 77.77,
+    "latency_p95_ms": 104.45,
+    "throughput_chunks_per_sec": 17.27
+  },
+  "paraphrase_pairs": [
+    {
+      "id": "para_01",
+      "topic": "Academic Warning CGPA",
+      "text_a": "An undergraduate student whose cumulative grade point average (CGPA) falls below 2.00 is placed on academic warning.",
+      "text_b": "A student with a cumulative GPA of less than 2.00 will receive an academic warning.",
+      "similarity": 0.9186
+    },
+    {
+      "id": "para_02",
+      "topic": "Attendance Requirement",
+      "text_a": "Students must maintain at least 80 percent attendance in undergraduate lectures and lab sessions to sit for final examinations.",
+      "text_b": "A minimum of 80% class attendance is mandatory for undergraduate students to be eligible for final exams.",
+      "similarity": 0.905
+    },
+    {
+      "id": "para_03",
+      "topic": "Course Withdrawal Cutoff",
+      "text_a": "Under the 2026 academic regulations, the deadline to officially withdraw from a course is the final day of the makeup week.",
+      "text_b": "Students may withdraw from registered courses until the conclusion of makeup week under the 2026 rules.",
+      "similarity": 0.9135
+    },
+    {
+      "id": "para_04",
+      "topic": "Deans List Honors",
+      "text_a": "Undergraduates earning a semester GPA between 3.50 and 3.99 are awarded placement on the Dean's List of Honors.",
+      "text_b": "A semester grade point average ranging from 3.50 to 3.99 qualifies a student for the Dean's Honors List.",
+      "similarity": 0.9126
+    },
+    {
+      "id": "para_05",
+      "topic": "Rectors List SGPA 4.00",
+      "text_a": "Students achieving a perfect semester GPA of 4.00 are honored on the Rector's List of Honours.",
+      "text_b": "A semester GPA of 4.00 earns an undergraduate scholar a place on the Rector's Honours List.",
+      "similarity": 0.9085
+    },
+    {
+      "id": "para_06",
+      "topic": "Incomplete Grade Conversion",
+      "text_a": "An incomplete grade 'I' must be converted into a regular letter grade before the end of the subsequent semester.",
+      "text_b": "Grade 'I' must be fulfilled and replaced with an earned grade prior to the conclusion of the following semester.",
+      "similarity": 0.8774
+    },
+    {
+      "id": "para_07",
+      "topic": "Fee Refund in Second Week",
+      "text_a": "Eighty percent of the tuition fee is refundable if admission is withdrawn between the 8th and 15th calendar day of classes.",
+      "text_b": "Students receive an 80% refund on tuition fees when dropping enrollment during the second week (days 8 to 15) of the semester.",
+      "similarity": 0.8666
+    },
+    {
+      "id": "para_08",
+      "topic": "Admission Fee Non-Refundable",
+      "text_a": "The one-time admission fee paid at enrollment is strictly non-refundable under all circumstances.",
+      "text_b": "Under university refund policy, admission charges cannot be refunded once paid.",
+      "similarity": 0.7696
+    },
+    {
+      "id": "para_09",
+      "topic": "FA Grade Meaning",
+      "text_a": "The grade FA denotes failure due to attendance shortage and awards 0.00 grade points.",
+      "text_b": "Grade code FA signifies failing the course because of insufficient class attendance with zero credit points.",
+      "similarity": 0.8825
+    },
+    {
+      "id": "para_10",
+      "topic": "Generative AI Research Policy",
+      "text_a": "Generative AI tools may assist in background research, but must never serve as the student's exclusive source of information.",
+      "text_b": "Students may utilize AI tools for preliminary research provided AI is not their sole reference material.",
+      "similarity": 0.8627
+    },
+    {
+      "id": "para_11",
+      "topic": "Academic Integrity AI Disclosure",
+      "text_a": "Submitting text produced by generative AI verbatim without attribution is treated as plagiarism.",
+      "text_b": "Uncredited verbatim submission of machine-generated text violates academic honesty and constitutes plagiarism.",
+      "similarity": 0.8263
+    },
+    {
+      "id": "para_12",
+      "topic": "Employee Health Insurance Coverage",
+      "text_a": "The university health insurance program provides comprehensive coverage for faculty, officers, and administrative staff.",
+      "text_b": "Medical insurance benefits are extended to all permanent faculty members, administrative personnel, and university officers.",
+      "similarity": 0.8052
+    },
+    {
+      "id": "para_13",
+      "topic": "Start-up Commercialization Purpose",
+      "text_a": "The faculty technical start-ups policy aims to commercialize intellectual property and research created on university campuses.",
+      "text_b": "The objective of the technical entrepreneurship framework is to translate campus-developed research into commercial enterprises.",
+      "similarity": 0.7299
+    },
+    {
+      "id": "para_14",
+      "topic": "Medium of Instruction English",
+      "text_a": "English serves as the official medium of instruction and assessment across all degree programs.",
+      "text_b": "All courses and exams are administered in the English language throughout the institution.",
+      "similarity": 0.8298
+    },
+    {
+      "id": "para_15",
+      "topic": "Tuition Fee Per Credit Hour",
+      "text_a": "The tuition fee for BS and BBA programs is fixed at 12,000 PKR per credit hour starting Fall 2026.",
+      "text_b": "Tuition charges for undergraduate BS degrees are 12,000 rupees for each credit hour from Fall 2026.",
+      "similarity": 0.8537
+    },
+    {
+      "id": "para_16",
+      "topic": "HoD Attendance Condonation",
+      "text_a": "The Head of Department possesses the authority to condone up to 20 percent of class absences for valid medical reasons.",
+      "text_b": "Up to 20% attendance deficiency may be excused by the department head upon presentation of genuine medical grounds.",
+      "similarity": 0.7997
+    }
+  ],
+  "unrelated_pairs": [
+    {
+      "id": "unrel_01",
+      "topic": "Academic Warning vs Health Insurance",
+      "text_a": "An undergraduate student whose cumulative grade point average (CGPA) falls below 2.00 is placed on academic warning.",
+      "text_b": "The university health insurance program provides comprehensive coverage for faculty, officers, and administrative staff.",
+      "similarity": 0.4819
+    },
+    {
+      "id": "unrel_02",
+      "topic": "Attendance vs Admission Fee",
+      "text_a": "Students must maintain at least 80 percent attendance in undergraduate lectures and lab sessions to sit for final examinations.",
+      "text_b": "The one-time admission fee paid at enrollment is strictly non-refundable under all circumstances.",
+      "similarity": 0.535
+    },
+    {
+      "id": "unrel_03",
+      "topic": "Course Withdrawal vs Start-ups",
+      "text_a": "Under the 2026 academic regulations, the deadline to officially withdraw from a course is the final day of the makeup week.",
+      "text_b": "Under the Faculty Entrepreneurship and Technical Start-ups Policy, spin-offs commercialize research generated at NUCES.",
+      "similarity": 0.4842
+    },
+    {
+      "id": "unrel_04",
+      "topic": "Deans List vs Fee Refund",
+      "text_a": "Undergraduates earning a semester GPA between 3.50 and 3.99 are awarded placement on the Dean's List of Honors.",
+      "text_b": "Eighty percent of the tuition fee is refundable if admission is withdrawn between the 8th and 15th calendar day of classes.",
+      "similarity": 0.549
+    },
+    {
+      "id": "unrel_05",
+      "topic": "FA Grade vs Dependent Medical Benefits",
+      "text_a": "The grade FA denotes failure due to attendance shortage and awards 0.00 grade points.",
+      "text_b": "Medical insurance covers hospitalization expenses for faculty members, officers, and their registered dependents.",
+      "similarity": 0.4441
+    },
+    {
+      "id": "unrel_06",
+      "topic": "AI Research Policy vs Tuition Rates",
+      "text_a": "Generative AI tools may assist in background research, but must never serve as the student's exclusive source of information.",
+      "text_b": "Tuition fee per credit hour for BBA and BS degree programs is 12,000 Pakistani Rupees for Fall 2026.",
+      "similarity": 0.3948
+    },
+    {
+      "id": "unrel_07",
+      "topic": "Incomplete Grade vs Campus Bus Routes",
+      "text_a": "An incomplete grade 'I' must be converted into a regular letter grade before the end of the subsequent semester.",
+      "text_b": "The university operates campus bus routes serving commuter students across the metropolitan area.",
+      "similarity": 0.4093
+    },
+    {
+      "id": "unrel_08",
+      "topic": "Rectors List vs Lab Protective Eyewear",
+      "text_a": "Students achieving a perfect semester GPA of 4.00 are honored on the Rector's List of Honours.",
+      "text_b": "All laboratory safety rules require students to wear protective eyewear during chemical experiments.",
+      "similarity": 0.495
+    },
+    {
+      "id": "unrel_09",
+      "topic": "Medium of Instruction vs Fee Refund",
+      "text_a": "English serves as the official medium of instruction and assessment across all degree programs.",
+      "text_b": "Students receive an 80% refund on tuition fees when dropping enrollment during the second week of the semester.",
+      "similarity": 0.4961
+    },
+    {
+      "id": "unrel_10",
+      "topic": "Technical Start-ups vs FA Grade",
+      "text_a": "The faculty technical start-ups policy aims to commercialize intellectual property created on university campuses.",
+      "text_b": "Grade code FA signifies failing the course because of insufficient class attendance with zero credit points.",
+      "similarity": 0.3622
+    },
+    {
+      "id": "unrel_11",
+      "topic": "HoD Attendance Condonation vs Tuition Rates",
+      "text_a": "The Head of Department possesses the authority to condone up to 20 percent of class absences for valid medical reasons.",
+      "text_b": "Tuition charges for undergraduate BS degrees are 12,000 rupees for each credit hour from Fall 2026.",
+      "similarity": 0.4426
+    },
+    {
+      "id": "unrel_12",
+      "topic": "Plagiarism Sanction vs Cafeteria Subsidy",
+      "text_a": "Submitting text produced by generative AI verbatim without attribution is treated as plagiarism.",
+      "text_b": "The university cafeteria provides subsidized hot meals and beverages between 8 AM and 5 PM.",
+      "similarity": 0.3395
+    },
+    {
+      "id": "unrel_13",
+      "topic": "Tuition Rates vs Academic Warning",
+      "text_a": "The tuition fee for BS and BBA programs is fixed at 12,000 PKR per credit hour starting Fall 2026.",
+      "text_b": "A student with a cumulative GPA of less than 2.00 will receive an academic warning.",
+      "similarity": 0.5733
+    },
+    {
+      "id": "unrel_14",
+      "topic": "Deans List vs Football Field Turf",
+      "text_a": "A semester grade point average ranging from 3.50 to 3.99 qualifies a student for the Dean's Honors List.",
+      "text_b": "The campus football field is maintained with Bermuda grass and floodlights for evening training.",
+      "similarity": 0.4276
+    },
+    {
+      "id": "unrel_15",
+      "topic": "Non-Refundable Fee vs Semester Duration",
+      "text_a": "Under university refund policy, admission charges cannot be refunded once paid.",
+      "text_b": "The academic year is divided into two mandatory eighteen-week semesters designated Fall and Spring.",
+      "similarity": 0.5107
+    },
+    {
+      "id": "unrel_16",
+      "topic": "Incomplete Grade vs Fire Extinguishers",
+      "text_a": "Grade 'I' must be fulfilled and replaced with an earned grade prior to the conclusion of the following semester.",
+      "text_b": "Fire extinguishers are inspected and re-certified every six months in accordance with municipal safety codes.",
+      "similarity": 0.4459
+    }
+  ]
+}

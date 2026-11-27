@@ -14,6 +14,11 @@ try:
 except ImportError:
     httpx = None  # type: ignore
 
+try:
+    import requests
+except ImportError:
+    requests = None  # type: ignore
+
 from .config import IndexerSettings
 
 log = logging.getLogger("rahbar.indexer.embed")
@@ -54,8 +59,8 @@ def embed(texts: list[str], settings: IndexerSettings,
                 tok_norm = math.sqrt(sum(v * v for v in tok_values[:dim])) or 1.0
                 for i in range(dim):
                     combined[i] += (tok_values[i] / tok_norm) * weight
-            for i in range(len(text) - 3):
-                ngram = text[i : i + 4].lower()
+            unique_ngrams = list({text[i : i + 4].lower() for i in range(0, len(text) - 3, 2)})
+            for ngram in unique_ngrams:
                 ng_values: list[float] = []
                 ng_seed = ngram.encode("utf-8")
                 while len(ng_values) < dim:
@@ -90,7 +95,17 @@ def embed(texts: list[str], settings: IndexerSettings,
             log.warning("could not read embedding cache: %s", exc)
 
     own_client = client is None
-    http = client or httpx.Client(timeout=httpx.Timeout(180.0, connect=15.0))
+    if client is not None:
+        http = client
+    elif httpx is not None:
+        http = httpx.Client(timeout=httpx.Timeout(180.0, connect=15.0))
+    elif requests is not None:
+        http = requests.Session()
+    else:
+        raise RuntimeError(
+            "Neither httpx nor requests is installed in the active environment. "
+            "To embed with live Ollama, please install requests/httpx or set EMBED_MODEL=dummy-768 for offline deterministic evaluation."
+        )
     try:
         vectors: list[list[float]] = []
         step = max(1, settings.embed_batch_size)
@@ -141,7 +156,7 @@ def _embed_batch(http: httpx.Client, settings: IndexerSettings,
             return [[float(x) for x in vector] for vector in embeddings]
         except RuntimeError:
             raise
-        except (httpx.HTTPError, ValueError) as exc:
+        except Exception as exc:
             last_error = f"{type(exc).__name__}: {exc}"
             log.warning("embedding attempt %d/%d failed: %s", attempt, _ATTEMPTS, last_error)
             if attempt < _ATTEMPTS:

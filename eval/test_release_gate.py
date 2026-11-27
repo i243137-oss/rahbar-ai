@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "eval"))
 
-from eval.release_gate import (
+from eval.release_gate import (  # noqa: E402
     evaluate_gate,
     extract_evaluation_metrics,
     load_config,

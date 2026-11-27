@@ -22,16 +22,7 @@ from math import isclose
 from pathlib import Path
 from statistics import mean
 
-try:
-    import httpx
-except ImportError:
-    httpx = None  # type: ignore
-
-try:
-    import requests
-except ImportError:
-    requests = None  # type: ignore
-
+import httpx
 import yaml
 
 HERE = Path(__file__).resolve().parent
@@ -43,12 +34,8 @@ REQUIRED_ABSTENTION = 1.0      # every must-abstain question must be declined
 
 
 def load_golden(path: Path) -> list[dict]:
-    if path.suffix.lower() in {".jsonl", ".ndjson"}:
-        lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-        questions = [json.loads(line) for line in lines]
-    else:
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        questions = data.get("questions") or []
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    questions = data.get("questions") or []
     if not questions:
         sys.exit(f"no questions in {path}")
     return questions
@@ -185,10 +172,7 @@ def main() -> int:
     questions = load_golden(args.golden)
     rows = []
     headers = {"Host": args.host} if args.host else {}
-    client_ctx = httpx.Client(timeout=120.0, headers=headers) if httpx is not None else requests.Session()
-    if httpx is None and headers:
-        client_ctx.headers.update(headers)
-    with client_ctx as client:
+    with httpx.Client(timeout=120.0, headers=headers) as client:
         for q in questions:
             started = time.perf_counter()
             response = ask(client, args.api, q["question"])

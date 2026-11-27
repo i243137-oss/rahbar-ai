@@ -43,19 +43,7 @@ def extract(path: str, doc_version: str, superseded: bool, *, ocr_dpi: int = 300
 
 def _extract_pdf(path: Path, dpi: int, lang: str, min_chars: int,
                  columns: bool = True) -> list[Page]:
-    try:
-        import pdfplumber
-    except ImportError:
-        import subprocess
-        try:
-            res = subprocess.run(["pdftotext", str(path), "-"], stdout=subprocess.PIPE, text=True, errors="replace")
-            raw_pages = res.stdout.split("\x0c")
-            pages = [Page(path.name, num, text.strip(), ocr=False) for num, text in enumerate(raw_pages, 1) if text.strip()]
-            if pages:
-                return pages
-        except Exception as exc:
-            log.warning("pdftotext fallback failed for %s: %s", path.name, exc)
-        raise ImportError("pdfplumber is not installed and pdftotext extraction was unsuccessful.")
+    import pdfplumber
 
     pages: list[Page] = []
     with pdfplumber.open(path) as pdf:

@@ -1,0 +1,224 @@
+{
+  "timestamp": "2026-11-27T19:09:31.340881+00:00",
+  "model": "dummy-768",
+  "iterations": 2,
+  "reproducibility_passed": true,
+  "embedding_variance_detected": false,
+  "retrieval_variance_detected": false,
+  "embedding_deviations": [],
+  "retrieval_deviations": [],
+  "run_1_metrics": {
+    "embedding": {
+      "model": "dummy-768",
+      "dimension": 768,
+      "paraphrase_count": 16,
+      "unrelated_count": 16,
+      "paraphrase_mean_sim": 0.4494,
+      "paraphrase_min_sim": 0.2193,
+      "paraphrase_max_sim": 0.7512,
+      "paraphrase_stdev": 0.179,
+      "unrelated_mean_sim": 0.098,
+      "unrelated_min_sim": -0.0093,
+      "unrelated_max_sim": 0.2401,
+      "unrelated_stdev": 0.0748,
+      "separation_gap": 0.3514,
+      "determinism_max_abs_diff": 0.0,
+      "determinism_passed": true,
+      "latency_mean_ms": 18.31,
+      "latency_p50_ms": 18.17,
+      "latency_p95_ms": 19.86,
+      "throughput_chunks_per_sec": 48.07
+    },
+    "retrieval_clean": {
+      "mode": "clean",
+      "total_queries": 28,
+      "answerable_queries": 22,
+      "unanswerable_queries": 6,
+      "recall_at_3": 0.3182,
+      "recall_at_5": 0.3182,
+      "mrr": 0.3333,
+      "ndcg_at_5": 0.3432,
+      "abstention_accuracy": 0.0,
+      "recall_at_3_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "recall_at_5_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "ndcg_at_5_by_type": {
+        "fee_structure": 0.9033,
+        "grading_rules": 0.25,
+        "academic_policy": 0.2718,
+        "academic_honors": 0.4355,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      }
+    },
+    "retrieval_noisy": {
+      "mode": "noisy",
+      "total_queries": 28,
+      "answerable_queries": 22,
+      "unanswerable_queries": 6,
+      "recall_at_3": 0.25,
+      "recall_at_5": 0.3182,
+      "mrr": 0.2932,
+      "ndcg_at_5": 0.3142,
+      "abstention_accuracy": 0.0,
+      "recall_at_3_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.0,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "recall_at_5_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "ndcg_at_5_by_type": {
+        "fee_structure": 0.9033,
+        "grading_rules": 0.25,
+        "academic_policy": 0.2718,
+        "academic_honors": 0.2226,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      }
+    },
+    "retrieval_deltas": {
+      "delta_recall_at_3": -0.0682,
+      "delta_recall_at_5": 0.0,
+      "delta_mrr": -0.0401,
+      "delta_ndcg_at_5": -0.029,
+      "recall_5_retention_pct": 100.0,
+      "ndcg_5_retention_pct": 91.6
+    }
+  },
+  "run_2_metrics": {
+    "embedding": {
+      "model": "dummy-768",
+      "dimension": 768,
+      "paraphrase_count": 16,
+      "unrelated_count": 16,
+      "paraphrase_mean_sim": 0.4494,
+      "paraphrase_min_sim": 0.2193,
+      "paraphrase_max_sim": 0.7512,
+      "paraphrase_stdev": 0.179,
+      "unrelated_mean_sim": 0.098,
+      "unrelated_min_sim": -0.0093,
+      "unrelated_max_sim": 0.2401,
+      "unrelated_stdev": 0.0748,
+      "separation_gap": 0.3514,
+      "determinism_max_abs_diff": 0.0,
+      "determinism_passed": true,
+      "latency_mean_ms": 20.53,
+      "latency_p50_ms": 18.87,
+      "latency_p95_ms": 27.38,
+      "throughput_chunks_per_sec": 47.07
+    },
+    "retrieval_clean": {
+      "mode": "clean",
+      "total_queries": 28,
+      "answerable_queries": 22,
+      "unanswerable_queries": 6,
+      "recall_at_3": 0.3182,
+      "recall_at_5": 0.3182,
+      "mrr": 0.3333,
+      "ndcg_at_5": 0.3432,
+      "abstention_accuracy": 0.0,
+      "recall_at_3_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "recall_at_5_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "ndcg_at_5_by_type": {
+        "fee_structure": 0.9033,
+        "grading_rules": 0.25,
+        "academic_policy": 0.2718,
+        "academic_honors": 0.4355,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      }
+    },
+    "retrieval_noisy": {
+      "mode": "noisy",
+      "total_queries": 28,
+      "answerable_queries": 22,
+      "unanswerable_queries": 6,
+      "recall_at_3": 0.25,
+      "recall_at_5": 0.3182,
+      "mrr": 0.2932,
+      "ndcg_at_5": 0.3142,
+      "abstention_accuracy": 0.0,
+      "recall_at_3_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.0,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "recall_at_5_by_type": {
+        "fee_structure": 0.875,
+        "grading_rules": 0.25,
+        "academic_policy": 0.1667,
+        "academic_honors": 0.5,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      },
+      "ndcg_at_5_by_type": {
+        "fee_structure": 0.9033,
+        "grading_rules": 0.25,
+        "academic_policy": 0.2718,
+        "academic_honors": 0.2226,
+        "health_benefits": 0.0,
+        "research_commercialization": 0.0,
+        "course_registration": 0.0
+      }
+    },
+    "retrieval_deltas": {
+      "delta_recall_at_3": -0.0682,
+      "delta_recall_at_5": 0.0,
+      "delta_mrr": -0.0401,
+      "delta_ndcg_at_5": -0.029,
+      "recall_5_retention_pct": 100.0,
+      "ndcg_5_retention_pct": 91.6
+    }
+  }
+}

@@ -29,8 +29,8 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "indexer"))
 
-from pipeline.config import IndexerSettings, get_settings
-from pipeline.embed import embed
+from pipeline.config import IndexerSettings, get_settings  # noqa: E402
+from pipeline.embed import embed  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("rahbar.eval.embeddings")

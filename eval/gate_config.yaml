@@ -1,0 +1,68 @@
+# ==============================================================================
+# RAHBAR AI — Evaluation Release Gate Configuration (Part C3)
+# ==============================================================================
+# Defines standardized thresholds for automated gating before candidate releases
+# are approved for Kubernetes deployment or production promotion.
+# Used by:
+# - Member 1: Change experiment gate runner (eval/release_gate.py)
+# - Member 2 (Ahmed): CI/CD & Kubernetes deployment gate workflow
+# ==============================================================================
+
+version: "1.0"
+name: "rahbar-rag-release-gate"
+description: "Quality release gate evaluating candidate retrieval and generation against baseline"
+
+# Retrieval Quality Thresholds (Evaluated against eval/golden.jsonl)
+retrieval:
+  # Minimum acceptable Recall@3 on clean golden dataset.
+  # Rationale: At least 65% of queries must retrieve the target section in top-3 chunks.
+  min_recall_at_3: 0.65
+
+  # Minimum acceptable Recall@5 on clean golden dataset.
+  # Rationale: Production baseline achieved 0.7273; candidate must not fall below 0.70.
+  min_recall_at_5: 0.70
+
+  # Minimum Mean Reciprocal Rank (MRR).
+  # Rationale: Ensures relevant sections appear within rank 1 or 2 on average (1/1.66 ~ 0.60).
+  min_mrr: 0.60
+
+  # Minimum Normalized Discounted Cumulative Gain (nDCG@5).
+  # Rationale: Production baseline achieved 0.7481; ranking quality must remain >= 0.70.
+  min_ndcg_at_5: 0.70
+
+  # Maximum allowable absolute regression in Recall@5 compared to baseline.
+  # Rationale: Prevents regressions larger than 5% relative to established baseline.
+  max_recall_at_5_drop: 0.05
+
+  # Maximum allowable absolute regression in nDCG@5 compared to baseline.
+  # Rationale: Prevents ranking degradation larger than 0.05 relative to established baseline.
+  max_ndcg_at_5_drop: 0.05
+
+  # Minimum retention percentage of Recall@5 under query noise (typos + 3 distractor passages).
+  # Rationale: Retrieval must remain resilient against realistic user typos and noise.
+  min_noise_retention_pct: 85.0
+
+  # Maximum allowable chunk storage amplification ratio (candidate chunks / baseline chunks).
+  # Rationale: Protects vector database memory and embedding index limits (< 50% expansion).
+  max_chunk_amplification_ratio: 1.50
+
+# Generation & Answer Quality Thresholds (For Member 2 / Ahmed Pipeline Integration)
+generation:
+  # Minimum groundedness score (fraction of claims directly supported by retrieved context).
+  # Rationale: University policy advisor must not provide fabricated policy guidelines.
+  min_groundedness: 0.80
+
+  # Minimum citation precision (fraction of generated citations that accurately reference source).
+  # Rationale: Legal/academic rules require trustworthy and accurate citations.
+  min_citation_precision: 0.80
+
+  # Maximum allowable hallucination rate.
+  # Rationale: Strictly limits hallucinated facts to <= 15%.
+  max_hallucination_rate: 0.15
+
+  # Minimum semantic relevance between user question and final generated response.
+  min_answer_relevance: 0.75
+
+  # When false, generation metric checks are skipped if generation data is absent in report.
+  # When true, gate fails if generation metrics are missing.
+  require_generation_metrics: false

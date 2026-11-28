@@ -1,0 +1,190 @@
+{"ts": "2026-11-28T11:33:06Z", "logger": "rahbar.indexer", "msg": "indexer starting", "dummy": false, "dry_run": false, "embed_model": "nomic-embed-text", "collection": "rahbar", "chroma": "chroma:8000", "pod": "ingestion-minikube-pl7pk"}
+{"ts": "2026-11-28T11:33:07Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 1/26"}
+{"ts": "2026-11-28T11:33:21Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 5/26"}
+{"ts": "2026-11-28T11:33:54Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 10/26"}
+{"ts": "2026-11-28T11:34:31Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 15/26"}
+{"ts": "2026-11-28T11:35:10Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 20/26"}
+{"ts": "2026-11-28T11:35:48Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 25/26"}
+{"ts": "2026-11-28T11:35:51Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 26/26"}
+{"ts": "2026-11-28T11:35:52Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 1/58"}
+{"ts": "2026-11-28T11:35:56Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 5/58"}
+{"ts": "2026-11-28T11:35:57Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 10/58"}
+{"ts": "2026-11-28T11:35:58Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 15/58"}
+{"ts": "2026-11-28T11:35:59Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 20/58"}
+{"ts": "2026-11-28T11:35:59Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 25/58"}
+{"ts": "2026-11-28T11:36:00Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 30/58"}
+{"ts": "2026-11-28T11:36:00Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 35/58"}
+{"ts": "2026-11-28T11:36:01Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 40/58"}
+{"ts": "2026-11-28T11:36:01Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 45/58"}
+{"ts": "2026-11-28T11:36:02Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 50/58"}
+{"ts": "2026-11-28T11:36:03Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 55/58"}
+{"ts": "2026-11-28T11:36:04Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 58/58"}
+{"ts": "2026-11-28T11:36:10Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting prospectus-2026-academic-rules-and-regulations.pdf: page 1/5"}
+{"ts": "2026-11-28T11:36:12Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting prospectus-2026-academic-rules-and-regulations.pdf: page 5/5"}
+{"ts": "2026-11-28T11:36:12Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 1/64"}
+{"ts": "2026-11-28T11:36:15Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 5/64"}
+{"ts": "2026-11-28T11:36:16Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 10/64"}
+{"ts": "2026-11-28T11:36:16Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 15/64"}
+{"ts": "2026-11-28T11:36:17Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 20/64"}
+{"ts": "2026-11-28T11:36:18Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 25/64"}
+{"ts": "2026-11-28T11:36:18Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 30/64"}
+{"ts": "2026-11-28T11:36:19Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 35/64"}
+{"ts": "2026-11-28T11:36:19Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 40/64"}
+{"ts": "2026-11-28T11:36:20Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 45/64"}
+{"ts": "2026-11-28T11:36:20Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 50/64"}
+{"ts": "2026-11-28T11:36:21Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 55/64"}
+{"ts": "2026-11-28T11:36:22Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 60/64"}
+{"ts": "2026-11-28T11:36:23Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 64/64"}
+{"ts": "2026-11-28T11:36:28Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 1/33"}
+{"ts": "2026-11-28T11:36:28Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 5/33"}
+{"ts": "2026-11-28T11:36:29Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 10/33"}
+{"ts": "2026-11-28T11:36:30Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 15/33"}
+{"ts": "2026-11-28T11:36:32Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 20/33"}
+{"ts": "2026-11-28T11:36:33Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 25/33"}
+{"ts": "2026-11-28T11:36:33Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 30/33"}
+{"ts": "2026-11-28T11:36:33Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 33/33"}
+{"ts": "2026-11-28T11:36:34Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 1/85"}
+{"ts": "2026-11-28T11:36:34Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 5/85"}
+{"ts": "2026-11-28T11:36:35Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 10/85"}
+{"ts": "2026-11-28T11:36:36Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 15/85"}
+{"ts": "2026-11-28T11:36:37Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 20/85"}
+{"ts": "2026-11-28T11:36:38Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 25/85"}
+{"ts": "2026-11-28T11:36:39Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 30/85"}
+{"ts": "2026-11-28T11:36:39Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 35/85"}
+{"ts": "2026-11-28T11:36:40Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 40/85"}
+{"ts": "2026-11-28T11:36:41Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 45/85"}
+{"ts": "2026-11-28T11:36:42Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 50/85"}
+{"ts": "2026-11-28T11:36:43Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 55/85"}
+{"ts": "2026-11-28T11:36:43Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 60/85"}
+{"ts": "2026-11-28T11:36:44Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 65/85"}
+{"ts": "2026-11-28T11:36:44Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 70/85"}
+{"ts": "2026-11-28T11:36:45Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 75/85"}
+{"ts": "2026-11-28T11:36:46Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 80/85"}
+{"ts": "2026-11-28T11:36:46Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 85/85"}
+{"ts": "2026-11-28T11:36:46Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 1/8"}
+{"ts": "2026-11-28T11:37:16Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 5/8"}
+{"ts": "2026-11-28T11:37:31Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 8/8"}
+{"ts": "2026-11-28T11:37:34Z", "logger": "rahbar.indexer", "msg": "verification stage complete", "total": 9, "accepted": 9, "quarantined": 0, "quarantine_dir": "/corpus/quarantine"}
+{"ts": "2026-11-28T11:37:34Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "incremental diff computed: unchanged=0, new=9, modified=0, removed=0"}
+{"ts": "2026-11-28T11:37:35Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 1/26"}
+{"ts": "2026-11-28T11:37:50Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 5/26"}
+{"ts": "2026-11-28T11:38:22Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 10/26"}
+{"ts": "2026-11-28T11:38:58Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 15/26"}
+{"ts": "2026-11-28T11:39:34Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 20/26"}
+{"ts": "2026-11-28T11:40:13Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 25/26"}
+{"ts": "2026-11-28T11:40:16Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting undergraduate-academic-rules-aug-2023.pdf: page 26/26"}
+{"ts": "2026-11-28T11:40:26Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/16 chunks"}
+{"ts": "2026-11-28T11:40:40Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/16 chunks"}
+{"ts": "2026-11-28T11:40:40Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: undergraduate-academic-rules-aug-2023.pdf (16 chunks embedded)"}
+{"ts": "2026-11-28T11:40:40Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 1/58"}
+{"ts": "2026-11-28T11:40:45Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 5/58"}
+{"ts": "2026-11-28T11:40:46Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 10/58"}
+{"ts": "2026-11-28T11:40:46Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 15/58"}
+{"ts": "2026-11-28T11:40:47Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 20/58"}
+{"ts": "2026-11-28T11:40:48Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 25/58"}
+{"ts": "2026-11-28T11:40:48Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 30/58"}
+{"ts": "2026-11-28T11:40:49Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 35/58"}
+{"ts": "2026-11-28T11:40:49Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 40/58"}
+{"ts": "2026-11-28T11:40:50Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 45/58"}
+{"ts": "2026-11-28T11:40:50Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 50/58"}
+{"ts": "2026-11-28T11:40:51Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 55/58"}
+{"ts": "2026-11-28T11:40:52Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting academic-rules-handbook-jun-2026.pdf: page 58/58"}
+{"ts": "2026-11-28T11:41:05Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/55 chunks"}
+{"ts": "2026-11-28T11:41:20Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/55 chunks"}
+{"ts": "2026-11-28T11:41:34Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 24/55 chunks"}
+{"ts": "2026-11-28T11:41:43Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 32/55 chunks"}
+{"ts": "2026-11-28T11:41:54Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 40/55 chunks"}
+{"ts": "2026-11-28T11:42:01Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 48/55 chunks"}
+{"ts": "2026-11-28T11:42:03Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 55/55 chunks"}
+{"ts": "2026-11-28T11:42:03Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: academic-rules-handbook-jun-2026.pdf (55 chunks embedded)"}
+{"ts": "2026-11-28T11:42:03Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting prospectus-2026-academic-rules-and-regulations.pdf: page 1/5"}
+{"ts": "2026-11-28T11:42:05Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting prospectus-2026-academic-rules-and-regulations.pdf: page 5/5"}
+{"ts": "2026-11-28T11:42:16Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/17 chunks"}
+{"ts": "2026-11-28T11:42:20Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/17 chunks"}
+{"ts": "2026-11-28T11:42:21Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 17/17 chunks"}
+{"ts": "2026-11-28T11:42:21Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: prospectus-2026-academic-rules-and-regulations.pdf (17 chunks embedded)"}
+{"ts": "2026-11-28T11:42:22Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 1/64"}
+{"ts": "2026-11-28T11:42:25Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 5/64"}
+{"ts": "2026-11-28T11:42:26Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 10/64"}
+{"ts": "2026-11-28T11:42:26Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 15/64"}
+{"ts": "2026-11-28T11:42:27Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 20/64"}
+{"ts": "2026-11-28T11:42:27Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 25/64"}
+{"ts": "2026-11-28T11:42:28Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 30/64"}
+{"ts": "2026-11-28T11:42:29Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 35/64"}
+{"ts": "2026-11-28T11:42:29Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 40/64"}
+{"ts": "2026-11-28T11:42:29Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 45/64"}
+{"ts": "2026-11-28T11:42:30Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 50/64"}
+{"ts": "2026-11-28T11:42:31Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 55/64"}
+{"ts": "2026-11-28T11:42:32Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 60/64"}
+{"ts": "2026-11-28T11:42:33Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting student-handbook-jun-2026.pdf: page 64/64"}
+{"ts": "2026-11-28T11:42:49Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/71 chunks"}
+{"ts": "2026-11-28T11:43:04Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/71 chunks"}
+{"ts": "2026-11-28T11:43:18Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 24/71 chunks"}
+{"ts": "2026-11-28T11:43:33Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 32/71 chunks"}
+{"ts": "2026-11-28T11:43:46Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 40/71 chunks"}
+{"ts": "2026-11-28T11:43:56Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 48/71 chunks"}
+{"ts": "2026-11-28T11:44:06Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 56/71 chunks"}
+{"ts": "2026-11-28T11:44:13Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 64/71 chunks"}
+{"ts": "2026-11-28T11:44:14Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 71/71 chunks"}
+{"ts": "2026-11-28T11:44:15Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: student-handbook-jun-2026.pdf (71 chunks embedded)"}
+{"ts": "2026-11-28T11:44:15Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 1/33"}
+{"ts": "2026-11-28T11:44:15Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 5/33"}
+{"ts": "2026-11-28T11:44:16Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 10/33"}
+{"ts": "2026-11-28T11:44:17Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 15/33"}
+{"ts": "2026-11-28T11:44:19Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 20/33"}
+{"ts": "2026-11-28T11:44:19Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 25/33"}
+{"ts": "2026-11-28T11:44:20Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 30/33"}
+{"ts": "2026-11-28T11:44:20Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2019-20.pdf: page 33/33"}
+{"ts": "2026-11-28T11:44:35Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/34 chunks"}
+{"ts": "2026-11-28T11:44:39Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/34 chunks"}
+{"ts": "2026-11-28T11:44:55Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 24/34 chunks"}
+{"ts": "2026-11-28T11:44:56Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 32/34 chunks"}
+{"ts": "2026-11-28T11:44:57Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 34/34 chunks"}
+{"ts": "2026-11-28T11:44:57Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: annual-report-2019-20.pdf (34 chunks embedded)"}
+{"ts": "2026-11-28T11:44:57Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 1/85"}
+{"ts": "2026-11-28T11:44:58Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 5/85"}
+{"ts": "2026-11-28T11:44:58Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 10/85"}
+{"ts": "2026-11-28T11:45:00Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 15/85"}
+{"ts": "2026-11-28T11:45:01Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 20/85"}
+{"ts": "2026-11-28T11:45:01Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 25/85"}
+{"ts": "2026-11-28T11:45:02Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 30/85"}
+{"ts": "2026-11-28T11:45:03Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 35/85"}
+{"ts": "2026-11-28T11:45:04Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 40/85"}
+{"ts": "2026-11-28T11:45:04Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 45/85"}
+{"ts": "2026-11-28T11:45:05Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 50/85"}
+{"ts": "2026-11-28T11:45:06Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 55/85"}
+{"ts": "2026-11-28T11:45:07Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 60/85"}
+{"ts": "2026-11-28T11:45:07Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 65/85"}
+{"ts": "2026-11-28T11:45:08Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 70/85"}
+{"ts": "2026-11-28T11:45:09Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 75/85"}
+{"ts": "2026-11-28T11:45:09Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 80/85"}
+{"ts": "2026-11-28T11:45:10Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting annual-report-2023-24.pdf: page 85/85"}
+{"ts": "2026-11-28T11:45:22Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/108 chunks"}
+{"ts": "2026-11-28T11:45:34Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 16/108 chunks"}
+{"ts": "2026-11-28T11:45:46Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 24/108 chunks"}
+{"ts": "2026-11-28T11:45:56Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 32/108 chunks"}
+{"ts": "2026-11-28T11:46:13Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 40/108 chunks"}
+{"ts": "2026-11-28T11:46:30Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 48/108 chunks"}
+{"ts": "2026-11-28T11:46:45Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 56/108 chunks"}
+{"ts": "2026-11-28T11:47:00Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 64/108 chunks"}
+{"ts": "2026-11-28T11:47:14Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 72/108 chunks"}
+{"ts": "2026-11-28T11:47:19Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 80/108 chunks"}
+{"ts": "2026-11-28T11:47:27Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 88/108 chunks"}
+{"ts": "2026-11-28T11:47:30Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 96/108 chunks"}
+{"ts": "2026-11-28T11:47:37Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 104/108 chunks"}
+{"ts": "2026-11-28T11:47:40Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 108/108 chunks"}
+{"ts": "2026-11-28T11:47:41Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: annual-report-2023-24.pdf (108 chunks embedded)"}
+{"ts": "2026-11-28T11:47:43Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/10 chunks"}
+{"ts": "2026-11-28T11:47:44Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 10/10 chunks"}
+{"ts": "2026-11-28T11:47:44Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: fee-structure-page.html (10 chunks embedded)"}
+{"ts": "2026-11-28T11:47:47Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 7/7 chunks"}
+{"ts": "2026-11-28T11:47:47Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: grading-page.html (7 chunks embedded)"}
+{"ts": "2026-11-28T11:47:47Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 1/8"}
+{"ts": "2026-11-28T11:48:14Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 5/8"}
+{"ts": "2026-11-28T11:48:26Z", "logger": "rahbar.indexer.extract", "level": "INFO", "msg": "extracting faculty-entrepreneurship-and-technical-start-ups-policy.pdf: page 8/8"}
+{"ts": "2026-11-28T11:48:33Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 8/10 chunks"}
+{"ts": "2026-11-28T11:48:36Z", "logger": "rahbar.indexer.embed", "level": "INFO", "msg": "embedded 10/10 chunks"}
+{"ts": "2026-11-28T11:48:36Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "new document indexed: faculty-entrepreneurship-and-technical-start-ups-policy.pdf (10 chunks embedded)"}
+{"ts": "2026-11-28T11:48:36Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "incremental ingestion complete: 328 live chunks, 328 embedded, 0 deleted, 0 retained"}
+{"ts": "2026-11-28T11:48:36Z", "logger": "rahbar.indexer", "msg": "incremental ingestion complete", "chunks_total": 328, "embeddings_computed": 328, "unchanged_documents": 0, "new_documents": 9, "modified_documents": 0, "removed_documents": 0}
+{"ts": "2026-11-28T11:48:36Z", "logger": "rahbar.indexer", "msg": "indexer finished", "chunks": 328, "seconds": 929.6}

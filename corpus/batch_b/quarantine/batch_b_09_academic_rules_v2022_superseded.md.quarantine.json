@@ -1,0 +1,50 @@
+{
+  "source": "batch_b_09_academic_rules_v2022_superseded.md",
+  "quarantined_at": "2026-11-27T16:26:11.710701+00:00",
+  "passed": false,
+  "failed_checks": [
+    "recency"
+  ],
+  "checks": {
+    "quality": {
+      "passed": true,
+      "reason": "Quality check passed: clean extraction (368 characters across 1 page(s))",
+      "details": {
+        "char_count": 368,
+        "page_count": 1
+      }
+    },
+    "completeness": {
+      "passed": true,
+      "reason": "Completeness check passed: all required metadata present and content complete",
+      "details": {
+        "title": "Academic Rules Handbook",
+        "doc_version": "2022-08",
+        "page_count": 1
+      }
+    },
+    "recency": {
+      "passed": false,
+      "reason": "Recency check failed: document is marked superseded (version 2022-08)",
+      "details": {
+        "superseded": true,
+        "doc_version": "2022-08"
+      }
+    },
+    "uniqueness": {
+      "passed": true,
+      "reason": "Uniqueness check passed: document content is unique",
+      "details": {
+        "sha256": "e045784f8605"
+      }
+    }
+  },
+  "metadata": {
+    "title": "Academic Rules Handbook",
+    "doc_version": "2022-08",
+    "superseded": true,
+    "char_count": 368,
+    "page_count": 1,
+    "sha256": "e045784f8605f9731da6148a39880695ec0280067afae5459791b4c35349de94"
+  }
+}

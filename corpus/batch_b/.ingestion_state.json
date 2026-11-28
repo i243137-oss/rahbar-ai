@@ -1,0 +1,124 @@
+{
+  "last_run_id": "ingest-20261127T162613Z",
+  "last_run_ts": "2026-11-27T16:26:13.812637+00:00",
+  "collection_name": "rahbar_batch_b",
+  "embed_model": "dummy-768",
+  "documents": {
+    "batch_b_01_grading_policy_v2026.md": {
+      "source": "batch_b_01_grading_policy_v2026.md",
+      "title": "FAST-NUCES Grading Policy Handbook",
+      "doc_version": "2026-06",
+      "superseded": false,
+      "file_sha256": "9ade1635e364c6e39f3075497c698f853382399942cd96d6ef882b5dac03fb30",
+      "content_sha256": "494e9e2cd16dd668e1b7b58a16a27b20a82a0e8eb9816ea8d0112ea5149008db",
+      "chunk_ids": [
+        "batch-b-01-grading-policy-v2026-md-0000",
+        "batch-b-01-grading-policy-v2026-md-0001",
+        "batch-b-01-grading-policy-v2026-md-0002"
+      ],
+      "chunk_count": 3,
+      "status": "active",
+      "ingested_at": "2026-11-27T16:26:11.737616+00:00",
+      "updated_at": "2026-11-27T16:26:11.737616+00:00"
+    },
+    "batch_b_08_academic_rules_v2027.md": {
+      "source": "batch_b_08_academic_rules_v2027.md",
+      "title": "Academic Rules Handbook",
+      "doc_version": "2027-01",
+      "superseded": false,
+      "file_sha256": "082868b62ab0347cc6768b4394faaf221195657a4ae7cb429c61afb8765162ac",
+      "content_sha256": "ede570fdd6a76349beccae2f12849bc0583d5b517b3feb07b102c99d14a4c9e4",
+      "chunk_ids": [
+        "batch-b-08-academic-rules-v2027-md-0000",
+        "batch-b-08-academic-rules-v2027-md-0001"
+      ],
+      "chunk_count": 2,
+      "status": "active",
+      "ingested_at": "2026-11-27T16:26:11.737616+00:00",
+      "updated_at": "2026-11-27T16:26:11.737616+00:00"
+    },
+    "batch_b_10_prompt_injection_exploit.md": {
+      "source": "batch_b_10_prompt_injection_exploit.md",
+      "title": "Campus Advisory on Generative AI",
+      "doc_version": "2026-06",
+      "superseded": false,
+      "file_sha256": "eb88a81d56618f9d3b01f92d238692173672364f74c279ad55d1d209e9eea02d",
+      "content_sha256": "0bf46247904fcba0874f20b4ab1d15e2b63f2e425a91a6995667237793478597",
+      "chunk_ids": [
+        "batch-b-10-prompt-injection-exploit-md-0000",
+        "batch-b-10-prompt-injection-exploit-md-0001"
+      ],
+      "chunk_count": 2,
+      "status": "active",
+      "ingested_at": "2026-11-27T16:26:11.737616+00:00",
+      "updated_at": "2026-11-27T16:26:11.737616+00:00"
+    },
+    "batch_b_11_hostel_rules_v2026.md": {
+      "source": "batch_b_11_hostel_rules_v2026.md",
+      "title": "Campus Student Hostel Regulations",
+      "doc_version": "2026-06",
+      "superseded": false,
+      "file_sha256": "d06a35da55deacb0ecedb1a19ccd848f96c6c04efe5e985aa79878263d58f766",
+      "content_sha256": "6dbff0e927156d59c258eda6d8d6f3f3510b9d070de951b65378b865232e8f40",
+      "chunk_ids": [
+        "batch-b-11-hostel-rules-v2026-md-0000",
+        "batch-b-11-hostel-rules-v2026-md-0001",
+        "batch-b-11-hostel-rules-v2026-md-0002"
+      ],
+      "chunk_count": 3,
+      "status": "active",
+      "ingested_at": "2026-11-27T16:26:11.737616+00:00",
+      "updated_at": "2026-11-27T16:26:11.737616+00:00"
+    },
+    "batch_b_12_scholarship_policy_v2026.md": {
+      "source": "batch_b_12_scholarship_policy_v2026.md",
+      "title": "FAST University Scholarship and Financial Aid Policy",
+      "doc_version": "2026-06",
+      "superseded": false,
+      "file_sha256": "d370804e541d5e361be134e8f20ca57a051eabaa650c776913da941bd9beaf5e",
+      "content_sha256": "27690314d96eecbb8810aa127d5f9b598f337ef7780f9366f4686993ffc792d1",
+      "chunk_ids": [
+        "batch-b-12-scholarship-policy-v2026-md-0000",
+        "batch-b-12-scholarship-policy-v2026-md-0001"
+      ],
+      "chunk_count": 2,
+      "status": "active",
+      "ingested_at": "2026-11-27T16:26:11.737616+00:00",
+      "updated_at": "2026-11-27T16:26:11.737616+00:00"
+    }
+  },
+  "history": [
+    {
+      "run_id": "ingest-20261127T162611Z",
+      "timestamp": "2026-11-27T16:26:11.737616+00:00",
+      "unchanged_documents": 0,
+      "new_documents": 5,
+      "modified_documents": 0,
+      "removed_documents": 0,
+      "chunks_added": 12,
+      "chunks_deleted": 0,
+      "embedding_operations": 12,
+      "total_chunks": 12
+    },
+    {
+      "event": "archive_document",
+      "timestamp": "2026-11-27T16:26:13.804021+00:00",
+      "source": "batch_b_09_academic_rules_v2022_superseded.md",
+      "archive_file": "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162613Z.md",
+      "doc_version": "2022-08",
+      "reason": "superseded_by_2027_edition"
+    },
+    {
+      "run_id": "ingest-20261127T162613Z",
+      "timestamp": "2026-11-27T16:26:13.812637+00:00",
+      "unchanged_documents": 5,
+      "new_documents": 0,
+      "modified_documents": 0,
+      "removed_documents": 0,
+      "chunks_added": 0,
+      "chunks_deleted": 0,
+      "embedding_operations": 0,
+      "total_chunks": 12
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{"ts": "2026-11-28T15:59:46Z", "logger": "rahbar.indexer", "msg": "indexer starting", "dummy": false, "dry_run": false, "embed_model": "nomic-embed-text", "collection": "rahbar-batch-b-demo", "chroma": "chroma:8000", "pod": "ingest-batch-b-repeat-lf4kr"}
+{"ts": "2026-11-28T15:59:46Z", "logger": "rahbar.indexer", "msg": "verification stage complete", "total": 12, "accepted": 6, "quarantined": 6, "quarantine_dir": "/corpus/quarantine"}
+{"ts": "2026-11-28T15:59:46Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "incremental diff computed: unchanged=6, new=0, modified=0, removed=0"}
+{"ts": "2026-11-28T15:59:48Z", "logger": "rahbar.indexer.incremental", "level": "INFO", "msg": "incremental ingestion complete: 16 live chunks, 0 embedded, 0 deleted, 16 retained"}
+{"ts": "2026-11-28T15:59:48Z", "logger": "rahbar.indexer", "msg": "incremental ingestion complete", "chunks_total": 16, "embeddings_computed": 0, "unchanged_documents": 6, "new_documents": 0, "modified_documents": 0, "removed_documents": 0}
+{"ts": "2026-11-28T15:59:48Z", "logger": "rahbar.indexer", "msg": "indexer finished", "chunks": 16, "seconds": 2.0}

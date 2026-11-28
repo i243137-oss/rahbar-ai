@@ -22,7 +22,16 @@ from math import isclose
 from pathlib import Path
 from statistics import mean, median, quantiles
 
-import httpx
+try:
+    import httpx
+except ImportError:
+    httpx = None  # type: ignore
+
+try:
+    import requests
+except ImportError:
+    requests = None  # type: ignore
+
 import yaml
 
 HERE = Path(__file__).resolve().parent
@@ -50,9 +59,10 @@ def load_golden(path: Path) -> list[dict]:
     return questions
 
 
-def ask(client: httpx.Client, api: str, question: str) -> dict:
+def ask(client: httpx.Client | requests.Session, api: str, question: str, timeout: float | None = None) -> dict:
     """POST one question and return the AskResponse as a dict (see api/app/schemas.py)."""
-    response = client.post(f"{api.rstrip('/')}/api/ask", json={"question": question})
+    options = {"timeout": timeout} if timeout is not None else {}
+    response = client.post(f"{api.rstrip('/')}/api/ask", json={"question": question}, **options)
     response.raise_for_status()
     return response.json()
 
@@ -185,10 +195,17 @@ def main() -> int:
     questions = load_golden(args.golden)
     rows = []
     headers = {"Host": args.host} if args.host else {}
-    with httpx.Client(timeout=args.timeout, headers=headers) as client:
+    if httpx is not None:
+        client_ctx = httpx.Client(timeout=args.timeout, headers=headers)
+    elif requests is not None:
+        client_ctx = requests.Session()
+        client_ctx.headers.update(headers)
+    else:
+        parser.error("Install httpx or requests to call the evaluation API.")
+    with client_ctx as client:
         for q in questions:
             started = time.perf_counter()
-            response = ask(client, args.api, q["question"])
+            response = ask(client, args.api, q["question"], timeout=args.timeout)
             rows.append({
                 "id": q["id"], "type": q.get("type", "ordinary"),
                 "question": q["question"],

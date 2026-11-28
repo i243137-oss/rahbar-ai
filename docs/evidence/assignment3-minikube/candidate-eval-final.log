@@ -1,0 +1,25 @@
+Timestamped archive: /results/gemini-candidate-eval-gemini-candidate-sbdz7/offline/retrieval_eval_report_20261128T160738Z.json
+================================================================================
+
+================================================================================
+  REPRODUCIBILITY COMPARISON TABLE (RUN 1 VS. RUN 2)
+================================================================================
+Metric                              | Run 1        | Run 2        | Abs Delta  | Status
+-----------------------------------------------------------------------------------
+Embedding Paraphrase Mean           | 0.8538       | 0.8538       | 0.000000   | PASS  
+Embedding Unrelated Mean            | 0.4619       | 0.4619       | 0.000000   | PASS  
+Embedding Separation Gap            | 0.3919       | 0.3919       | 0.000000   | PASS  
+Retrieval Recall@3 (Clean)          | 0.5893       | 0.5893       | 0.000000   | PASS  
+Retrieval Recall@5 (Clean)          | 0.6250       | 0.6250       | 0.000000   | PASS  
+Retrieval MRR (Clean)               | 0.5429       | 0.5429       | 0.000000   | PASS  
+Retrieval nDCG@5 (Clean)            | 0.6165       | 0.6165       | 0.000000   | PASS  
+Retrieval Recall@5 (Noisy)          | 0.5536       | 0.5536       | 0.000000   | PASS  
+Retrieval nDCG@5 (Noisy)            | 0.5294       | 0.5294       | 0.000000   | PASS  
+Recall@5 Retention %                | 88.6000      | 88.6000      | 0.000000   | PASS  
+nDCG@5 Retention %                  | 85.9000      | 85.9000      | 0.000000   | PASS  
+-----------------------------------------------------------------------------------
+Overall Reproducibility: PASSED (100% Deterministic)
+================================================================================
+Report written to: /results/gemini-candidate-eval-gemini-candidate-sbdz7/offline/reproducibility_report.json
+Timestamped archive: /results/gemini-candidate-eval-gemini-candidate-sbdz7/offline/reproducibility_report_20261128T160738Z.json
+Evidence saved to /results/gemini-candidate-eval-gemini-candidate-sbdz7. Faithfulness review and release decision are pending.

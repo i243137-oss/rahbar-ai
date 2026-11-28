@@ -57,7 +57,7 @@ def clean(doc: Document) -> Document:
         text = re.sub(r"\n{3,}", "\n\n", "\n".join(lines)).strip()
         if text:
             pages.append(Page(page.source, page.page, text, page.ocr))
-    return Document(doc.source, doc.doc_version, doc.superseded, pages)
+    return Document(doc.source, doc.doc_version, doc.superseded, pages, title=getattr(doc, "title", ""))
 
 
 def _normalise(text: str) -> str:

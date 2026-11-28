@@ -273,9 +273,41 @@ The repository enforces a two-branch workflow (`dev` for active integration, pro
 
 ## Team & Responsibilities
 
-- **Member 1 (Ahmed Tanveer)**: Document corpus, PDF/OCR extraction, text cleaning, chunking pipeline, embedding generation, ChromaDB vector storage.
+- **Member 1 (Ahmed Tanweer)**: Document corpus, PDF/OCR extraction, text cleaning, chunking pipeline, embedding generation, ChromaDB vector storage.
 - **Member 2 (Umair Hassan)**: API generation pipeline, ChromaRetriever, LLM provider integration (Ollama & Hosted), prompt safety & injection defense, citation validation, Redis semantic caching, Kubernetes architecture, Kustomize manifests, NetworkPolicies, HPA, and CI/CD automation.
+
 ## Assignment 3 on Minikube
+
+Umair Hassan led data management and evaluation. Ahmed Tanweer led Kubernetes integration, release operations, and observability.
+
+Follow the Minikube setup below before running these commands from the repository root. The candidate experiment uses an isolated collection.
+
+```bash
+# A — Stage and ingest Batch B.
+bash scripts/load_batch_b_minikube.sh
+kubectl --context minikube apply -f k8s/batch-b-ingestion.yaml
+
+# B — Run the evaluation Job.
+kubectl --context minikube apply -f k8s/eval-job.yaml
+
+# C — Prepare and evaluate the isolated candidate. Configure the evidence paths before running the gate.
+kubectl --context minikube apply -f k8s/candidate-ingestion.yaml
+kubectl --context minikube -n rahbar wait --for=condition=complete job/ingest-candidate-400-50 --timeout=30m
+kubectl --context minikube apply -f k8s/candidate-api.yaml
+kubectl --context minikube -n rahbar rollout status deployment/api-candidate
+kubectl --context minikube apply -f k8s/eval-candidate-job.yaml
+
+# D — Reconstruct the context and model input from a real saved trace.
+trace_dir=$(mktemp -d)
+jq -c . traces/batch-b-injection.json > "$trace_dir/events.jsonl"
+python3 scripts/query_traces.py "$trace_dir" --id f4428b49e01c4219b6805e2f87755861
+
+# E — Compare golden coverage with the local Minikube embedding endpoint.
+OLLAMA_URL=http://192.168.49.1:11434 python3 -m eval.coverage --drift --min-coverage 40.0 --min-improvement 10.0
+
+# F — Apply the base Minikube workload after completing the setup below.
+kubectl --context minikube apply -k k8s/overlays/minikube
+```
 
 - [Fresh deployment and Gemini setup](k8s/README.md)
 - [Evaluation, candidate release, and rollback commands](k8s/README.md#baseline-evaluation-and-evidence-collection)

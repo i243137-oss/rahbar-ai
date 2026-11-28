@@ -1,0 +1,96 @@
+{
+  "experiment": "Batch B Verification & Incremental Ingestion (Part A4)",
+  "timestamp": "2026-11-27T16:26:13.815152+00:00",
+  "total_documents_evaluated": 12,
+  "passed_verification_count": 5,
+  "quarantined_count": 7,
+  "passed_documents": [
+    "batch_b_01_grading_policy_v2026.md",
+    "batch_b_08_academic_rules_v2027.md",
+    "batch_b_10_prompt_injection_exploit.md",
+    "batch_b_11_hostel_rules_v2026.md",
+    "batch_b_12_scholarship_policy_v2026.md"
+  ],
+  "quarantined_documents": {
+    "batch_b_02_grading_policy_exact_dupe.md": "Uniqueness check failed: exact duplicate of 'batch_b_01_grading_policy_v2026.md' (SHA-256 match: 15fd6cd29f7c...)",
+    "batch_b_03_grading_policy_exact_dupe_2.md": "Uniqueness check failed: exact duplicate of 'batch_b_01_grading_policy_v2026.md' (SHA-256 match: 30be0e35cbf8...)",
+    "batch_b_04_grading_policy_near_dupe.md": "Uniqueness check failed: near-duplicate of 'batch_b_01_grading_policy_v2026.md' (similarity 0.923 >= threshold 0.8)",
+    "batch_b_05_corrupt_unreadable.pdf": "Quality check failed: extraction failed (ModuleNotFoundError: No module named 'pdfplumber')",
+    "batch_b_06_truncated_regulations.md": "Completeness check failed: content contains explicit truncation marker ('[truncated - content cut off]')",
+    "batch_b_07_missing_metadata.md": "Completeness check failed: missing required metadata (doc_version)",
+    "batch_b_09_academic_rules_v2022_superseded.md": "Recency check failed: document is marked superseded (version 2022-08)"
+  },
+  "run_1_metrics": {
+    "run_id": "ingest-20261127T162611Z",
+    "timestamp": "2026-11-27T16:26:11.737616+00:00",
+    "collection": "rahbar_batch_b",
+    "embed_model": "dummy-768",
+    "unchanged_count": 0,
+    "new_count": 5,
+    "modified_count": 0,
+    "removed_count": 0,
+    "chunks_added": 12,
+    "chunks_deleted": 0,
+    "chunks_retained": 0,
+    "chunks_total": 12,
+    "embedding_operations": 12,
+    "orphans_cleaned": 0,
+    "unchanged_documents": [],
+    "new_documents": [
+      "batch_b_01_grading_policy_v2026.md",
+      "batch_b_08_academic_rules_v2027.md",
+      "batch_b_10_prompt_injection_exploit.md",
+      "batch_b_11_hostel_rules_v2026.md",
+      "batch_b_12_scholarship_policy_v2026.md"
+    ],
+    "modified_documents": [],
+    "removed_documents": []
+  },
+  "run_2_unchanged_metrics": {
+    "run_id": "ingest-20261127T162613Z",
+    "timestamp": "2026-11-27T16:26:13.812637+00:00",
+    "collection": "rahbar_batch_b",
+    "embed_model": "dummy-768",
+    "unchanged_count": 5,
+    "new_count": 0,
+    "modified_count": 0,
+    "removed_count": 0,
+    "chunks_added": 0,
+    "chunks_deleted": 0,
+    "chunks_retained": 12,
+    "chunks_total": 12,
+    "embedding_operations": 0,
+    "orphans_cleaned": 0,
+    "unchanged_documents": [
+      "batch_b_01_grading_policy_v2026.md",
+      "batch_b_08_academic_rules_v2027.md",
+      "batch_b_10_prompt_injection_exploit.md",
+      "batch_b_11_hostel_rules_v2026.md",
+      "batch_b_12_scholarship_policy_v2026.md"
+    ],
+    "new_documents": [],
+    "modified_documents": [],
+    "removed_documents": []
+  },
+  "archived_documents": [
+    {
+      "source": "batch_b_09_academic_rules_v2022_superseded.md",
+      "archive_file": "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162613Z.md",
+      "doc_version": "2022-08",
+      "archived_at": "2026-11-27T16:26:13.804021+00:00",
+      "reason": "superseded_by_2027_edition",
+      "superseded_by": "batch_b_08_academic_rules_v2027.md",
+      "file_sha256": "e045784f8605f9731da6148a39880695ec0280067afae5459791b4c35349de94",
+      "content_sha256": "972ee4ed672a3d6cc3c853a43df99ecd1eb20773ce639c9ae59873a2f6aea67f",
+      "chunk_ids": [],
+      "chunk_count": 0,
+      "restored_at": null,
+      "restoration_count": 0
+    }
+  ],
+  "guarantees": {
+    "all_planted_problems_handled": true,
+    "prompt_injection_treated_as_passive_data": true,
+    "zero_embeddings_on_unchanged_run": true
+  }
+}

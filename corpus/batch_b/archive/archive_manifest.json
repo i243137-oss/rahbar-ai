@@ -1,0 +1,30 @@
+{
+  "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162510Z.md": {
+    "source": "batch_b_09_academic_rules_v2022_superseded.md",
+    "archive_file": "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162510Z.md",
+    "doc_version": "2022-08",
+    "archived_at": "2026-11-27T16:25:10.372868+00:00",
+    "reason": "superseded_by_2027_edition",
+    "superseded_by": "batch_b_08_academic_rules_v2027.md",
+    "file_sha256": "e045784f8605f9731da6148a39880695ec0280067afae5459791b4c35349de94",
+    "content_sha256": "972ee4ed672a3d6cc3c853a43df99ecd1eb20773ce639c9ae59873a2f6aea67f",
+    "chunk_ids": [],
+    "chunk_count": 0,
+    "restored_at": null,
+    "restoration_count": 0
+  },
+  "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162613Z.md": {
+    "source": "batch_b_09_academic_rules_v2022_superseded.md",
+    "archive_file": "batch_b_09_academic_rules_v2022_superseded_v2022-08_20261127T162613Z.md",
+    "doc_version": "2022-08",
+    "archived_at": "2026-11-27T16:26:13.804021+00:00",
+    "reason": "superseded_by_2027_edition",
+    "superseded_by": "batch_b_08_academic_rules_v2027.md",
+    "file_sha256": "e045784f8605f9731da6148a39880695ec0280067afae5459791b4c35349de94",
+    "content_sha256": "972ee4ed672a3d6cc3c853a43df99ecd1eb20773ce639c9ae59873a2f6aea67f",
+    "chunk_ids": [],
+    "chunk_count": 0,
+    "restored_at": null,
+    "restoration_count": 0
+  }
+}

@@ -1,0 +1,14 @@
+========================================================================================
+  RAHBAR AI — EVALUATION RELEASE GATE DECISION REPORT
+  Configuration : historical-retrieval-threshold-demo
+  Timestamp     : 2026-11-28T14:27:06.374437+00:00
+========================================================================================
+Rule Name                      | Observed     | Condition        | Status   | Rationale
+----------------------------------------------------------------------------------------
+min_recall_at_5                | 0.7273       | >= 0.36365       | PASS     | Ensure baseline retrieval recall quality at top 5
+----------------------------------------------------------------------------------------
+OVERALL VERDICT : GATE PASSED — RELEASE APPROVED
+SUMMARY         : 1/1 rules passed (0 failed)
+========================================================================================
+
+Machine-readable gate decision saved to: /tmp/decision.json

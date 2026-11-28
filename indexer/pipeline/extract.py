@@ -15,7 +15,7 @@ log = logging.getLogger("rahbar.indexer.extract")
 
 def extract(path: str, doc_version: str, superseded: bool, *, ocr_dpi: int = 300,
             ocr_lang: str = "eng", min_page_chars: int = 40,
-            detect_columns: bool = True) -> Document:
+            detect_columns: bool = True, title: str = "") -> Document:
     """Return the document's text page by page.
 
     PDF   : text layer via pdfplumber. A page with (almost) no text is rendered to an
@@ -36,14 +36,26 @@ def extract(path: str, doc_version: str, superseded: bool, *, ocr_dpi: int = 300
         pages = [Page(p.name, 1, _strip_front_matter(p.read_text(encoding="utf-8")))]
     else:
         raise ValueError(f"unsupported file type: {p.name}")
-    return Document(source=p.name, doc_version=doc_version, superseded=superseded, pages=pages)
+    return Document(source=p.name, doc_version=doc_version, superseded=superseded, pages=pages, title=title)
 
 
 # --------------------------------------------------------------------------- PDF
 
 def _extract_pdf(path: Path, dpi: int, lang: str, min_chars: int,
                  columns: bool = True) -> list[Page]:
-    import pdfplumber
+    try:
+        import pdfplumber
+    except ImportError:
+        import subprocess
+        try:
+            res = subprocess.run(["pdftotext", str(path), "-"], stdout=subprocess.PIPE, text=True, errors="replace")
+            raw_pages = res.stdout.split("\x0c")
+            pages = [Page(path.name, num, text.strip(), ocr=False) for num, text in enumerate(raw_pages, 1) if text.strip()]
+            if pages:
+                return pages
+        except Exception as exc:
+            log.warning("pdftotext fallback failed for %s: %s", path.name, exc)
+        raise ImportError("pdfplumber is not installed and pdftotext extraction was unsuccessful.")
 
     pages: list[Page] = []
     with pdfplumber.open(path) as pdf:

@@ -1,0 +1,24 @@
+  q01   118.69s  What is the BBA/BS tuition fee per credit hour for Fall 2026
+  q13     0.73s  What is the nightly curfew for residents of the on-campus ho
+
+results written to /results/smoke-20261128T132420Z-eval-smoke-kctqc.json
+
+gate passed
+Saved report at /results/smoke-20261128T132420Z-eval-smoke-kctqc.json
+{
+  "recall@3": 1.0,
+  "recall@3_by_type": {
+    "ordinary": 1.0,
+    "abstain": null
+  },
+  "recall@5": 1.0,
+  "recall@5_by_type": {
+    "ordinary": 1.0,
+    "abstain": null
+  },
+  "citation_validity": 1.0,
+  "grounded_without_citations": 0,
+  "abstention_correctness": 1,
+  "golden": "eval/golden.smoke.jsonl",
+  "questions": 2
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "Job",
+  "apiVersion": "batch/v1",
+  "metadata": {
+    "name": "batch-b-archive-restore",
+    "namespace": "rahbar"
+  },
+  "spec": {
+    "backoffLimit": 0,
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "indexer"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "corpus-volume",
+            "persistentVolumeClaim": {
+              "claimName": "batch-b-corpus"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "indexer",
+            "image": "rahbar-indexer:f9727ae",
+            "envFrom": [
+              {
+                "configMapRef": {
+                  "name": "rahbar-config"
+                }
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "2",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "corpus-volume",
+                "mountPath": "/corpus"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "IfNotPresent",
+            "securityContext": {
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "allowPrivilegeEscalation": false
+            },
+            "env": [
+              {
+                "name": "CHROMA_COLLECTION",
+                "value": "rahbar-batch-b-demo"
+              }
+            ],
+            "command": [
+              "python",
+              "-u",
+              "-c"
+            ],
+            "args": [
+              "from pathlib import Path\nfrom pipeline.archive import ArchiveManager\nfrom pipeline.config import get_settings\nfrom pipeline.store import get_client\n\nsettings = get_settings()\nroot = Path(settings.corpus_dir)\nclient = get_client(settings)\ncollection = client.get_collection(settings.collection)\nfilename = \"batch_b_09_academic_rules_v2022_superseded.md\"\nmanager = ArchiveManager(settings=settings)\ndef chunks():\n    return collection.get(where={\"source\": filename}, include=[\"metadatas\"])\nbefore = chunks()\nassert before[\"ids\"]\narchived = manager.archive_document(root / filename, \"2022-08\", client=client)\narchived_records = chunks()\nassert all(item[\"superseded\"] for item in archived_records[\"metadatas\"])\nprint(\"Archive file:\", archived.archive_file)\nprint(\"Saved chunk IDs:\", archived_records[\"ids\"])\nrestored, count = manager.restore_document(archived.archive_file, client=client)\nafter = chunks()\nassert set(before[\"ids\"]) == set(after[\"ids\"])\nassert all(not item[\"superseded\"] for item in after[\"metadatas\"])\nprint(\"Restored:\", restored, \"chunks:\", count)\nprint(\"Verified unchanged chunk IDs and active metadata:\", after[\"ids\"])\n"
+            ]
+          }
+        ],
+        "restartPolicy": "Never",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "indexer-sa",
+        "serviceAccount": "indexer-sa",
+        "automountServiceAccountToken": false,
+        "securityContext": {
+          "runAsUser": 10001,
+          "runAsGroup": 10001,
+          "runAsNonRoot": true,
+          "fsGroup": 10001
+        },
+        "schedulerName": "default-scheduler"
+      }
+    }
+  }
+}

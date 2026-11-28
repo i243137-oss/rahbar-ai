@@ -1,0 +1,4 @@
+Report written to /results/candidate-precheck/rejected.json
+Release evidence incomplete or provider failures detected. See the report for details.
+Promotion blocked. The release gate Job has not completed successfully.
+Live Deployment revision before and after rejection: 10

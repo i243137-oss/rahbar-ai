@@ -1,0 +1,63 @@
+NAME                                 READY   STATUS      RESTARTS   AGE
+pod/api-789b8d879c-rwtkl             1/1     Running     0          85m
+pod/api-candidate-7887b99965-x6dp5   1/1     Running     0          84m
+pod/chroma-0                         1/1     Running     0          4h45m
+pod/eval-gate-demo-fail-nl7f4        0/1     Error       0          83m
+pod/eval-gate-demo-pass-lvjmd        0/1     Completed   0          83m
+pod/eval-gemini-baseline-cqwlr       1/1     Running     0          88m
+pod/eval-gemini-candidate-sbdz7      1/1     Running     0          73m
+pod/eval-smoke-kctqc                 0/1     Completed   0          145m
+pod/ingest-candidate-400-50-ptffx    0/1     Completed   0          87m
+pod/ingestion-minikube-pl7pk         0/1     Completed   0          4h17m
+pod/ollama-connectivity              0/1     Completed   0          4h33m
+pod/redis-d648d4899-rcx2n            1/1     Running     0          4h45m
+
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/api             ClusterIP   10.107.159.182   <none>        8000/TCP   4h45m
+service/api-candidate   ClusterIP   10.105.133.57    <none>        8000/TCP   84m
+service/chroma          ClusterIP   10.108.191.116   <none>        8000/TCP   4h45m
+service/redis           ClusterIP   10.101.83.174    <none>        6379/TCP   4h45m
+
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/api             1/1     1            1           4h45m
+deployment.apps/api-candidate   1/1     1            1           84m
+deployment.apps/redis           1/1     1            1           4h45m
+
+NAME                                       DESIRED   CURRENT   READY   AGE
+replicaset.apps/api-54cf47758d             0         0         0       4h45m
+replicaset.apps/api-678c85dbc5             0         0         0       82m
+replicaset.apps/api-7744864755             0         0         0       4h33m
+replicaset.apps/api-789b8d879c             1         1         1       85m
+replicaset.apps/api-7b595945cd             0         0         0       3h53m
+replicaset.apps/api-candidate-7887b99965   1         1         1       84m
+replicaset.apps/api-d865d888               0         0         0       95m
+replicaset.apps/redis-d648d4899            1         1         1       4h45m
+
+NAME                      READY   AGE
+statefulset.apps/chroma   1/1     4h45m
+
+NAME                    SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/reindex   0 0 * * 0   <none>     True      0        <none>          4h45m
+
+NAME                                STATUS      COMPLETIONS   DURATION   AGE
+job.batch/eval-baseline             Suspended   0/1                      127m
+job.batch/eval-gate-demo-fail       Failed      0/1           83m        83m
+job.batch/eval-gate-demo-pass       Complete    1/1           3s         83m
+job.batch/eval-gemini-baseline      Running     0/1           88m        88m
+job.batch/eval-gemini-candidate     Running     0/1           73m        73m
+job.batch/eval-smoke                Complete    1/1           2m3s       145m
+job.batch/ingest-candidate-400-50   Complete    1/1           14m        87m
+job.batch/ingestion-minikube        Complete    1/1           15m        4h17m
+
+NAME                                         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/chroma-data-chroma-0   Bound    pvc-09b97828-7d63-4e8b-b516-c214f915b5d4   5Gi        RWO            standard       <unset>                 4h45m
+persistentvolumeclaim/corpus-pvc             Bound    pvc-4e07c8bc-e9cf-4e2a-8ac1-b99e28b917d1   1Gi        RWO            standard       <unset>                 5h29m
+persistentvolumeclaim/eval-results           Bound    pvc-fee7fd78-3345-489f-ae24-82dd68017624   1Gi        RWO            standard       <unset>                 154m
+persistentvolumeclaim/query-traces           Bound    pvc-32e3e1fe-23dc-4831-af4b-a2a4f8b0a39c   1Gi        RWO            standard       <unset>                 85m
+persistentvolumeclaim/redis-data-pvc         Bound    pvc-7c0fd5a1-1bad-4fcf-a024-4ef0077c2199   2Gi        RWO            standard       <unset>                 4h45m
+
+NAME                                 DATA   AGE
+configmap/eval-gate-config           1      117m
+configmap/eval-gate-threshold-demo   2      83m
+configmap/kube-root-ca.crt           1      5h29m
+configmap/rahbar-config              25     4h45m

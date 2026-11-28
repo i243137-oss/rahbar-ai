@@ -1,0 +1,113 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {
+    "name": "eval-gemini-candidate",
+    "namespace": "rahbar"
+  },
+  "spec": {
+    "backoffLimit": 0,
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "evaluator"
+        }
+      },
+      "spec": {
+        "automountServiceAccountToken": false,
+        "containers": [
+          {
+            "args": [
+              "--api",
+              "http://api-candidate:8000",
+              "--results",
+              "/results/gemini-candidate-$(POD_NAME)"
+            ],
+            "env": [
+              {
+                "name": "POD_NAME",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.name"
+                  }
+                }
+              },
+              {
+                "name": "ALLOW_FIXTURE_FALLBACK",
+                "value": "false"
+              },
+              {
+                "name": "PYTHONHASHSEED",
+                "value": "0"
+              },
+              {
+                "name": "CHROMA_COLLECTION",
+                "value": "rahbar-candidate-400-50"
+              },
+              {
+                "name": "CHUNK_SIZE",
+                "value": "400"
+              },
+              {
+                "name": "CHUNK_OVERLAP",
+                "value": "50"
+              }
+            ],
+            "envFrom": [
+              {
+                "configMapRef": {
+                  "name": "rahbar-config"
+                }
+              }
+            ],
+            "image": "rahbar-eval:full-f9727ae-v2",
+            "imagePullPolicy": "Never",
+            "name": "evaluator",
+            "resources": {
+              "limits": {
+                "cpu": "2",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "2Gi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/results",
+                "name": "results"
+              },
+              {
+                "mountPath": "/app/corpus/raw",
+                "name": "corpus",
+                "readOnly": true
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Never",
+        "securityContext": {
+          "fsGroup": 10001,
+          "runAsGroup": 10001,
+          "runAsNonRoot": true,
+          "runAsUser": 10001
+        },
+        "volumes": [
+          {
+            "name": "results",
+            "persistentVolumeClaim": {
+              "claimName": "eval-results"
+            }
+          },
+          {
+            "name": "corpus",
+            "persistentVolumeClaim": {
+              "claimName": "corpus-pvc"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

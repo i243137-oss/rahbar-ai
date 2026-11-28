@@ -20,7 +20,7 @@ import time
 from collections import defaultdict
 from math import isclose
 from pathlib import Path
-from statistics import mean
+from statistics import mean, median, quantiles
 
 try:
     import httpx
@@ -40,23 +40,29 @@ HERE = Path(__file__).resolve().parent
 MAX_RECALL5_DROP = 0.05        # recall@5 may fall at most 5 points below the baseline
 MIN_CITATION_VALIDITY = 0.95   # at least 95% of citations must match retrieved passages
 REQUIRED_ABSTENTION = 1.0      # every must-abstain question must be declined
+FALLBACK_PREFIX = "An error occurred while generating a response from official documents."
+
+
+def provider_failed(response: dict) -> bool:
+    return response.get("answer", "").startswith(FALLBACK_PREFIX)
 
 
 def load_golden(path: Path) -> list[dict]:
+    content = path.read_text(encoding="utf-8")
     if path.suffix.lower() in {".jsonl", ".ndjson"}:
-        lines = [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-        questions = [json.loads(line) for line in lines]
+        questions = [json.loads(line) for line in content.splitlines() if line.strip()]
     else:
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        data = yaml.safe_load(content) or {}
         questions = data.get("questions") or []
     if not questions:
         sys.exit(f"no questions in {path}")
     return questions
 
 
-def ask(client: httpx.Client, api: str, question: str) -> dict:
+def ask(client: httpx.Client | requests.Session, api: str, question: str, timeout: float | None = None) -> dict:
     """POST one question and return the AskResponse as a dict (see api/app/schemas.py)."""
-    response = client.post(f"{api.rstrip('/')}/api/ask", json={"question": question})
+    options = {"timeout": timeout} if timeout is not None else {}
+    response = client.post(f"{api.rstrip('/')}/api/ask", json={"question": question}, **options)
     response.raise_for_status()
     return response.json()
 
@@ -133,7 +139,8 @@ def summarise(rows: list[dict]) -> dict:
     results["grounded_without_citations"] = grounded_without_citations
 
     abstentions = [
-        row["response"]["answered_from_context"] is False for row in rows if row["must_abstain"]
+        row["response"]["answered_from_context"] is False and not provider_failed(row["response"])
+        for row in rows if row["must_abstain"]
     ]
     results["abstention_correctness"] = mean(abstentions) if abstentions else None
     return results
@@ -178,6 +185,9 @@ def main() -> int:
     parser.add_argument("--golden", type=Path, default=HERE / "golden.yaml")
     parser.add_argument("--baseline", type=Path, default=HERE / "baseline.json")
     parser.add_argument("--out", type=Path, default=HERE / "results.json")
+    parser.add_argument("--timeout", type=float, default=120.0, help="HTTP timeout in seconds")
+    parser.add_argument("--details", action="store_true",
+                        help="Include per-question observations and latency percentiles")
     parser.add_argument("--update-baseline", action="store_true",
                         help="write these results as the new baseline")
     args = parser.parse_args()
@@ -185,15 +195,20 @@ def main() -> int:
     questions = load_golden(args.golden)
     rows = []
     headers = {"Host": args.host} if args.host else {}
-    client_ctx = httpx.Client(timeout=120.0, headers=headers) if httpx is not None else requests.Session()
-    if httpx is None and headers:
+    if httpx is not None:
+        client_ctx = httpx.Client(timeout=args.timeout, headers=headers)
+    elif requests is not None:
+        client_ctx = requests.Session()
         client_ctx.headers.update(headers)
+    else:
+        parser.error("Install httpx or requests to call the evaluation API.")
     with client_ctx as client:
         for q in questions:
             started = time.perf_counter()
-            response = ask(client, args.api, q["question"])
+            response = ask(client, args.api, q["question"], timeout=args.timeout)
             rows.append({
                 "id": q["id"], "type": q.get("type", "ordinary"),
+                "question": q["question"],
                 "must_abstain": bool(q.get("must_abstain", False)),
                 "relevant": q.get("relevant") or [],
                 "expect": q.get("expect"),
@@ -212,6 +227,16 @@ def main() -> int:
 
     results["golden"] = str(args.golden)
     results["questions"] = len(rows)
+    if args.details:
+        results["provider_failures"] = sum(provider_failed(row["response"]) for row in rows)
+        durations = [row["seconds"] for row in rows]
+        results["latency_p50_seconds"] = median(durations)
+        results["latency_p95_seconds"] = (
+            quantiles(durations, n=100, method="inclusive")[94]
+            if len(durations) > 1 else durations[0]
+        )
+        results["per_question"] = rows
+    args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(f"\nresults written to {args.out}")
     if args.update_baseline:

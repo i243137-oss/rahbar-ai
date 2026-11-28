@@ -1,0 +1,25 @@
+Timestamped archive: /results/gemini-baseline-eval-gemini-baseline-cqwlr/offline/retrieval_eval_report_20261128T160051Z.json
+================================================================================
+
+================================================================================
+  REPRODUCIBILITY COMPARISON TABLE (RUN 1 VS. RUN 2)
+================================================================================
+Metric                              | Run 1        | Run 2        | Abs Delta  | Status
+-----------------------------------------------------------------------------------
+Embedding Paraphrase Mean           | 0.8538       | 0.8538       | 0.000000   | PASS  
+Embedding Unrelated Mean            | 0.4619       | 0.4619       | 0.000000   | PASS  
+Embedding Separation Gap            | 0.3919       | 0.3919       | 0.000000   | PASS  
+Retrieval Recall@3 (Clean)          | 0.5000       | 0.5000       | 0.000000   | PASS  
+Retrieval Recall@5 (Clean)          | 0.5357       | 0.5357       | 0.000000   | PASS  
+Retrieval MRR (Clean)               | 0.5030       | 0.5030       | 0.000000   | PASS  
+Retrieval nDCG@5 (Clean)            | 0.4924       | 0.4924       | 0.000000   | PASS  
+Retrieval Recall@5 (Noisy)          | 0.4821       | 0.4821       | 0.000000   | PASS  
+Retrieval nDCG@5 (Noisy)            | 0.4129       | 0.4129       | 0.000000   | PASS  
+Recall@5 Retention %                | 90.0000      | 90.0000      | 0.000000   | PASS  
+nDCG@5 Retention %                  | 83.9000      | 83.9000      | 0.000000   | PASS  
+-----------------------------------------------------------------------------------
+Overall Reproducibility: PASSED (100% Deterministic)
+================================================================================
+Report written to: /results/gemini-baseline-eval-gemini-baseline-cqwlr/offline/reproducibility_report.json
+Timestamped archive: /results/gemini-baseline-eval-gemini-baseline-cqwlr/offline/reproducibility_report_20261128T160051Z.json
+Evidence saved to /results/gemini-baseline-eval-gemini-baseline-cqwlr. Faithfulness review and release decision are pending.

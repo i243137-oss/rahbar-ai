@@ -14,6 +14,7 @@ import httpx
 from pydantic import ValidationError
 
 from ...config import Settings
+from ...query_trace import record_model_input
 from ...schemas import Answer, Passage
 from .prompt import SYSTEM_PROMPT, build_user_prompt
 
@@ -62,12 +63,13 @@ class HostedProvider:
 
         try:
             with httpx.Client(timeout=self.timeout) as client:
+                record_model_input(payload)
                 resp = client.post(endpoint, json=payload, headers=headers)
-                # Some OpenAI-compatible providers (like Google AI Studio/Gemini) do not support
-                # response_format: {"type": "json_object"} and return 400 or 503. Retry without it.
-                if resp.is_error and "response_format" in payload:
+                # Retry a rejected output format once, but preserve quota and server errors.
+                if resp.status_code in {400, 422} and "response_format" in payload:
                     log.info("retrying hosted call without response_format")
                     payload_no_rf = {k: v for k, v in payload.items() if k != "response_format"}
+                    record_model_input(payload_no_rf)
                     resp = client.post(endpoint, json=payload_no_rf, headers=headers)
 
                 resp.raise_for_status()

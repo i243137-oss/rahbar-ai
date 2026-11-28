@@ -1,0 +1,21 @@
+========================================================================================
+  RAHBAR AI — EVALUATION RELEASE GATE DECISION REPORT
+  Configuration : rahbar-rag-release-gate
+  Timestamp     : 2026-11-28T16:10:51.330962+00:00
+========================================================================================
+Rule Name                      | Observed     | Condition        | Status   | Rationale
+----------------------------------------------------------------------------------------
+min_recall_at_3                | 0.5893       | >= 0.65          | FAIL     | Ensure at least specified proportion of target chunks in top 3
+min_recall_at_5                | 0.625        | >= 0.7           | FAIL     | Ensure baseline retrieval recall quality at top 5
+min_mrr                        | 0.5429       | >= 0.6           | FAIL     | Mean Reciprocal Rank must place relevant chunk near top ranks
+min_ndcg_at_5                  | 0.6165       | >= 0.7           | FAIL     | Normalized Discounted Cumulative Gain ranking quality
+max_recall_at_5_drop           | 0.0893       | >= -0.05         | PASS     | Recall@5 regression relative to baseline must not exceed 0.05
+max_ndcg_at_5_drop             | 0.1241       | >= -0.05         | PASS     | nDCG@5 ranking degradation relative to baseline must not exceed 0.05
+min_noise_retention_pct        | 88.6         | >= 85.0          | PASS     | Robustness against typos and distractor noise
+generation_metrics_presence    | MISSING      | == PRESENT       | FAIL     | Generation metrics required by policy but not present in report
+----------------------------------------------------------------------------------------
+OVERALL VERDICT : GATE FAILED — RELEASE REJECTED
+SUMMARY         : 3/8 rules passed (5 failed)
+========================================================================================
+
+Machine-readable gate decision saved to: /gate/decision.json

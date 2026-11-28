@@ -1,0 +1,137 @@
+{
+  "trace_id": "e21672abac92468b8052c35bc996f552",
+  "timestamp": "2026-11-28T14:26:50.970799+00:00",
+  "query": "If I complete all course requirements except the final exam and get an incomplete grade, by when must it be converted to the appropriate grade?",
+  "rewritten_query": null,
+  "collection": "rahbar",
+  "embedding_model": "nomic-embed-text",
+  "embedding_version": "nomic-embed-text",
+  "embedding_dimension": 768,
+  "model": "gemini-3-flash-preview",
+  "provider": "hosted",
+  "parameters": {
+    "top_k": 5,
+    "temperature": 0.2
+  },
+  "retrieved": [
+    {
+      "chunk_id": "grading-page-html-0006",
+      "text": "Incomplete Course\n\nA student may request an extension in the final examination for genuine reasons subject to the following.\nAn \"I\" grade will be given for the affected course provided he/she has satisfactorily met all other requirements for the course except the final examination.\nThe \"I\" grade will be converted to appropriate grade before the end of next semester.",
+      "source": "grading-page.html",
+      "section": "Incomplete Course",
+      "page": 1,
+      "score": 0.79904592,
+      "doc_version": "2026",
+      "superseded": false
+    },
+    {
+      "chunk_id": "academic-rules-handbook-jun-2026-pdf-0019",
+      "text": "5. Academic Assessment\n\naltered. 5.22 Committee should adhere to the following guidelines to handle rechecking cases: 5.15 Late holding of examination must take place as soon as possible, but not later than one week before the start of the a) Committee should recount marks awarded by the next regular semester. The grade in the course should be concerned instructor. finalized before the start of next semester. Complete b) Unmarked question or part should be sent to the Transparency in Evaluation instructor for checking/marking.\n5.16 To ensure transparency, all instruments of evaluation must be\nc) Committee should not discuss the outcome of the shared with the students after grading/marking. rechecking with the students.\n5.17 Answer books of the final exams must be shared with students\nd) Committee recommendation should be submitted to after marking, in a formally scheduled open \u2018paper viewing' the Director\u2019s office using the Change of Grade Form session, and any issue arising there off will be resolved. for final approval.\n5.18 Objections to grading/evaluation must be submitted in writing\n5.23 Examination Office will inform the student about the outcome to the concerned course instructor or staff supervising the of the rechecking application. paper viewing session.\n5.24 A student who has not viewed his final exam paper in the Rechecking of Final Exams scheduled paper viewing session may also request rechecking of the final examination by paying the prescribed fee.\n5.19 The Rechecking Committee shall have the following composition:\n5.25 Rechecking fee will be refunded if there is an increase in marks.\na) Head of the Department\nb) A Subject Specialist from the Department\n5.20 Application to recheck a final exam must be submitted on prescribed form together with rechecking fee. Undergraduate Academic Rules and Regulations 2026 21",
+      "source": "academic-rules-handbook-jun-2026.pdf",
+      "section": "5. Academic Assessment",
+      "page": 27,
+      "score": 0.70461,
+      "doc_version": "2026-06",
+      "superseded": false
+    },
+    {
+      "chunk_id": "academic-rules-handbook-jun-2026-pdf-0018",
+      "text": "5. Academic Assessment\n\nthe 5.11 If a student repeats a failed course, the new grade will be used Faculty. for CGPA calculation, but if a student takes a new course in lieu of the course in which s/he failed, both the grades will be Academic Warning/Probation used for CGPA calculation. 5.4 Minimum CGPA required to avoid academic warning is 2.00 Late conduct of Examination/ Missed Examination for all undergraduate programs. 5.12 A student is expected to take mid and final examination as per\n5.5 If at the end of a semester (including summer semester) CGPA the announced schedule by the department. For more details, drops below 2.00, warning is issued, and warning count is please see Policy on Retake Examinations (Section 9). incremented by one.\n5.13 Late conduct of examination can be held on the\n5.6 If CGPA remains below 2.00 for 3 consecutive semesters, recommendation of the HoD and approval of the Director, warning count becomes three and the admission of student at only in cases of unavoidable emergencies/situations. the University is automatically closed. Examples of such situations are hospitalization, serious road accident or death of a very close blood relative. Documentary evidence must be submitted to request permission to appear Undergraduate Academic Rules and Regulations 2026 19 in the late examination.\n5.14 The standing of a student in the pre-final semester work evaluation cannot be altered.\n5.15 Late holding of examination must take place as soon as possible, but not later than one week before the start of the next regular semester. The grade in the course should be finalized before the start of next semester. Complete Transparency in Evaluation\n5.16 To ensure transparency, all instruments of evaluation must be shared with the students after grading/marking.\n5.17 Answer books of the final exams must be shared with students after marking, in a formally scheduled open \u2018paper viewing' session, and any issue arising there off will be resolved.\n5.18 Objections to grading/evaluation must be submitted in writing to the concerned course instructor or staff supervising the paper viewing session. Rechecking of Final Exams\n5.19 The Rechecking Committee shall have the following composition:\na) Head of the Department\nb) A Subject Specialist from the Department\n5.20 Application to recheck a final exam must be submitted on prescribed form together with rechecking fee. in the late examination. 5.21 Student application should reach the Examination Office within seven days of the announcement of the result.\n5.14 The standing of a student in the pre-final semester work evaluation cannot be altered. 5.22 Committee should adhere to the following guidelines to handle rechecking cases:\n5.15 Late holding of examination must take place as soon as possible, but not later than one week before the start of the a) Committee should recount marks awarded by the next regular semester. The grade in the course should be concerned instructor. finalized before the start of next semester. Complete\nb) Unmarked question or part should be sent to the Transparency in Evaluation instructor for checking/marking.",
+      "source": "academic-rules-handbook-jun-2026.pdf",
+      "section": "5. Academic Assessment",
+      "page": 25,
+      "score": 0.6819073600000001,
+      "doc_version": "2026-06",
+      "superseded": false
+    },
+    {
+      "chunk_id": "grading-page-html-0001",
+      "text": "Academic Grading\n\nHome\nStudent\nAcademic Grading\nThe performance of students is assessed during the semester through mid term tests, assignments, quizzes, case studies or any other method considered appropriate by the course instructor and the University, This shall be communicated to the students at the start of a course. For almost all courses, the semester work will contribute 50% towards the final grade, while the final examination will contribute the remaining 50% of the total marks. A letter grade will be awarded to each student based on his/her overall academic performance in a course.",
+      "source": "grading-page.html",
+      "section": "Academic Grading",
+      "page": 1,
+      "score": 0.6801387,
+      "doc_version": "2026",
+      "superseded": false
+    },
+    {
+      "chunk_id": "academic-rules-handbook-jun-2026-pdf-0010",
+      "text": "1. Introduction\n\n6 Grade | Points | Grade | Points A+ | 4.00 | C+ | 2.33 A | 4.00 | C | 2.00 A- | 3.67 | C- | 1.67 B+ | 3.33 | D+ | 1.33 B | 3.00 | D | 1.00 B- | 2.67 | F | 0.00 Grade Points only the most recent grade points are used, even if they are less than the earlier attempts. 2.3 The points for each letter grade are given as follows:\n2.8 \u201cW\u201d will be awarded for withdrawn courses. It will appear on the Grade Points Grade Points transcript. However, it will not affect the CGPA. A+ 4.00 C+ 2.33 2.9 \u201cI\u201d is a temporary grade given for incomplete work. If it is not changed to an earned grade, it shall automatically convert to A 4.00 C 2.00 F grade after a fixed time set by the competent authority. A- 3.67 C- 1.67 2.10 F/A grade in the transcript implies that the student fails to appear in the final examination. B+ 3.33 D+ 1.33\n2.11 For PhD. thesis 1-IV, a student will be assigned either B 3.00 D 1.00 \u201cSatisfactory\u201d (S) or Unsatisfactory (U) grade. B- 2.67 F 0.00 GPA Calculation\n2.4 SGPA is calculated as follows: SGPA = (P1*C1 + P2*C2 + P3*C3 + P4*C4)/C\n2.5 Where P1, P2, P3 and P4 are the grade points earned in courses, while C1, C2, C3, C4 are the credit hours of respective course studied in the semester and C is the number of total credits attempted in the semester, that is, C= C1+C2+C3+C4.\n2.6 CGPA is calculated as the weighted average for all semesters cumulatively using grade points of all the courses taken by a student.\n2.7 In CGPA calculation for the courses that have been repeated, U ndergraduate Academic Rules and Regulations 2026 7",
+      "source": "academic-rules-handbook-jun-2026.pdf",
+      "section": "1. Introduction",
+      "page": 13,
+      "score": 0.67200017,
+      "doc_version": "2026-06",
+      "superseded": false
+    }
+  ],
+  "reranked_order": [
+    "grading-page-html-0006",
+    "academic-rules-handbook-jun-2026-pdf-0019",
+    "academic-rules-handbook-jun-2026-pdf-0018",
+    "grading-page-html-0001",
+    "academic-rules-handbook-jun-2026-pdf-0010"
+  ],
+  "filters": {
+    "superseded": false
+  },
+  "guardrails": [
+    "abstain:topical_only"
+  ],
+  "model_inputs": [],
+  "cache": "disabled",
+  "timings": {
+    "cache": 0.005253282994090114,
+    "retrieval": 0.18746426699362928,
+    "guardrail": 0.00017061099788406864,
+    "total": 0.1931206880035461
+  },
+  "index_id": null,
+  "evidence_status": "topical_only",
+  "evidence_reason": "Passages are topically related but lack requested attribute(s): ['deadline']",
+  "response": {
+    "request_id": "e21672abac92468b8052c35bc996f552",
+    "answer": "I could not find information in the official FAST-NUCES documents to answer your question. Please consult the relevant department or handbook directly.",
+    "citations": [],
+    "answered_from_context": false,
+    "confidence": "low",
+    "retrieved": [
+      {
+        "chunk_id": "grading-page-html-0006",
+        "source": "grading-page.html",
+        "section": "Incomplete Course",
+        "page": 1,
+        "score": 0.79904592
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-pdf-0019",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 27,
+        "score": 0.70461
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-pdf-0018",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 25,
+        "score": 0.6819073600000001
+      },
+      {
+        "chunk_id": "grading-page-html-0001",
+        "source": "grading-page.html",
+        "section": "Academic Grading",
+        "page": 1,
+        "score": 0.6801387
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-pdf-0010",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "1. Introduction",
+        "page": 13,
+        "score": 0.67200017
+      }
+    ],
+    "provider": "hosted"
+  }
+}

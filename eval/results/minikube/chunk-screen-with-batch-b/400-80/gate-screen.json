@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-11-28T18:03:24.642981+00:00",
+  "verdict": "FAIL",
+  "overall_passed": false,
+  "rules_evaluated": 8,
+  "rules_passed": 7,
+  "rules_failed": 1,
+  "details": [
+    {
+      "rule": "min_recall_at_3",
+      "observed": 0.7679,
+      "condition": ">= 0.65",
+      "threshold": 0.65,
+      "status": "PASS",
+      "rationale": "Ensure at least specified proportion of target chunks in top 3"
+    },
+    {
+      "rule": "min_recall_at_5",
+      "observed": 0.8036,
+      "condition": ">= 0.7",
+      "threshold": 0.7,
+      "status": "PASS",
+      "rationale": "Ensure baseline retrieval recall quality at top 5"
+    },
+    {
+      "rule": "min_mrr",
+      "observed": 0.7173,
+      "condition": ">= 0.6",
+      "threshold": 0.6,
+      "status": "PASS",
+      "rationale": "Mean Reciprocal Rank must place relevant chunk near top ranks"
+    },
+    {
+      "rule": "min_ndcg_at_5",
+      "observed": 0.8104,
+      "condition": ">= 0.7",
+      "threshold": 0.7,
+      "status": "PASS",
+      "rationale": "Normalized Discounted Cumulative Gain ranking quality"
+    },
+    {
+      "rule": "max_recall_at_5_drop",
+      "observed": 0.0536,
+      "condition": ">= -0.05",
+      "threshold": -0.05,
+      "status": "PASS",
+      "rationale": "Recall@5 regression relative to baseline must not exceed 0.05"
+    },
+    {
+      "rule": "max_ndcg_at_5_drop",
+      "observed": 0.1037,
+      "condition": ">= -0.05",
+      "threshold": -0.05,
+      "status": "PASS",
+      "rationale": "nDCG@5 ranking degradation relative to baseline must not exceed 0.05"
+    },
+    {
+      "rule": "min_noise_retention_pct",
+      "observed": 91.1,
+      "condition": ">= 85.0",
+      "threshold": 85.0,
+      "status": "PASS",
+      "rationale": "Robustness against typos and distractor noise"
+    },
+    {
+      "rule": "generation_metrics_presence",
+      "observed": "MISSING",
+      "condition": "== PRESENT",
+      "threshold": "PRESENT",
+      "status": "FAIL",
+      "rationale": "Generation metrics required by policy but not present in report"
+    }
+  ],
+  "candidate_file": "eval/results/minikube/chunk-screen-with-batch-b/400-80/retrieval_eval_report.json",
+  "baseline_file": "eval/results/minikube/chunk-screen-with-batch-b/500-80/retrieval_eval_report.json",
+  "config_file": "/tmp/rahbar-batch-b-gate.MKipgN/gate.yaml"
+}

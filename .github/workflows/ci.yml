@@ -95,6 +95,11 @@ jobs:
         run: |
           kustomize build k8s/overlays/prod | kubeconform -strict -ignore-missing-schemas -kubernetes-version 1.30.0
 
+      - name: Validate Assignment 3 Minikube manifests
+        run: |
+          kustomize build k8s/overlays/minikube | kubeconform -strict -kubernetes-version 1.30.0
+          kubeconform -strict -kubernetes-version 1.30.0 k8s/eval-support.yaml k8s/eval-job.yaml k8s/eval-candidate-job.yaml k8s/eval-gate-config.yaml k8s/eval-gate-job.yaml k8s/trace-pvc.yaml k8s/candidate-api.yaml k8s/candidate-ingestion.yaml k8s/batch-b-ingestion.yaml k8s/batch-b-archive-restore.yaml k8s/batch-b-api.yaml
+
   build:
     name: Build Container Images
     runs-on: ubuntu-latest

@@ -52,6 +52,10 @@ _INJECTION_PATTERNS = [
     r"disregard\s+all\s+(rules|guidelines)",
 ]
 
+def contains_document_injection(text: str) -> bool:
+    """Match explicit embedded override instructions before sending evidence to a model."""
+    return bool(re.search(r"(?im)^\s*(?:\[injection probe\b|system override instruction\s*:?\s*$)", text))
+
 # Attribute clusters that specify inquiry targets
 _ATTRIBUTE_CLUSTERS: dict[str, set[str]] = {
     "curfew": {"curfew", "nightly", "closing time", "gates close", "in-time", "entry timing"},

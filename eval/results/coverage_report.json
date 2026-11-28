@@ -1,0 +1,836 @@
+{
+  "timestamp": "2026-11-28T01:00:58.328335+00:00",
+  "configuration": {
+    "live_queries_path": "eval/live_queries.jsonl",
+    "golden_path": "eval/golden.jsonl",
+    "corpus_dir": "corpus/raw",
+    "embed_model": "nomic-embed-text",
+    "similarity_threshold": 0.7,
+    "threshold_justification": "Empirically justified by embedding evaluation separation gap of 0.3919 (Paraphrase mean=0.8539, min=0.7299; Unrelated mean=0.4619, max=0.5733).",
+    "min_required_coverage_pct": 0.0
+  },
+  "summary": {
+    "total_queries": 44,
+    "in_domain_queries": 30,
+    "out_of_domain_queries": 14,
+    "covered_queries": 21,
+    "uncovered_queries": 23,
+    "in_domain_covered": 21,
+    "in_domain_uncovered": 9,
+    "in_domain_coverage_pct": 70.0,
+    "overall_coverage_pct": 47.73,
+    "mean_similarity": 0.6781,
+    "median_similarity": 0.6939
+  },
+  "similarity_distribution": {
+    "< 0.50": 6,
+    "0.50 - 0.59": 5,
+    "0.60 - 0.69": 12,
+    "0.70 - 0.79": 13,
+    "0.80 - 0.89": 7,
+    ">= 0.90": 1
+  },
+  "uncovered_topic_breakdown": [
+    {
+      "topic": "hostel_rules",
+      "uncovered_queries": 2,
+      "sample_questions": [
+        "Are university hostel residents permitted to keep electric heaters or cooking appliances in their rooms?",
+        "What is the procedure for a hostel resident to submit a room change request?"
+      ]
+    },
+    {
+      "topic": "attendance_policy",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What is the minimum percentage of attendance required to sit in final examinations?"
+      ]
+    },
+    {
+      "topic": "transcripts",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What is the procedure and fee for obtaining an official university academic transcript?"
+      ]
+    },
+    {
+      "topic": "library_rules",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "How many books can an undergraduate student borrow from the university central library at one time?"
+      ]
+    },
+    {
+      "topic": "transport_services",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What are the departure timings for the campus shuttle buses operating between the city center and campus?"
+      ]
+    },
+    {
+      "topic": "campus_amenities",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "Who chairs the campus cafeteria food quality inspection and price regulation committee?"
+      ]
+    },
+    {
+      "topic": "student_societies",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What are the eligibility criteria and GPA requirements to run for Student Council executive office?"
+      ]
+    },
+    {
+      "topic": "sports_facilities",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What are the operating hours and equipment reservation rules for the campus gymnasium and sports complex?"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "LQ001",
+      "question": "What is the tuition fee per credit hour for BS and BBA programs in Fall 2026?",
+      "domain": "in_domain",
+      "topic": "tuition_fees",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.9837,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q01",
+        "golden_question": "What is the BBA/BS tuition fee per credit hour for Fall 2026?",
+        "source": "fee-structure-page.html",
+        "section": "Tuition Fee (w.e.f. Fall 2026 semester)",
+        "page": 1,
+        "similarity": 0.9837
+      }
+    },
+    {
+      "id": "LQ002",
+      "question": "How much tuition fee refund can a student receive if they apply within the first week of classes?",
+      "domain": "in_domain",
+      "topic": "fee_refund",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7809,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q24",
+        "golden_question": "If a student cancels their admission on the 10th calendar day following commencement of classes, what exact percentage of their tuition fee and admission fee are refunded according to the official Fee Refund Policy?",
+        "source": "fee-structure-page.html",
+        "section": "Fee Refund Policy",
+        "page": 1,
+        "similarity": 0.7809
+      }
+    },
+    {
+      "id": "LQ003",
+      "question": "What is the minimum percentage of attendance required to sit in final examinations?",
+      "domain": "in_domain",
+      "topic": "attendance_policy",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6805,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q11",
+        "golden_question": "What attendance does clause 1.21 of the June 2026 Academic Rules Handbook require, and how much absence may the HoD condone for genuine reasons?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "1. Introduction",
+        "page": 10,
+        "similarity": 0.6805
+      }
+    },
+    {
+      "id": "LQ004",
+      "question": "Until which week of the regular semester is a student allowed to withdraw from a course?",
+      "domain": "in_domain",
+      "topic": "course_withdrawal",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8354,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q09",
+        "golden_question": "Under the current June 2026 undergraduate academic rules, what is the deadline to withdraw from a course?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "4. Registration",
+        "page": 5,
+        "similarity": 0.8354
+      }
+    },
+    {
+      "id": "LQ005",
+      "question": "If an incomplete grade I is awarded, when is the deadline to convert it into a regular letter grade?",
+      "domain": "in_domain",
+      "topic": "grading_system",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8196,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q03",
+        "golden_question": "If I complete all course requirements except the final exam and get an incomplete grade, by when must it be converted to the appropriate grade?",
+        "source": "grading-page.html",
+        "section": "Incomplete Course",
+        "page": 1,
+        "similarity": 0.8196
+      }
+    },
+    {
+      "id": "LQ006",
+      "question": "What minimum cumulative GPA must an undergraduate student maintain to avoid academic warning?",
+      "domain": "in_domain",
+      "topic": "academic_standing",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8276,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q04",
+        "golden_question": "What minimum CGPA does the June 2026 undergraduate Academic Rules Handbook require to avoid academic warning?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 5,
+        "similarity": 0.8276
+      }
+    },
+    {
+      "id": "LQ007",
+      "question": "What semester GPA range qualifies an undergraduate student for the Dean's List of Honors?",
+      "domain": "in_domain",
+      "topic": "academic_honors",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8852,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q05",
+        "golden_question": "What semester GPA range does the 2026 prospectus list for the Dean's List of Honors?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "8. Dean's List of Honors",
+        "page": 2,
+        "similarity": 0.8852
+      }
+    },
+    {
+      "id": "LQ008",
+      "question": "What is the minimum CGPA required for graduation and award of a BS degree?",
+      "domain": "in_domain",
+      "topic": "degree_requirements",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7616,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q04",
+        "golden_question": "What minimum CGPA does the June 2026 undergraduate Academic Rules Handbook require to avoid academic warning?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 5,
+        "similarity": 0.7616
+      }
+    },
+    {
+      "id": "LQ009",
+      "question": "What happens if a student is found guilty of major plagiarism in their final year thesis project?",
+      "domain": "in_domain",
+      "topic": "plagiarism_policy",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7078,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "8. Academic Honesty",
+        "page": 34,
+        "similarity": 0.7078
+      }
+    },
+    {
+      "id": "LQ010",
+      "question": "How is the CGPA calculated when a student repeats a course to improve a previously failed grade?",
+      "domain": "in_domain",
+      "topic": "course_repeat",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.816,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "grading-page.html",
+        "section": "Repeating a Course",
+        "page": 1,
+        "similarity": 0.816
+      }
+    },
+    {
+      "id": "LQ011",
+      "question": "What is the maximum number of credit hours an undergraduate student can register for in a regular semester?",
+      "domain": "in_domain",
+      "topic": "course_registration",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.751,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "1. Introduction",
+        "page": 8,
+        "similarity": 0.751
+      }
+    },
+    {
+      "id": "LQ012",
+      "question": "How many courses is an undergraduate student permitted to enroll in during the summer semester?",
+      "domain": "in_domain",
+      "topic": "summer_semester",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8044,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "undergraduate-academic-rules-aug-2023.pdf",
+        "section": "6. Rules for Summer Semester",
+        "page": 20,
+        "similarity": 0.8044
+      }
+    },
+    {
+      "id": "LQ013",
+      "question": "Are university faculty members permitted to take sabbatical leave to pursue technical start-ups?",
+      "domain": "in_domain",
+      "topic": "faculty_policy",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7038,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "faculty-entrepreneurship-and-technical-start-ups-policy.pdf",
+        "section": "1. Purpose",
+        "page": 1,
+        "similarity": 0.7038
+      }
+    },
+    {
+      "id": "LQ014",
+      "question": "What are the eligibility criteria for the award of the Chancellor's Medal at convocation?",
+      "domain": "in_domain",
+      "topic": "academic_honors",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7336,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "7. Awards and the Honor System",
+        "page": 32,
+        "similarity": 0.7336
+      }
+    },
+    {
+      "id": "LQ015",
+      "question": "Within how many working days must a student submit an appeal for grade rechecking after result declaration?",
+      "domain": "in_domain",
+      "topic": "grade_appeal",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7393,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "undergraduate-academic-rules-aug-2023.pdf",
+        "section": "5. Academic Assessment",
+        "page": 18,
+        "similarity": 0.7393
+      }
+    },
+    {
+      "id": "LQ016",
+      "question": "What is the deadline for dropping a registered course without having a W grade reflected on the transcript?",
+      "domain": "in_domain",
+      "topic": "course_drop",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7416,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q09",
+        "golden_question": "Under the current June 2026 undergraduate academic rules, what is the deadline to withdraw from a course?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "4. Registration",
+        "page": 5,
+        "similarity": 0.7416
+      }
+    },
+    {
+      "id": "LQ017",
+      "question": "What is the procedure and fee for obtaining an official university academic transcript?",
+      "domain": "in_domain",
+      "topic": "transcripts",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6698,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "fee-structure-page.html",
+        "section": "Tuition Fee (w.e.f. Fall 2026 semester)",
+        "page": 1,
+        "similarity": 0.6698
+      }
+    },
+    {
+      "id": "LQ018",
+      "question": "How many books can an undergraduate student borrow from the university central library at one time?",
+      "domain": "in_domain",
+      "topic": "library_rules",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6939,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "CODE OF CONDUCT",
+        "page": 33,
+        "similarity": 0.6939
+      }
+    },
+    {
+      "id": "LQ019",
+      "question": "What is the mandatory curfew timing for undergraduate students residing in the campus hostel?",
+      "domain": "in_domain",
+      "topic": "hostel_rules",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8508,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q13",
+        "golden_question": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.8508
+      }
+    },
+    {
+      "id": "LQ020",
+      "question": "Are university hostel residents permitted to keep electric heaters or cooking appliances in their rooms?",
+      "domain": "in_domain",
+      "topic": "hostel_rules",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6169,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q13",
+        "golden_question": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.6169
+      }
+    },
+    {
+      "id": "LQ021",
+      "question": "What is the procedure for a hostel resident to submit a room change request?",
+      "domain": "in_domain",
+      "topic": "hostel_rules",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6652,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q14",
+        "golden_question": "What is the deadline to apply for an on-campus hostel room at FAST Chiniot-Faisalabad for Fall 2026?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.6652
+      }
+    },
+    {
+      "id": "LQ022",
+      "question": "What minimum CGPA and batch position qualifies a student for a full-tuition merit scholarship?",
+      "domain": "in_domain",
+      "topic": "scholarships",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7828,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "1. Merit Scholarships for Bachelor Students",
+        "page": 31,
+        "similarity": 0.7828
+      }
+    },
+    {
+      "id": "LQ023",
+      "question": "What percentage tuition waiver is granted to national-level athletes under the university sports scholarship?",
+      "domain": "in_domain",
+      "topic": "scholarships",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7098,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "CODE OF CONDUCT",
+        "page": 17,
+        "similarity": 0.7098
+      }
+    },
+    {
+      "id": "LQ024",
+      "question": "What financial documentation is required to renew a university need-based financial assistance grant?",
+      "domain": "in_domain",
+      "topic": "scholarships",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7143,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "CODE OF CONDUCT",
+        "page": 17,
+        "similarity": 0.7143
+      }
+    },
+    {
+      "id": "LQ025",
+      "question": "What are the departure timings for the campus shuttle buses operating between the city center and campus?",
+      "domain": "in_domain",
+      "topic": "transport_services",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6272,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q18",
+        "golden_question": "What is the refund percentage for the university semester bus transport pass if cancelled 30 days after the semester starts?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.6272
+      }
+    },
+    {
+      "id": "LQ026",
+      "question": "Who chairs the campus cafeteria food quality inspection and price regulation committee?",
+      "domain": "in_domain",
+      "topic": "campus_amenities",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6058,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "Chapter-3 Students\u2019 Profile",
+        "page": 22,
+        "similarity": 0.6058
+      }
+    },
+    {
+      "id": "LQ027",
+      "question": "What are the eligibility criteria and GPA requirements to run for Student Council executive office?",
+      "domain": "in_domain",
+      "topic": "student_societies",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6832,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q26",
+        "golden_question": "What SGPA must an undergraduate student achieve in a semester to be placed on the Rector's List of Honours according to the 2026 prospectus?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "9. Rector's List of Honours",
+        "page": 2,
+        "similarity": 0.6832
+      }
+    },
+    {
+      "id": "LQ028",
+      "question": "What medical emergency treatments and physician consultation hours are provided by the campus health clinic?",
+      "domain": "in_domain",
+      "topic": "health_services",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7391,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "Chapter-9 Health Care Facilities",
+        "page": 85,
+        "similarity": 0.7391
+      }
+    },
+    {
+      "id": "LQ029",
+      "question": "What are the operating hours and equipment reservation rules for the campus gymnasium and sports complex?",
+      "domain": "in_domain",
+      "topic": "sports_facilities",
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6623,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q19",
+        "golden_question": "What is the security deposit and reservation procedure for external commercial organizations to rent the FAST Lahore cricket stadium on weekends?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.6623
+      }
+    },
+    {
+      "id": "LQ030",
+      "question": "What is the procedure for getting an official university degree verified and attested by the Higher Education Commission?",
+      "domain": "in_domain",
+      "topic": "degree_attestation",
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.7116,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "Chapter-6 Directorate of Quality Assurance",
+        "page": 28,
+        "similarity": 0.7116
+      }
+    },
+    {
+      "id": "LQ031",
+      "question": "Which national cricket team won the ICC Men's T20 World Cup in 2024?",
+      "domain": "out_of_domain",
+      "topic": "general_sports",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.6203,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "NUMLOGIC 2024",
+        "page": 27,
+        "similarity": 0.6203
+      }
+    },
+    {
+      "id": "LQ032",
+      "question": "What is the traditional recipe and cooking technique for Karachi beef biryani?",
+      "domain": "out_of_domain",
+      "topic": "culinary",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.5856,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q28",
+        "golden_question": "What is the standard medium of instruction and examination for all courses across FAST-NUCES programs according to the 2026 Prospectus, and which examination may be taken in Urdu?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "2. Medium of Instruction",
+        "page": 1,
+        "similarity": 0.5856
+      }
+    },
+    {
+      "id": "LQ033",
+      "question": "How do I implement a recursive binary search algorithm in Python 3?",
+      "domain": "out_of_domain",
+      "topic": "programming",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.4822,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "NUMLOGIC 2024",
+        "page": 27,
+        "similarity": 0.4822
+      }
+    },
+    {
+      "id": "LQ034",
+      "question": "What was the closing stock price of Apple Inc. AAPL on NASDAQ yesterday?",
+      "domain": "out_of_domain",
+      "topic": "financial_markets",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.4959,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "LAHORE CAMPUS",
+        "page": 51,
+        "similarity": 0.4959
+      }
+    },
+    {
+      "id": "LQ035",
+      "question": "What are the top recommended Android smartphones priced under sixty thousand Pakistani rupees?",
+      "domain": "out_of_domain",
+      "topic": "consumer_tech",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.6203,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "ISLAMABAD, PAKISTAN",
+        "page": 4,
+        "similarity": 0.6203
+      }
+    },
+    {
+      "id": "LQ036",
+      "question": "What are the primary symptoms and diagnostic tests for dengue fever?",
+      "domain": "out_of_domain",
+      "topic": "medical_health",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.5328,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "3. Students suffering from Coughs",
+        "page": 39,
+        "similarity": 0.5328
+      }
+    },
+    {
+      "id": "LQ037",
+      "question": "When is the official theatrical release date for Christopher Nolan's next feature film?",
+      "domain": "out_of_domain",
+      "topic": "entertainment",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.535,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q14",
+        "golden_question": "What is the deadline to apply for an on-campus hostel room at FAST Chiniot-Faisalabad for Fall 2026?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.535
+      }
+    },
+    {
+      "id": "LQ038",
+      "question": "How often should engine oil and oil filter be replaced in a gasoline passenger car?",
+      "domain": "out_of_domain",
+      "topic": "automotive",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.4786,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "grading-page.html",
+        "section": "Repeating a Course",
+        "page": 1,
+        "similarity": 0.4786
+      }
+    },
+    {
+      "id": "LQ039",
+      "question": "What is the federal capital city of the Commonwealth of Australia?",
+      "domain": "out_of_domain",
+      "topic": "geography",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.4991,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "ISLAMABAD, PAKISTAN",
+        "page": 4,
+        "similarity": 0.4991
+      }
+    },
+    {
+      "id": "LQ040",
+      "question": "What is the fundamental difference between Newtonian mechanics and quantum mechanics in physics?",
+      "domain": "out_of_domain",
+      "topic": "physics",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.4731,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "13. Doctor of Philosophy (Civil Engineering) LHR Sanctioned",
+        "page": 71,
+        "similarity": 0.4731
+      }
+    },
+    {
+      "id": "LQ041",
+      "question": "Can you summarize the tragic flaws of Prince Hamlet in William Shakespeare's play?",
+      "domain": "out_of_domain",
+      "topic": "literature",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.459,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2023-24.pdf",
+        "section": "Chapter-4 Academic Activities",
+        "page": 22,
+        "similarity": 0.459
+      }
+    },
+    {
+      "id": "LQ042",
+      "question": "What is the current foreign exchange conversion rate from United States Dollars to Pakistani Rupees?",
+      "domain": "out_of_domain",
+      "topic": "currency_forex",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.5957,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q28",
+        "golden_question": "What is the standard medium of instruction and examination for all courses across FAST-NUCES programs according to the 2026 Prospectus, and which examination may be taken in Urdu?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "2. Medium of Instruction",
+        "page": 1,
+        "similarity": 0.5957
+      }
+    },
+    {
+      "id": "LQ043",
+      "question": "How many recognized major planets and dwarf planets orbit the Sun in our Solar System?",
+      "domain": "out_of_domain",
+      "topic": "astronomy",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.5311,
+      "matched_evidence": {
+        "type": "golden_question",
+        "golden_id": "q17",
+        "golden_question": "How many electric vehicle (EV) charging stations are installed in the faculty parking area of FAST Karachi campus?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.5311
+      }
+    },
+    {
+      "id": "LQ044",
+      "question": "What are the most popular tourist attractions and mountain trekking valleys to visit in Northern Pakistan?",
+      "domain": "out_of_domain",
+      "topic": "tourism_travel",
+      "classification": "OUT_OF_DOMAIN",
+      "is_covered": false,
+      "similarity": 0.6213,
+      "matched_evidence": {
+        "type": "corpus_chunk",
+        "source": "annual-report-2019-20.pdf",
+        "section": "ISLAMABAD, PAKISTAN",
+        "page": 4,
+        "similarity": 0.6213
+      }
+    }
+  ]
+}

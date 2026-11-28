@@ -12,7 +12,7 @@ if str(REPO_ROOT) not in sys.path:
 if str(REPO_ROOT / "eval") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "eval"))
 
-from eval.run_drift_experiment import (
+from eval.run_drift_experiment import (  # noqa: E402
     DEFAULT_MIN_COVERAGE,
     DEFAULT_MIN_IMPROVEMENT,
     JUSTIFIED_SIMILARITY_THRESHOLD,

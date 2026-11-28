@@ -26,9 +26,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "indexer"))
 sys.path.insert(0, str(REPO_ROOT / "eval"))
 
-from eval_embeddings import run_embedding_evaluation
-from eval_retrieval import run_retrieval_suite
-from pipeline.config import IndexerSettings, get_settings
+from eval_embeddings import run_embedding_evaluation  # noqa: E402
+from eval_retrieval import run_retrieval_suite  # noqa: E402
+from pipeline.config import IndexerSettings, get_settings  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("rahbar.eval.reproducibility")

@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from eval.check_coverage import (
+from eval.check_coverage import (  # noqa: E402
     JUSTIFIED_SIMILARITY_THRESHOLD,
     cosine_similarity,
     run_coverage_analysis,

@@ -26,9 +26,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "indexer"))
 sys.path.insert(0, str(REPO_ROOT / "eval"))
 
-from eval_embeddings import run_embedding_evaluation  # noqa: E402
-from eval_retrieval import run_retrieval_suite  # noqa: E402
-from pipeline.config import IndexerSettings, get_settings  # noqa: E402
+from eval_embeddings import run_embedding_evaluation
+from eval_retrieval import run_retrieval_suite
+from pipeline.config import IndexerSettings, get_settings
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("rahbar.eval.reproducibility")
@@ -78,12 +78,13 @@ def run_reproducibility_benchmark(
     if model_override:
         active_settings = IndexerSettings(**{**active_settings.__dict__, "embed_model": model_override})
     elif "OLLAMA_URL" not in os.environ and "minikube" in active_settings.ollama_url:
+        import urllib.error
         import urllib.request
         try:
             urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=1.0)
             active_settings = IndexerSettings(**{**active_settings.__dict__, "ollama_url": "http://127.0.0.1:11434"})
-        except Exception:
-            pass
+        except (OSError, urllib.error.URLError) as exc:
+            log.debug("Ollama localhost probe: %s", exc)
 
     print("=" * 80)
     print("  RAHBAR AI — EVALUATION REPRODUCIBILITY BENCHMARK (PART B5)")

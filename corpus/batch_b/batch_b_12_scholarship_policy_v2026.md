@@ -16,3 +16,6 @@ To remain eligible, a student must achieve a minimum semester GPA of 3.80 and ta
 ## 2. Need-Based Financial Assistance
 Students facing verifiable financial hardship may apply for need-based tuition fee subsidies.
 Completed financial aid forms accompanied by guardian income certificates and utility bills must be submitted by the third week of classes.
+
+## 3. Sports Quota Scholarship
+National-level student athletes actively representing the university in national collegiate or provincial championships receive a 50 percent tuition fee waiver renewable each academic year.

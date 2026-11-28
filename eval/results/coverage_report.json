@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-28T01:00:58.328335+00:00",
+  "timestamp": "2026-11-28T02:47:10.555453+00:00",
   "configuration": {
     "live_queries_path": "eval/live_queries.jsonl",
     "golden_path": "eval/golden.jsonl",
-    "corpus_dir": "corpus/raw",
+    "corpus_dir": null,
     "embed_model": "nomic-embed-text",
     "similarity_threshold": 0.7,
     "threshold_justification": "Empirically justified by embedding evaluation separation gap of 0.3919 (Paraphrase mean=0.8539, min=0.7299; Unrelated mean=0.4619, max=0.5733).",
@@ -13,37 +13,78 @@
     "total_queries": 44,
     "in_domain_queries": 30,
     "out_of_domain_queries": 14,
-    "covered_queries": 21,
-    "uncovered_queries": 23,
-    "in_domain_covered": 21,
-    "in_domain_uncovered": 9,
-    "in_domain_coverage_pct": 70.0,
-    "overall_coverage_pct": 47.73,
-    "mean_similarity": 0.6781,
-    "median_similarity": 0.6939
+    "covered_queries": 14,
+    "uncovered_queries": 30,
+    "in_domain_covered": 14,
+    "in_domain_uncovered": 16,
+    "in_domain_coverage_pct": 46.67,
+    "overall_coverage_pct": 31.82,
+    "mean_similarity": 0.6595,
+    "median_similarity": 0.643
   },
   "similarity_distribution": {
-    "< 0.50": 6,
-    "0.50 - 0.59": 5,
+    "< 0.50": 7,
+    "0.50 - 0.59": 11,
     "0.60 - 0.69": 12,
-    "0.70 - 0.79": 13,
+    "0.70 - 0.79": 4,
     "0.80 - 0.89": 7,
-    ">= 0.90": 1
+    ">= 0.90": 3
   },
   "uncovered_topic_breakdown": [
-    {
-      "topic": "hostel_rules",
-      "uncovered_queries": 2,
-      "sample_questions": [
-        "Are university hostel residents permitted to keep electric heaters or cooking appliances in their rooms?",
-        "What is the procedure for a hostel resident to submit a room change request?"
-      ]
-    },
     {
       "topic": "attendance_policy",
       "uncovered_queries": 1,
       "sample_questions": [
         "What is the minimum percentage of attendance required to sit in final examinations?"
+      ]
+    },
+    {
+      "topic": "plagiarism_policy",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What happens if a student is found guilty of major plagiarism in their final year thesis project?"
+      ]
+    },
+    {
+      "topic": "course_repeat",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "How is the CGPA calculated when a student repeats a course to improve a previously failed grade?"
+      ]
+    },
+    {
+      "topic": "course_registration",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What is the maximum number of credit hours an undergraduate student can register for in a regular semester?"
+      ]
+    },
+    {
+      "topic": "summer_semester",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "How many courses is an undergraduate student permitted to enroll in during the summer semester?"
+      ]
+    },
+    {
+      "topic": "faculty_policy",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "Are university faculty members permitted to take sabbatical leave to pursue technical start-ups?"
+      ]
+    },
+    {
+      "topic": "academic_honors",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What are the eligibility criteria for the award of the Chancellor's Medal at convocation?"
+      ]
+    },
+    {
+      "topic": "grade_appeal",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "Within how many working days must a student submit an appeal for grade rechecking after result declaration?"
       ]
     },
     {
@@ -82,10 +123,24 @@
       ]
     },
     {
+      "topic": "health_services",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What medical emergency treatments and physician consultation hours are provided by the campus health clinic?"
+      ]
+    },
+    {
       "topic": "sports_facilities",
       "uncovered_queries": 1,
       "sample_questions": [
         "What are the operating hours and equipment reservation rules for the campus gymnasium and sports complex?"
+      ]
+    },
+    {
+      "topic": "degree_attestation",
+      "uncovered_queries": 1,
+      "sample_questions": [
+        "What is the procedure for getting an official university degree verified and attested by the Higher Education Commission?"
       ]
     }
   ],
@@ -239,15 +294,17 @@
       "question": "What happens if a student is found guilty of major plagiarism in their final year thesis project?",
       "domain": "in_domain",
       "topic": "plagiarism_policy",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7078,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6427,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "academic-rules-handbook-jun-2026.pdf",
-        "section": "8. Academic Honesty",
-        "page": 34,
-        "similarity": 0.7078
+        "type": "golden_question",
+        "golden_id": "q25",
+        "golden_question": "Under the 2026 student handbook, what are the two mandatory conditions a student must fulfill when using generative AI tools for research, and what disciplinary consequence applies if synthetic output is submitted verbatim as original thought?",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "4. Acceptable Uses of Generative AI Tools",
+        "page": 7,
+        "similarity": 0.6427
       }
     },
     {
@@ -255,15 +312,17 @@
       "question": "How is the CGPA calculated when a student repeats a course to improve a previously failed grade?",
       "domain": "in_domain",
       "topic": "course_repeat",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.816,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6418,
       "matched_evidence": {
-        "type": "corpus_chunk",
+        "type": "golden_question",
+        "golden_id": "q03",
+        "golden_question": "If I complete all course requirements except the final exam and get an incomplete grade, by when must it be converted to the appropriate grade?",
         "source": "grading-page.html",
-        "section": "Repeating a Course",
+        "section": "Incomplete Course",
         "page": 1,
-        "similarity": 0.816
+        "similarity": 0.6418
       }
     },
     {
@@ -271,15 +330,17 @@
       "question": "What is the maximum number of credit hours an undergraduate student can register for in a regular semester?",
       "domain": "in_domain",
       "topic": "course_registration",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.751,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6793,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "academic-rules-handbook-jun-2026.pdf",
-        "section": "1. Introduction",
-        "page": 8,
-        "similarity": 0.751
+        "type": "golden_question",
+        "golden_id": "q26",
+        "golden_question": "What SGPA must an undergraduate student achieve in a semester to be placed on the Rector's List of Honours according to the 2026 prospectus?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "9. Rector's List of Honours",
+        "page": 2,
+        "similarity": 0.6793
       }
     },
     {
@@ -287,15 +348,17 @@
       "question": "How many courses is an undergraduate student permitted to enroll in during the summer semester?",
       "domain": "in_domain",
       "topic": "summer_semester",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.8044,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6348,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "undergraduate-academic-rules-aug-2023.pdf",
-        "section": "6. Rules for Summer Semester",
-        "page": 20,
-        "similarity": 0.8044
+        "type": "golden_question",
+        "golden_id": "q26",
+        "golden_question": "What SGPA must an undergraduate student achieve in a semester to be placed on the Rector's List of Honours according to the 2026 prospectus?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "9. Rector's List of Honours",
+        "page": 2,
+        "similarity": 0.6348
       }
     },
     {
@@ -303,15 +366,17 @@
       "question": "Are university faculty members permitted to take sabbatical leave to pursue technical start-ups?",
       "domain": "in_domain",
       "topic": "faculty_policy",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7038,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6832,
       "matched_evidence": {
-        "type": "corpus_chunk",
+        "type": "golden_question",
+        "golden_id": "q08",
+        "golden_question": "Under the Faculty Entrepreneurship and Technical Start-ups Policy, what kind of research are the start-ups intended to commercialize?",
         "source": "faculty-entrepreneurship-and-technical-start-ups-policy.pdf",
         "section": "1. Purpose",
         "page": 1,
-        "similarity": 0.7038
+        "similarity": 0.6832
       }
     },
     {
@@ -319,15 +384,17 @@
       "question": "What are the eligibility criteria for the award of the Chancellor's Medal at convocation?",
       "domain": "in_domain",
       "topic": "academic_honors",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7336,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6761,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "academic-rules-handbook-jun-2026.pdf",
-        "section": "7. Awards and the Honor System",
-        "page": 32,
-        "similarity": 0.7336
+        "type": "golden_question",
+        "golden_id": "q26",
+        "golden_question": "What SGPA must an undergraduate student achieve in a semester to be placed on the Rector's List of Honours according to the 2026 prospectus?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "9. Rector's List of Honours",
+        "page": 2,
+        "similarity": 0.6761
       }
     },
     {
@@ -335,15 +402,17 @@
       "question": "Within how many working days must a student submit an appeal for grade rechecking after result declaration?",
       "domain": "in_domain",
       "topic": "grade_appeal",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7393,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.6734,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "undergraduate-academic-rules-aug-2023.pdf",
-        "section": "5. Academic Assessment",
-        "page": 18,
-        "similarity": 0.7393
+        "type": "golden_question",
+        "golden_id": "q03",
+        "golden_question": "If I complete all course requirements except the final exam and get an incomplete grade, by when must it be converted to the appropriate grade?",
+        "source": "grading-page.html",
+        "section": "Incomplete Course",
+        "page": 1,
+        "similarity": 0.6734
       }
     },
     {
@@ -371,13 +440,15 @@
       "topic": "transcripts",
       "classification": "IN_DOMAIN_UNCOVERED",
       "is_covered": false,
-      "similarity": 0.6698,
+      "similarity": 0.596,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "fee-structure-page.html",
-        "section": "Tuition Fee (w.e.f. Fall 2026 semester)",
+        "type": "golden_question",
+        "golden_id": "q32",
+        "golden_question": "What percentage tuition fee waiver is awarded to the first and second rank holders in each departmental semester cohort under the merit-based scholarship policy?",
+        "source": "batch_b_12_scholarship_policy_v2026.md",
+        "section": "1. Merit-Based Scholarships",
         "page": 1,
-        "similarity": 0.6698
+        "similarity": 0.596
       }
     },
     {
@@ -387,13 +458,15 @@
       "topic": "library_rules",
       "classification": "IN_DOMAIN_UNCOVERED",
       "is_covered": false,
-      "similarity": 0.6939,
+      "similarity": 0.5452,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "student-handbook-jun-2026.pdf",
-        "section": "CODE OF CONDUCT",
-        "page": 33,
-        "similarity": 0.6939
+        "type": "golden_question",
+        "golden_id": "q26",
+        "golden_question": "What SGPA must an undergraduate student achieve in a semester to be placed on the Rector's List of Honours according to the 2026 prospectus?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "9. Rector's List of Honours",
+        "page": 2,
+        "similarity": 0.5452
       }
     },
     {
@@ -403,15 +476,15 @@
       "topic": "hostel_rules",
       "classification": "IN_DOMAIN_COVERED",
       "is_covered": true,
-      "similarity": 0.8508,
+      "similarity": 0.9114,
       "matched_evidence": {
         "type": "golden_question",
-        "golden_id": "q13",
-        "golden_question": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
-        "source": null,
-        "section": null,
-        "page": null,
-        "similarity": 0.8508
+        "golden_id": "q29",
+        "golden_question": "What are the mandatory hostel curfew hours on weekdays and weekends under the Campus Student Hostel Regulations?",
+        "source": "batch_b_11_hostel_rules_v2026.md",
+        "section": "2. Curfew and Gate Timings",
+        "page": 1,
+        "similarity": 0.9114
       }
     },
     {
@@ -419,17 +492,17 @@
       "question": "Are university hostel residents permitted to keep electric heaters or cooking appliances in their rooms?",
       "domain": "in_domain",
       "topic": "hostel_rules",
-      "classification": "IN_DOMAIN_UNCOVERED",
-      "is_covered": false,
-      "similarity": 0.6169,
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8107,
       "matched_evidence": {
         "type": "golden_question",
-        "golden_id": "q13",
-        "golden_question": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
-        "source": null,
-        "section": null,
-        "page": null,
-        "similarity": 0.6169
+        "golden_id": "q30",
+        "golden_question": "What financial penalty is imposed on university hostel residents found in possession of unauthorized electrical heaters or cooking stoves?",
+        "source": "batch_b_11_hostel_rules_v2026.md",
+        "section": "3. Disciplinary Actions",
+        "page": 1,
+        "similarity": 0.8107
       }
     },
     {
@@ -437,17 +510,17 @@
       "question": "What is the procedure for a hostel resident to submit a room change request?",
       "domain": "in_domain",
       "topic": "hostel_rules",
-      "classification": "IN_DOMAIN_UNCOVERED",
-      "is_covered": false,
-      "similarity": 0.6652,
+      "classification": "IN_DOMAIN_COVERED",
+      "is_covered": true,
+      "similarity": 0.8953,
       "matched_evidence": {
         "type": "golden_question",
-        "golden_id": "q14",
-        "golden_question": "What is the deadline to apply for an on-campus hostel room at FAST Chiniot-Faisalabad for Fall 2026?",
-        "source": null,
-        "section": null,
-        "page": null,
-        "similarity": 0.6652
+        "golden_id": "q31",
+        "golden_question": "What is the procedure and timeline for an undergraduate hostel resident to request a room change or transfer?",
+        "source": "batch_b_11_hostel_rules_v2026.md",
+        "section": "4. Room Allocation and Transfers",
+        "page": 1,
+        "similarity": 0.8953
       }
     },
     {
@@ -457,13 +530,15 @@
       "topic": "scholarships",
       "classification": "IN_DOMAIN_COVERED",
       "is_covered": true,
-      "similarity": 0.7828,
+      "similarity": 0.7163,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "1. Merit Scholarships for Bachelor Students",
-        "page": 31,
-        "similarity": 0.7828
+        "type": "golden_question",
+        "golden_id": "q04",
+        "golden_question": "What minimum CGPA does the June 2026 undergraduate Academic Rules Handbook require to avoid academic warning?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 5,
+        "similarity": 0.7163
       }
     },
     {
@@ -473,13 +548,15 @@
       "topic": "scholarships",
       "classification": "IN_DOMAIN_COVERED",
       "is_covered": true,
-      "similarity": 0.7098,
+      "similarity": 0.9793,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "student-handbook-jun-2026.pdf",
-        "section": "CODE OF CONDUCT",
-        "page": 17,
-        "similarity": 0.7098
+        "type": "golden_question",
+        "golden_id": "q33",
+        "golden_question": "What percentage tuition waiver is granted to national-level student athletes under the university sports quota scholarship?",
+        "source": "batch_b_12_scholarship_policy_v2026.md",
+        "section": "3. Sports Quota Scholarship",
+        "page": 1,
+        "similarity": 0.9793
       }
     },
     {
@@ -489,13 +566,15 @@
       "topic": "scholarships",
       "classification": "IN_DOMAIN_COVERED",
       "is_covered": true,
-      "similarity": 0.7143,
+      "similarity": 0.8116,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "student-handbook-jun-2026.pdf",
-        "section": "CODE OF CONDUCT",
-        "page": 17,
-        "similarity": 0.7143
+        "type": "golden_question",
+        "golden_id": "q34",
+        "golden_question": "What supporting financial documents and submission deadline apply when applying for university need-based financial assistance?",
+        "source": "batch_b_12_scholarship_policy_v2026.md",
+        "section": "2. Need-Based Financial Assistance",
+        "page": 1,
+        "similarity": 0.8116
       }
     },
     {
@@ -523,13 +602,15 @@
       "topic": "campus_amenities",
       "classification": "IN_DOMAIN_UNCOVERED",
       "is_covered": false,
-      "similarity": 0.6058,
+      "similarity": 0.545,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "Chapter-3 Students\u2019 Profile",
-        "page": 22,
-        "similarity": 0.6058
+        "type": "golden_question",
+        "golden_id": "q32",
+        "golden_question": "What percentage tuition fee waiver is awarded to the first and second rank holders in each departmental semester cohort under the merit-based scholarship policy?",
+        "source": "batch_b_12_scholarship_policy_v2026.md",
+        "section": "1. Merit-Based Scholarships",
+        "page": 1,
+        "similarity": 0.545
       }
     },
     {
@@ -555,15 +636,17 @@
       "question": "What medical emergency treatments and physician consultation hours are provided by the campus health clinic?",
       "domain": "in_domain",
       "topic": "health_services",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7391,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.5887,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2023-24.pdf",
-        "section": "Chapter-9 Health Care Facilities",
-        "page": 85,
-        "similarity": 0.7391
+        "type": "golden_question",
+        "golden_id": "q29",
+        "golden_question": "What are the mandatory hostel curfew hours on weekdays and weekends under the Campus Student Hostel Regulations?",
+        "source": "batch_b_11_hostel_rules_v2026.md",
+        "section": "2. Curfew and Gate Timings",
+        "page": 1,
+        "similarity": 0.5887
       }
     },
     {
@@ -573,15 +656,15 @@
       "topic": "sports_facilities",
       "classification": "IN_DOMAIN_UNCOVERED",
       "is_covered": false,
-      "similarity": 0.6623,
+      "similarity": 0.6904,
       "matched_evidence": {
         "type": "golden_question",
-        "golden_id": "q19",
-        "golden_question": "What is the security deposit and reservation procedure for external commercial organizations to rent the FAST Lahore cricket stadium on weekends?",
-        "source": null,
-        "section": null,
-        "page": null,
-        "similarity": 0.6623
+        "golden_id": "q29",
+        "golden_question": "What are the mandatory hostel curfew hours on weekdays and weekends under the Campus Student Hostel Regulations?",
+        "source": "batch_b_11_hostel_rules_v2026.md",
+        "section": "2. Curfew and Gate Timings",
+        "page": 1,
+        "similarity": 0.6904
       }
     },
     {
@@ -589,15 +672,17 @@
       "question": "What is the procedure for getting an official university degree verified and attested by the Higher Education Commission?",
       "domain": "in_domain",
       "topic": "degree_attestation",
-      "classification": "IN_DOMAIN_COVERED",
-      "is_covered": true,
-      "similarity": 0.7116,
+      "classification": "IN_DOMAIN_UNCOVERED",
+      "is_covered": false,
+      "similarity": 0.643,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "Chapter-6 Directorate of Quality Assurance",
-        "page": 28,
-        "similarity": 0.7116
+        "type": "golden_question",
+        "golden_id": "q20",
+        "golden_question": "Compare the minimum semester GPA needed for the Dean's List versus the Rector's List in the 2026 regulations, and state what type of certificate or recognition is awarded for each.",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "8. Dean's List of Honors",
+        "page": 2,
+        "similarity": 0.643
       }
     },
     {
@@ -607,13 +692,15 @@
       "topic": "general_sports",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.6203,
+      "similarity": 0.5116,
       "matched_evidence": {
-        "type": "corpus_chunk",
+        "type": "golden_question",
+        "golden_id": "q07",
+        "golden_question": "Which groups of university employees are covered by the health insurance scheme described in the 2023\u201324 annual report?",
         "source": "annual-report-2023-24.pdf",
-        "section": "NUMLOGIC 2024",
-        "page": 27,
-        "similarity": 0.6203
+        "section": "Chapter-9 Health Care Facilities",
+        "page": 2,
+        "similarity": 0.5116
       }
     },
     {
@@ -641,13 +728,15 @@
       "topic": "programming",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.4822,
+      "similarity": 0.4007,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2023-24.pdf",
-        "section": "NUMLOGIC 2024",
-        "page": 27,
-        "similarity": 0.4822
+        "type": "golden_question",
+        "golden_id": "q06",
+        "golden_question": "According to the Student Handbook, can generative AI be my only source of information for preparatory research on an assignment?",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "4. Acceptable Uses of Generative AI Tools",
+        "page": 7,
+        "similarity": 0.4007
       }
     },
     {
@@ -657,13 +746,15 @@
       "topic": "financial_markets",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.4959,
+      "similarity": 0.4837,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2023-24.pdf",
-        "section": "LAHORE CAMPUS",
-        "page": 51,
-        "similarity": 0.4959
+        "type": "golden_question",
+        "golden_id": "q22",
+        "golden_question": "How did the official undergraduate course withdrawal cutoff differ between the August 2023 academic rules and the revised June 2026 handbook?",
+        "source": "undergraduate-academic-rules-aug-2023.pdf",
+        "section": "4. Registration",
+        "page": 4,
+        "similarity": 0.4837
       }
     },
     {
@@ -673,13 +764,15 @@
       "topic": "consumer_tech",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.6203,
+      "similarity": 0.5531,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "ISLAMABAD, PAKISTAN",
-        "page": 4,
-        "similarity": 0.6203
+        "type": "golden_question",
+        "golden_id": "q16",
+        "golden_question": "What minimum IELTS Academic band score is required for Pakistani national applicants seeking admission to the BS Computer Science program at FAST Islamabad?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.5531
       }
     },
     {
@@ -689,13 +782,15 @@
       "topic": "medical_health",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.5328,
+      "similarity": 0.5021,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "academic-rules-handbook-jun-2026.pdf",
-        "section": "3. Students suffering from Coughs",
-        "page": 39,
-        "similarity": 0.5328
+        "type": "golden_question",
+        "golden_id": "q28",
+        "golden_question": "What is the standard medium of instruction and examination for all courses across FAST-NUCES programs according to the 2026 Prospectus, and which examination may be taken in Urdu?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "2. Medium of Instruction",
+        "page": 1,
+        "similarity": 0.5021
       }
     },
     {
@@ -723,13 +818,15 @@
       "topic": "automotive",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.4786,
+      "similarity": 0.4594,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "grading-page.html",
-        "section": "Repeating a Course",
-        "page": 1,
-        "similarity": 0.4786
+        "type": "golden_question",
+        "golden_id": "q11",
+        "golden_question": "What attendance does clause 1.21 of the June 2026 Academic Rules Handbook require, and how much absence may the HoD condone for genuine reasons?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "1. Introduction",
+        "page": 10,
+        "similarity": 0.4594
       }
     },
     {
@@ -739,13 +836,15 @@
       "topic": "geography",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.4991,
+      "similarity": 0.4581,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "ISLAMABAD, PAKISTAN",
-        "page": 4,
-        "similarity": 0.4991
+        "type": "golden_question",
+        "golden_id": "q28",
+        "golden_question": "What is the standard medium of instruction and examination for all courses across FAST-NUCES programs according to the 2026 Prospectus, and which examination may be taken in Urdu?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "2. Medium of Instruction",
+        "page": 1,
+        "similarity": 0.4581
       }
     },
     {
@@ -755,13 +854,15 @@
       "topic": "physics",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.4731,
+      "similarity": 0.459,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2023-24.pdf",
-        "section": "13. Doctor of Philosophy (Civil Engineering) LHR Sanctioned",
-        "page": 71,
-        "similarity": 0.4731
+        "type": "golden_question",
+        "golden_id": "q28",
+        "golden_question": "What is the standard medium of instruction and examination for all courses across FAST-NUCES programs according to the 2026 Prospectus, and which examination may be taken in Urdu?",
+        "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+        "section": "2. Medium of Instruction",
+        "page": 1,
+        "similarity": 0.459
       }
     },
     {
@@ -771,13 +872,15 @@
       "topic": "literature",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.459,
+      "similarity": 0.4514,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2023-24.pdf",
-        "section": "Chapter-4 Academic Activities",
-        "page": 22,
-        "similarity": 0.459
+        "type": "golden_question",
+        "golden_id": "q21",
+        "golden_question": "What institutional sanction is levied against a candidate whose cumulative grade performance falls below the two-point threshold, and how long does the university afford them to restore good standing before dismissal?",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5. Academic Assessment",
+        "page": 5,
+        "similarity": 0.4514
       }
     },
     {
@@ -823,13 +926,15 @@
       "topic": "tourism_travel",
       "classification": "OUT_OF_DOMAIN",
       "is_covered": false,
-      "similarity": 0.6213,
+      "similarity": 0.4987,
       "matched_evidence": {
-        "type": "corpus_chunk",
-        "source": "annual-report-2019-20.pdf",
-        "section": "ISLAMABAD, PAKISTAN",
-        "page": 4,
-        "similarity": 0.6213
+        "type": "golden_question",
+        "golden_id": "q13",
+        "golden_question": "What is the nightly curfew for residents of the on-campus hostel at FAST Peshawar?",
+        "source": null,
+        "section": null,
+        "page": null,
+        "similarity": 0.4987
       }
     }
   ]

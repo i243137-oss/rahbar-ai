@@ -29,8 +29,8 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "indexer"))
 
-from pipeline.config import IndexerSettings, get_settings  # noqa: E402
-from pipeline.embed import embed  # noqa: E402
+from pipeline.config import IndexerSettings, get_settings
+from pipeline.embed import embed
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("rahbar.eval.embeddings")
@@ -119,12 +119,13 @@ def run_embedding_evaluation(
 
     active_settings = settings or get_settings()
     if "OLLAMA_URL" not in os.environ and "minikube" in active_settings.ollama_url:
+        import urllib.error
         import urllib.request
         try:
             urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=1.0)
             active_settings = IndexerSettings(**{**active_settings.__dict__, "ollama_url": "http://127.0.0.1:11434"})
-        except Exception:
-            pass
+        except (OSError, urllib.error.URLError) as exc:
+            log.debug("Ollama localhost probe: %s", exc)
 
     print("=" * 80)
     print("  RAHBAR AI — MODULE-LEVEL EMBEDDING EVALUATION (PART B2)")
@@ -316,8 +317,8 @@ def main() -> int:
             results_dir=args.results_dir,
         )
         return 0 if report["summary"]["determinism_passed"] else 1
-    except Exception as exc:
-        log.exception("Embedding evaluation failed: %s", exc)
+    except Exception:
+        log.exception("Embedding evaluation failed")
         return 1
 
 

@@ -145,5 +145,6 @@ def validate_golden_dataset(path: Path | None = None) -> bool:
 
 
 if __name__ == "__main__":
-    success = validate_golden_dataset()
+    target = Path(sys.argv[1]) if len(sys.argv) > 1 else None
+    success = validate_golden_dataset(target)
     sys.exit(0 if success else 1)

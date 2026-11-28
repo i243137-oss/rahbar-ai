@@ -37,8 +37,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "indexer"))
 sys.path.insert(0, str(REPO_ROOT / "api"))
 
-from pipeline.config import IndexerSettings, get_settings  # noqa: E402
-from pipeline.embed import embed  # noqa: E402
+from pipeline.config import IndexerSettings, get_settings
+from pipeline.embed import embed
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger("rahbar.eval.retrieval")
@@ -258,14 +258,21 @@ class InMemoryVectorRetriever:
         self.chunks: list[dict[str, Any]] = []
         self.vectors: list[list[float]] = []
 
-    def populate_from_corpus(self, corpus_dir: Path | str) -> int:
+    def populate_from_corpus(self, corpus_dir: Path | str | list[Any]) -> int:
         """Extract and chunk policy documents to build candidate vector pool."""
         from pipeline.chunk import chunk
         from pipeline.clean import clean
         from pipeline.extract import extract
         from pipeline.run import discover
 
-        docs = discover(str(corpus_dir))
+        target_list = [corpus_dir] if isinstance(corpus_dir, (str, Path)) else list(corpus_dir)
+        docs = []
+        for target in target_list:
+            t_path = Path(target)
+            if t_path.is_file():
+                docs.append((t_path, "2026-06", False))
+            elif t_path.exists():
+                docs.extend(discover(str(t_path)))
         raw_chunks = []
         for path, doc_version, superseded in docs:
             try:
@@ -290,7 +297,7 @@ class InMemoryVectorRetriever:
                         "superseded": p.superseded,
                         "text": p.text,
                     })
-            except Exception as exc:
+            except (RuntimeError, ValueError, OSError) as exc:
                 log.warning("failed to chunk %s: %s", path.name, exc)
 
         if not raw_chunks:
@@ -441,18 +448,20 @@ def run_retrieval_suite(
 
     active_settings = settings or get_settings()
     if "OLLAMA_URL" not in os.environ and "minikube" in active_settings.ollama_url:
+        import urllib.error
         import urllib.request
         try:
             urllib.request.urlopen("http://127.0.0.1:11434/api/tags", timeout=1.0)
             active_settings = IndexerSettings(**{**active_settings.__dict__, "ollama_url": "http://127.0.0.1:11434"})
-        except Exception:
-            pass
+        except (OSError, urllib.error.URLError) as exc:
+            log.debug("Ollama localhost probe: %s", exc)
 
     if active_settings.embed_model != "dummy-768":
+        import urllib.error
         import urllib.request
         try:
             urllib.request.urlopen(f"{active_settings.ollama_url.rstrip('/')}/api/tags", timeout=1.0)
-        except Exception:
+        except (OSError, urllib.error.URLError):
             log.warning("Ollama is not reachable at %s; falling back to deterministic dummy-768 embeddings", active_settings.ollama_url)
             active_settings = IndexerSettings(**{**active_settings.__dict__, "embed_model": "dummy-768"})
 
@@ -605,8 +614,8 @@ def main() -> int:
             noise_test=not args.skip_noise,
         )
         return 0 if report["clean_baseline"]["recall_at_5"] > 0.0 else 1
-    except Exception as exc:
-        log.exception("Retrieval evaluation failed: %s", exc)
+    except Exception:
+        log.exception("Retrieval evaluation failed")
         return 1
 
 

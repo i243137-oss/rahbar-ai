@@ -17,3 +17,6 @@ Nightly curfew is strictly enforced by the resident warden and biometric gate tu
 
 ## 3. Disciplinary Actions
 Possession of unauthorized electrical appliances, heaters, or cooking stoves inside resident dorm rooms incurs a mandatory fine of Rs. 5,000.
+
+## 4. Room Allocation and Transfers
+A resident student seeking a room change or transfer must submit a formal written application to the Resident Warden within the first two weeks of the semester. Room changes are subject to space availability and warden approval.

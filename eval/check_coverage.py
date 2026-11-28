@@ -124,11 +124,14 @@ def run_coverage_analysis(
 
     # 2. Optionally index corpus chunks for evidence matching
     corpus_retriever = None
-    if corpus_dir and corpus_dir.exists():
-        log.info("Indexing corpus chunks from %s...", corpus_dir)
-        corpus_retriever = InMemoryVectorRetriever(base_settings)
-        chunk_count = corpus_retriever.populate_from_corpus(corpus_dir)
-        log.info("Indexed %d corpus candidate chunks.", chunk_count)
+    if corpus_dir:
+        targets = [corpus_dir] if isinstance(corpus_dir, (str, Path)) else list(corpus_dir)
+        valid_targets = [Path(t) for t in targets if Path(t).exists()]
+        if valid_targets:
+            log.info("Indexing corpus chunks from %s...", [str(t) for t in valid_targets])
+            corpus_retriever = InMemoryVectorRetriever(base_settings)
+            chunk_count = corpus_retriever.populate_from_corpus(valid_targets)
+            log.info("Indexed %d corpus candidate chunks.", chunk_count)
 
     # 3. Embed simulated queries
     log.info("Embedding %d simulated live queries...", len(live_queries))
@@ -291,7 +294,11 @@ def run_coverage_analysis(
         "configuration": {
             "live_queries_path": str(live_queries_path),
             "golden_path": str(golden_path),
-            "corpus_dir": str(corpus_dir) if corpus_dir else None,
+            "corpus_dir": (
+                [str(d) for d in corpus_dir]
+                if isinstance(corpus_dir, (list, tuple))
+                else (str(corpus_dir) if corpus_dir else None)
+            ),
             "embed_model": base_settings.embed_model,
             "similarity_threshold": threshold,
             "threshold_justification": (

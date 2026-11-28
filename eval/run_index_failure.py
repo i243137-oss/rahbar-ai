@@ -12,7 +12,6 @@ from uuid import uuid4
 
 import pdfplumber
 import yaml
-
 from pipeline import chunk, extract
 from pipeline.config import get_settings
 from pipeline.embed import embed

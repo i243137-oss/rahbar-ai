@@ -20,8 +20,8 @@ sys.path.insert(0, str(REPO_ROOT / "indexer"))
 sys.path.insert(0, str(REPO_ROOT / "api"))
 sys.path.insert(0, str(REPO_ROOT / "eval"))
 
-from eval_retrieval import is_hit  # noqa: E402
-from run_eval import recall_at_k  # noqa: E402
+from eval_retrieval import is_hit
+from run_eval import recall_at_k
 
 
 def test_golden_dataset_schema() -> None:

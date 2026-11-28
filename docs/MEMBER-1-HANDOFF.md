@@ -139,7 +139,34 @@ The release gate automatically validates these metrics against configured thresh
 
 ---
 
-## 5. Verification Test Commands for Member 2
+## 5. Part E: Drift and Coverage Checking Suite
+
+Member 1 provides Member 2 with an automated coverage and drift evaluation suite to assess knowledge base freshness, detect knowledge gaps, and verify post-deployment corpus expansions.
+
+### 5.1 Key Deliverables
+- **Live Query Dataset (`eval/live_queries.jsonl`):** 44 simulated live queries (30 in-domain, 14 out-of-domain).
+- **Coverage Analyzer (`eval/check_coverage.py` / `python -m eval.coverage`):** Evaluates query similarity against knowledge base with justified similarity threshold $\tau = 0.70$.
+- **Drift Experiment Runner (`eval/run_drift_experiment.py` / `python -m eval.coverage --drift`):** Compares coverage before and after Batch B update and golden set expansion, verifying newly covered topics (`hostel_rules`, `scholarships`) with zero regressions.
+- **Documentation:** Complete methodology and empirical data available in `docs/PART-E-DRIFT-COVERAGE.md`.
+
+### 5.2 Verification Commands for Member 2
+```bash
+# 1. Run baseline coverage analysis on simulated user traffic
+python -m eval.coverage
+
+# 2. Run comparative drift experiment (Part E4)
+python -m eval.coverage --drift --min-coverage 40.0 --min-improvement 10.0
+
+# 3. Validate simulated queries schema & partitions
+python3 eval/validate_live_queries.py
+
+# 4. Run automated test suite for coverage & drift
+pytest eval/test_drift.py eval/test_coverage.py eval/test_live_queries.py -v
+```
+
+---
+
+## 6. Verification Test Commands for Member 2
 
 Before opening or merging pull requests, Member 2 can run the following offline checks:
 
@@ -159,7 +186,7 @@ Before opening or merging pull requests, Member 2 can run the following offline 
    ```bash
    python3 eval/validate_golden.py
    ```
-   *Expected output: `Golden dataset validation PASSED with 0 errors!`*
+   *Expected output: `All Part B1 Golden Evaluation Dataset criteria PASSED.`*
 
 4. **Run Representation Space Benchmark (Ollama):**
    ```bash
@@ -173,7 +200,13 @@ Before opening or merging pull requests, Member 2 can run the following offline 
    ```
    *Expected output: Recall@5 $\ge 0.70$, Recall@5 retention under noise $\ge 90\%$.*
 
+6. **Run Full Part E Test Suite:**
+   ```bash
+   pytest eval/test_drift.py eval/test_coverage.py eval/test_live_queries.py -v
+   ```
+   *Expected output: `10 passed`.*
+
 ---
 
-## 6. Contact & Support
+## 7. Contact & Support
 If any schema changes or additional corpus documents are required, please request a review from **Member 1 (Umair Hassan)** before altering `api/app/schemas.py` or Chroma metadata fields.

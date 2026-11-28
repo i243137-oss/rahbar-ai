@@ -1,0 +1,74 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: eval-gate
+  namespace: rahbar
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: gate
+          image: rahbar-eval:full-f9727ae-v2
+          imagePullPolicy: Never
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              : "${BASELINE_DIR:?Set BASELINE_DIR to the baseline report directory on /results}"
+              : "${CANDIDATE_DIR:?Set CANDIDATE_DIR to the candidate report directory on /results}"
+              out="/results/gate-${HOSTNAME}"
+              mkdir "$out"
+              assemble() {
+                run=$1
+                directory=$2
+                report=$3
+                set --
+                if [ -f "$directory/reviews-$run.json" ]; then
+                  set -- --reviews "$directory/reviews-$run.json"
+                fi
+                python /app/eval/assemble_release_report.py \
+                  --retrieval "$directory/review-needed-$run.json" \
+                  --answers "$directory/answers-$run.json" \
+                  --output "$report" "$@"
+              }
+              for iteration in 1 2; do
+                assemble "$iteration" "$CANDIDATE_DIR" "$out/candidate-$iteration.json"
+                assemble "$iteration" "$BASELINE_DIR" "$out/baseline-$iteration.json"
+                python /app/eval/release_gate.py \
+                  --candidate "$out/candidate-$iteration.json" \
+                  --baseline "$out/baseline-$iteration.json" \
+                  --config /gate/gate.yaml \
+                  --output "$out/decision-$iteration.json"
+              done
+          env:
+            - name: BASELINE_DIR
+              value: ""
+            - name: CANDIDATE_DIR
+              value: ""
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          volumeMounts:
+            - name: results
+              mountPath: /results
+            - name: thresholds
+              mountPath: /gate
+              readOnly: true
+      volumes:
+        - name: results
+          persistentVolumeClaim:
+            claimName: eval-results
+        - name: thresholds
+          configMap:
+            name: eval-gate-config

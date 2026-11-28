@@ -1,0 +1,13 @@
+NAME                           STATUS      COMPLETIONS   DURATION   AGE
+batch-b-archive-restore        Complete    1/1           6s         6m40s
+eval-baseline                  Suspended   0/1                      146m
+eval-gate-candidate-precheck   Failed      0/1           5m59s      5m59s
+eval-gate-demo-fail            Failed      0/1           102m       102m
+eval-gate-demo-pass            Complete    1/1           3s         102m
+eval-gemini-baseline           Complete    1/1           99m        107m
+eval-gemini-candidate          Failed      0/1           92m        92m
+eval-smoke                     Complete    1/1           2m3s       164m
+ingest-batch-b-demo            Complete    1/1           11s        17m
+ingest-batch-b-repeat          Complete    1/1           6s         9m25s
+ingest-candidate-400-50        Complete    1/1           14m        106m
+ingestion-minikube             Complete    1/1           15m        4h36m

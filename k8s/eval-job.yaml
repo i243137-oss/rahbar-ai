@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: eval-baseline
+  namespace: rahbar
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: evaluator
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: evaluator
+          image: rahbar-eval:full-f9727ae-v2
+          imagePullPolicy: Never
+          args: ["--api", "http://api:8000", "--results", "/results/baseline-$(POD_NAME)"]
+          envFrom:
+            - configMapRef:
+                name: rahbar-config
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ALLOW_FIXTURE_FALLBACK
+              value: "false"
+            - name: PYTHONHASHSEED
+              value: "0"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          volumeMounts:
+            - name: results
+              mountPath: /results
+            - name: corpus
+              mountPath: /app/corpus/raw
+              readOnly: true
+      volumes:
+        - name: results
+          persistentVolumeClaim:
+            claimName: eval-results
+        - name: corpus
+          persistentVolumeClaim:
+            claimName: corpus-pvc

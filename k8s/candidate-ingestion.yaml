@@ -1,0 +1,107 @@
+{
+  "kind": "Job",
+  "apiVersion": "batch/v1",
+  "metadata": {
+    "name": "ingest-candidate-400-50",
+    "namespace": "rahbar"
+  },
+  "spec": {
+    "backoffLimit": 0,
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "indexer"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "corpus-volume",
+            "persistentVolumeClaim": {
+              "claimName": "corpus-pvc"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "indexer",
+            "image": "rahbar-indexer:f9727ae",
+            "envFrom": [
+              {
+                "configMapRef": {
+                  "name": "rahbar-config"
+                }
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "2",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "500m",
+                "memory": "2Gi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "corpus-volume",
+                "mountPath": "/corpus"
+              }
+            ],
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "IfNotPresent",
+            "securityContext": {
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "allowPrivilegeEscalation": false
+            },
+            "env": [
+              {
+                "name": "CHROMA_COLLECTION",
+                "value": "rahbar-candidate-400-50"
+              },
+              {
+                "name": "CHUNK_SIZE",
+                "value": "400"
+              },
+              {
+                "name": "CHUNK_OVERLAP",
+                "value": "50"
+              },
+              {
+                "name": "STATE_FILE",
+                "value": "/corpus/.candidate-400-50-state.json"
+              },
+              {
+                "name": "QUARANTINE_DIR",
+                "value": "/corpus/candidate-400-50-quarantine"
+              },
+              {
+                "name": "ARCHIVE_DIR",
+                "value": "/corpus/candidate-400-50-archive"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Never",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "ClusterFirst",
+        "serviceAccountName": "indexer-sa",
+        "serviceAccount": "indexer-sa",
+        "automountServiceAccountToken": false,
+        "securityContext": {
+          "runAsUser": 10001,
+          "runAsGroup": 10001,
+          "runAsNonRoot": true,
+          "fsGroup": 10001
+        },
+        "schedulerName": "default-scheduler"
+      }
+    }
+  }
+}

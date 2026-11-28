@@ -14,6 +14,7 @@ import httpx
 from pydantic import ValidationError
 
 from ...config import Settings
+from ...query_trace import record_model_input
 from ...schemas import Answer, Passage
 from .prompt import SYSTEM_PROMPT, build_user_prompt
 
@@ -48,6 +49,7 @@ class OllamaProvider:
 
         try:
             with httpx.Client(timeout=self.timeout) as client:
+                record_model_input(payload)
                 resp = client.post(f"{self.ollama_url}/api/chat", json=payload)
                 resp.raise_for_status()
                 data = resp.json()

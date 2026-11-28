@@ -1,0 +1,53 @@
+# Initial two-question smoke test for the live API and results volume.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: eval-smoke
+  namespace: rahbar
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: evaluator
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: evaluator
+          image: rahbar-eval:smoke-f9727ae
+          imagePullPolicy: Never
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              report="/results/smoke-$(date -u +%Y%m%dT%H%M%SZ)-${HOSTNAME}.json"
+              rc=0
+              python -u eval/run_eval.py \
+                --api http://api:8000 \
+                --golden eval/golden.smoke.jsonl \
+                --baseline /app/no-baseline.json \
+                --out "$report" || rc=$?
+              if [ -f "$report" ]; then
+                echo "Saved report at $report"
+                cat "$report"
+              fi
+              exit "$rc"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          volumeMounts:
+            - name: results
+              mountPath: /results
+      volumes:
+        - name: results
+          persistentVolumeClaim:
+            claimName: eval-results

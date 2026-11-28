@@ -275,3 +275,8 @@ The repository enforces a two-branch workflow (`dev` for active integration, pro
 
 - **Member 1 (Ahmed Tanveer)**: Document corpus, PDF/OCR extraction, text cleaning, chunking pipeline, embedding generation, ChromaDB vector storage.
 - **Member 2 (Umair Hassan)**: API generation pipeline, ChromaRetriever, LLM provider integration (Ollama & Hosted), prompt safety & injection defense, citation validation, Redis semantic caching, Kubernetes architecture, Kustomize manifests, NetworkPolicies, HPA, and CI/CD automation.
+## Assignment 3 on Minikube
+
+- [Fresh deployment and Gemini setup](k8s/README.md)
+- [Evaluation, candidate release, and rollback commands](k8s/README.md#baseline-evaluation-and-evidence-collection)
+- [Observed results, trace diagnosis, resource measurements, and remaining checks](docs/ASSIGNMENT3-MINIKUBE.md)

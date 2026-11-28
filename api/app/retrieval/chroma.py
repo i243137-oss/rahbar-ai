@@ -11,6 +11,7 @@ import re
 from typing import Any
 
 from ..config import Settings
+from ..query_trace import record
 from ..schemas import Passage
 from .embed import embed_query
 
@@ -95,6 +96,12 @@ class ChromaRetriever:
         else:
             where_filter = None if explicit_historical else {"superseded": False}
 
+        record(
+            collection=getattr(collection, "name", self.settings.collection),
+            index_id=(getattr(collection, "metadata", None) or {}).get("index_id"),
+            filters=where_filter,
+        )
+
         # 4. Query Chroma collection
         try:
             results = collection.query(
@@ -127,6 +134,8 @@ class ChromaRetriever:
                     section=str(meta_dict.get("section", "General")),
                     page=int(meta_dict["page"]) if meta_dict.get("page") is not None else None,
                     score=similarity,
+                    doc_version=meta_dict.get("doc_version"),
+                    superseded=bool(meta_dict.get("superseded", False)),
                 )
             )
 

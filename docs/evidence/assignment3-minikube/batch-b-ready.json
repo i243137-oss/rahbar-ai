@@ -1,0 +1,1 @@
+{"status":"ready","checks":{"chroma_collection":"ok (16 documents)","embed_model_pin":"ok (nomic-embed-text)","dimension_pin":"ok (768)","redis":"disabled"}}

@@ -1,0 +1,17 @@
+{
+  "recall@3": 1.0,
+  "recall@3_by_type": {
+    "ordinary": 1.0,
+    "abstain": null
+  },
+  "recall@5": 1.0,
+  "recall@5_by_type": {
+    "ordinary": 1.0,
+    "abstain": null
+  },
+  "citation_validity": 1.0,
+  "grounded_without_citations": 0,
+  "abstention_correctness": 1,
+  "golden": "eval/golden.smoke.jsonl",
+  "questions": 2
+}

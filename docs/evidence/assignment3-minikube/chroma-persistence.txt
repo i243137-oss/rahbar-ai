@@ -1,0 +1,20 @@
+Before Chroma replacement
+NAME       UID
+chroma-0   dff9197a-9f2a-44e3-ade7-ee7f15135553
+CLAIM                  VOLUME                                     STATUS
+chroma-data-chroma-0   pvc-09b97828-7d63-4e8b-b516-c214f915b5d4   Bound
+{"status":"ready","checks":{"chroma_collection":"ok (328 documents)","embed_model_pin":"ok (nomic-embed-text)","dimension_pin":"ok (768)","redis":"disabled"}}
+{"status":"ready","checks":{"chroma_collection":"ok (380 documents)","embed_model_pin":"ok (nomic-embed-text)","dimension_pin":"ok (768)","redis":"disabled"}}
+statefulset.apps/chroma restarted
+Waiting for partitioned roll out to finish: 0 out of 1 new pods have been updated...
+Waiting for 1 pods to be ready...
+Waiting for 1 pods to be ready...
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+After Chroma replacement
+NAME       UID
+chroma-0   954088f1-a216-40f5-b179-cd72d159d905
+CLAIM                  VOLUME                                     STATUS
+chroma-data-chroma-0   pvc-09b97828-7d63-4e8b-b516-c214f915b5d4   Bound
+{"status":"ready","checks":{"chroma_collection":"ok (328 documents)","embed_model_pin":"ok (nomic-embed-text)","dimension_pin":"ok (768)","redis":"disabled"}}
+{"status":"ready","checks":{"chroma_collection":"ok (380 documents)","embed_model_pin":"ok (nomic-embed-text)","dimension_pin":"ok (768)","redis":"disabled"}}

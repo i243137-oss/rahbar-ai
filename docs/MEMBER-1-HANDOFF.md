@@ -87,7 +87,59 @@ python3 eval/run_eval.py --api http://<ingress-or-service> --golden eval/golden.
 
 ---
 
-## 4. Verification Test Commands for Member 2
+## 4. Part C Release Gate & Kubernetes CI/CD Integration
+
+Member 1 provides an automated, configurable quality release gate in [`eval/release_gate.py`](file:///home/umair_hassan/rahbar-ai/eval/release_gate.py) and [`eval/gate_config.yaml`](file:///home/umair_hassan/rahbar-ai/eval/gate_config.yaml). Member 2 can plug this directly into GitHub Actions, ArgoCD, or a Kubernetes deployment verification job.
+
+### 4.1 Running the Release Gate
+Ahmed can invoke the gate using:
+```bash
+python3 eval/release_gate.py \
+  --candidate eval/results/change_experiment_report.json \
+  --config eval/gate_config.yaml \
+  --output eval/results/gate_decision_report.json
+```
+Or when evaluating a newly generated candidate retrieval report against production baseline:
+```bash
+python3 eval/release_gate.py \
+  --candidate eval/results/retrieval_eval_report.json \
+  --baseline eval/results/retrieval_eval_report_baseline.json \
+  --config eval/gate_config.yaml \
+  --output eval/results/gate_decision_report.json
+```
+
+### 4.2 Exit Codes for Automated Deployment
+- `0` (Success): `GATE PASSED — RELEASE APPROVED`. Proceed with Kubernetes Canary promotion or rolling update.
+- `1` (Failure): `GATE FAILED — RELEASE REJECTED`. Halt rollout and trigger immediate rollback (`kubectl rollout undo deployment/rahbar-api`).
+- `2` (Error): Missing configuration or unreadable report file.
+
+### 4.3 Configurable Quality Thresholds (`eval/gate_config.yaml`)
+- `min_recall_at_3`: `0.65`
+- `min_recall_at_5`: `0.70`
+- `min_mrr`: `0.60`
+- `min_ndcg_at_5`: `0.70`
+- `max_recall_at_5_drop`: `0.05`
+- `max_ndcg_at_5_drop`: `0.05`
+- `min_noise_retention_pct`: `85.0%`
+- `max_chunk_amplification_ratio`: `1.50`
+
+### 4.4 Answer-Level Metrics Integration
+When Member 2 executes end-to-end evaluation with the live LLM, simply include `generation_metrics` in the JSON report:
+```json
+{
+  "generation_metrics": {
+    "groundedness": 0.88,
+    "citation_precision": 0.92,
+    "hallucination_rate": 0.05,
+    "answer_relevance": 0.84
+  }
+}
+```
+The release gate automatically validates these metrics against configured thresholds (`min_groundedness: 0.80`, `min_citation_precision: 0.80`, `max_hallucination_rate: 0.15`).
+
+---
+
+## 5. Verification Test Commands for Member 2
 
 Before opening or merging pull requests, Member 2 can run the following offline checks:
 
@@ -97,19 +149,25 @@ Before opening or merging pull requests, Member 2 can run the following offline 
    ```
    *Expected output: `ALL PART B4 INTEGRATION CONTRACT TESTS PASSED!`*
 
-2. **Run Golden Dataset Validator:**
+2. **Verify Release Gate Test Suite:**
+   ```bash
+   pytest eval/test_release_gate.py -v
+   ```
+   *Expected output: `9 passed in 0.34s`.*
+
+3. **Run Golden Dataset Validator:**
    ```bash
    python3 eval/validate_golden.py
    ```
    *Expected output: `Golden dataset validation PASSED with 0 errors!`*
 
-3. **Run Representation Space Benchmark (Ollama):**
+4. **Run Representation Space Benchmark (Ollama):**
    ```bash
    python3 eval/eval_embeddings.py
    ```
    *Expected output: Separation gap $\ge 0.35$, determinism delta $= 0.0$.*
 
-4. **Run Retrieval Metrics & Noise Robustness Suite:**
+5. **Run Retrieval Metrics & Noise Robustness Suite:**
    ```bash
    python3 eval/eval_retrieval.py
    ```
@@ -117,5 +175,5 @@ Before opening or merging pull requests, Member 2 can run the following offline 
 
 ---
 
-## 5. Contact & Support
+## 6. Contact & Support
 If any schema changes or additional corpus documents are required, please request a review from **Member 1 (Umair Hassan)** before altering `api/app/schemas.py` or Chroma metadata fields.
